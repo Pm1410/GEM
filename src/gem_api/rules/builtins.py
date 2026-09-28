@@ -194,11 +194,21 @@ def check_make_in_india(context: VerificationContext, params: dict[str, Any]) ->
 @register_check("debarment_check")
 def check_debarment(context: VerificationContext, params: dict[str, Any]) -> CheckResult:
     """Debarment / blacklisting check with scope evaluation (RULE-05)."""
+    portal_res = context.portal_results.get("debarment")
+    if portal_res:
+        status = portal_res.get("status") if isinstance(portal_res, dict) else getattr(portal_res, "status", None)
+        if status in ("TIMEOUT", "ERROR"):
+            return CheckResult(
+                check_id=params.get("id", "CHK-DEBARMENT"),
+                state="UNVERIFIABLE",
+                message=f"Debarment portal lookup unavailable ({status}). Retrying with backoff; not marked as FAIL.",
+                details={"portal_status": status}
+            )
+
     debarment_records = context.evidence.get("debarment_records")
-    if debarment_records is None:
-        portal_res = context.portal_results.get("debarment")
-        if portal_res:
-            debarment_records = portal_res.get("fields", {}).get("records", [])
+    if debarment_records is None and portal_res:
+        fields = portal_res.get("fields", {}) if isinstance(portal_res, dict) else getattr(portal_res, "fields", {})
+        debarment_records = fields.get("records", [])
 
     if debarment_records is None:
         debarment_records = []
@@ -219,7 +229,6 @@ def check_debarment(context: VerificationContext, params: dict[str, Any]) -> Che
         if scope != "org_wide":
             record_category = record.get("category", "").lower()
             if record_category and record_category != tender_category:
-                # Category mismatch, not in scope
                 continue
 
         # Check time bounds
@@ -248,6 +257,166 @@ def check_debarment(context: VerificationContext, params: dict[str, Any]) -> Che
         state="PASS",
         message="No active debarment or blacklisting records found in scope.",
         details={"records_checked": len(debarment_records)}
+    )
+
+
+@register_check("portal_gstn_check")
+def check_portal_gstn(context: VerificationContext, params: dict[str, Any]) -> CheckResult:
+    """Simulated GSTN portal registration & return filing check (PORT-02, PORT-09)."""
+    portal_res = context.portal_results.get("gstin") or context.portal_results.get("gstn")
+    if not portal_res:
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-GSTN"),
+            state="REVIEW",
+            message="No GSTN portal lookup result found in verification context."
+        )
+
+    status = portal_res.get("status") if isinstance(portal_res, dict) else getattr(portal_res, "status", None)
+    if status in ("TIMEOUT", "ERROR"):
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-GSTN"),
+            state="UNVERIFIABLE",
+            message=f"GSTN portal unreachable ({status}). Retrying with backoff; not marked as FAIL.",
+            details={"portal_status": status}
+        )
+
+    fields = portal_res.get("fields", {}) if isinstance(portal_res, dict) else getattr(portal_res, "fields", {})
+    filing_status = fields.get("filing_status")
+    reg_status = fields.get("status") or status
+
+    if reg_status == "INACTIVE" or status == "INACTIVE":
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-GSTN"),
+            state="FAIL",
+            message="GSTIN registration is INACTIVE or CANCELLED on GSTN portal.",
+            details=fields
+        )
+
+    if filing_status == "OVERDUE":
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-GSTN"),
+            state="FAIL",
+            message=f"GST return filing is OVERDUE (Last return: {fields.get('last_return_type')} for period {fields.get('last_return_period')}).",
+            details=fields
+        )
+
+    return CheckResult(
+        check_id=params.get("id", "CHK-PORTAL-GSTN"),
+        state="PASS",
+        message="GSTN portal confirmed active registration and compliant return filing.",
+        details=fields
+    )
+
+
+@register_check("portal_udyam_check")
+def check_portal_udyam(context: VerificationContext, params: dict[str, Any]) -> CheckResult:
+    """Simulated Udyam portal verification (PORT-03, PORT-09)."""
+    portal_res = context.portal_results.get("udyam")
+    if not portal_res:
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-UDYAM"),
+            state="REVIEW",
+            message="No Udyam portal lookup result found in verification context."
+        )
+
+    status = portal_res.get("status") if isinstance(portal_res, dict) else getattr(portal_res, "status", None)
+    if status in ("TIMEOUT", "ERROR"):
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-UDYAM"),
+            state="UNVERIFIABLE",
+            message=f"Udyam portal unreachable ({status}). Retrying with backoff; not marked as FAIL.",
+            details={"portal_status": status}
+        )
+
+    fields = portal_res.get("fields", {}) if isinstance(portal_res, dict) else getattr(portal_res, "fields", {})
+    if status in ("INACTIVE", "CANCELLED") or fields.get("status") in ("INACTIVE", "CANCELLED"):
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-UDYAM"),
+            state="FAIL",
+            message="Udyam enterprise registration is CANCELLED or INACTIVE.",
+            details=fields
+        )
+
+    return CheckResult(
+        check_id=params.get("id", "CHK-PORTAL-UDYAM"),
+        state="PASS",
+        message=f"Udyam registration verified: {fields.get('enterprise_name')} ({fields.get('enterprise_category')}).",
+        details=fields
+    )
+
+
+@register_check("portal_epfo_check")
+def check_portal_epfo(context: VerificationContext, params: dict[str, Any]) -> CheckResult:
+    """Simulated EPFO portal verification (PORT-04, PORT-09)."""
+    portal_res = context.portal_results.get("epfo")
+    if not portal_res:
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-EPFO"),
+            state="REVIEW",
+            message="No EPFO portal lookup result found in verification context."
+        )
+
+    status = portal_res.get("status") if isinstance(portal_res, dict) else getattr(portal_res, "status", None)
+    if status in ("TIMEOUT", "ERROR"):
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-EPFO"),
+            state="UNVERIFIABLE",
+            message=f"EPFO portal unreachable ({status}). Retrying with backoff; not marked as FAIL.",
+            details={"portal_status": status}
+        )
+
+    fields = portal_res.get("fields", {}) if isinstance(portal_res, dict) else getattr(portal_res, "fields", {})
+    if status == "INACTIVE":
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-EPFO"),
+            state="FAIL",
+            message="EPFO establishment registration is INACTIVE on portal.",
+            details=fields
+        )
+
+    return CheckResult(
+        check_id=params.get("id", "CHK-PORTAL-EPFO"),
+        state="PASS",
+        message=f"EPFO establishment verified: {fields.get('establishment_name')} (Contributing: {fields.get('members_contributed')}).",
+        details=fields
+    )
+
+
+@register_check("portal_esic_check")
+def check_portal_esic(context: VerificationContext, params: dict[str, Any]) -> CheckResult:
+    """Simulated ESIC portal verification (PORT-05, PORT-09)."""
+    portal_res = context.portal_results.get("esic")
+    if not portal_res:
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-ESIC"),
+            state="REVIEW",
+            message="No ESIC portal lookup result found in verification context."
+        )
+
+    status = portal_res.get("status") if isinstance(portal_res, dict) else getattr(portal_res, "status", None)
+    if status in ("TIMEOUT", "ERROR"):
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-ESIC"),
+            state="UNVERIFIABLE",
+            message=f"ESIC portal unreachable ({status}). Retrying with backoff; not marked as FAIL.",
+            details={"portal_status": status}
+        )
+
+    fields = portal_res.get("fields", {}) if isinstance(portal_res, dict) else getattr(portal_res, "fields", {})
+    compliance = fields.get("compliance_status")
+    if compliance == "DEFAULTER" or status == "INACTIVE":
+        return CheckResult(
+            check_id=params.get("id", "CHK-PORTAL-ESIC"),
+            state="FAIL",
+            message="ESIC employer is recorded as DEFAULTER or INACTIVE on portal.",
+            details=fields
+        )
+
+    return CheckResult(
+        check_id=params.get("id", "CHK-PORTAL-ESIC"),
+        state="PASS",
+        message=f"ESIC employer compliance verified for {fields.get('employer_name')}.",
+        details=fields
     )
 
 

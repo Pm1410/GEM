@@ -23,6 +23,16 @@ from gem_api.rules.engine import (
     evaluate_requirement,
     evaluate_tender,
 )
+from gem_api.rules.missing_info import (
+    detect_missing_fields,
+    MissingInfoReport,
+    DeficiencyFinding,
+)
+from gem_api.rules.result_aggregator import (
+    aggregate_states,
+    aggregate_evaluation_report,
+    AggregatedEvaluation,
+)
 
 # Ensure built-in checks are registered on import
 import gem_api.rules.builtins  # noqa: F401
@@ -45,4 +55,10 @@ __all__ = [
     "evaluate_check",
     "evaluate_requirement",
     "evaluate_tender",
+    "detect_missing_fields",
+    "MissingInfoReport",
+    "DeficiencyFinding",
+    "aggregate_states",
+    "aggregate_evaluation_report",
+    "AggregatedEvaluation",
 ]
