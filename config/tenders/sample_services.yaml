@@ -1,0 +1,53 @@
+tender_id: "TND-2026-SRV-002"
+version: "1.0.0"
+rule_set_version: "2026.1"
+title: "Annual Maintenance and Facility Management Services"
+tender_category: "services"
+bid_opening_date: "2026-04-01"
+estimated_value: 1200000.00
+local_content_threshold: 20.0
+
+requirements:
+  - id: "REQ-01"
+    description: "Valid GSTIN registration"
+    mandatory: true
+    evidence_types: ["gst_certificate"]
+    checks:
+      - id: "CHK-01-01"
+        type: "format_gstin"
+
+  - id: "REQ-02"
+    description: "Valid PAN card"
+    mandatory: true
+    evidence_types: ["pan_card"]
+    checks:
+      - id: "CHK-02-01"
+        type: "format_pan"
+
+  - id: "REQ-03"
+    description: "EPFO establishment registration (mandatory for services category)"
+    mandatory: true
+    applies_if:
+      tender_category: "services"
+    evidence_types: ["epfo_certificate"]
+    checks:
+      - id: "CHK-03-01"
+        type: "epfo_registration_check"
+
+  - id: "REQ-04"
+    description: "ESIC employer registration (mandatory for services category)"
+    mandatory: true
+    applies_if:
+      tender_category: "services"
+    evidence_types: ["esic_certificate"]
+    checks:
+      - id: "CHK-04-01"
+        type: "esic_registration_check"
+
+  - id: "REQ-05"
+    description: "Non-debarment confirmation"
+    mandatory: true
+    evidence_types: ["debarment_declaration"]
+    checks:
+      - id: "CHK-05-01"
+        type: "debarment_check"

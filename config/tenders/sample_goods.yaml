@@ -1,0 +1,45 @@
+tender_id: "TND-2026-GOODS-001"
+version: "1.0.0"
+rule_set_version: "2026.1"
+title: "Procurement of Heavy-Duty Solar Inverters"
+tender_category: "goods"
+bid_opening_date: "2026-03-15"
+estimated_value: 2500000.00
+local_content_threshold: 50.0
+
+requirements:
+  - id: "REQ-01"
+    description: "Valid GSTIN registration and compliance"
+    mandatory: true
+    evidence_types: ["gst_certificate"]
+    checks:
+      - id: "CHK-01-01"
+        type: "format_gstin"
+      - id: "CHK-01-02"
+        type: "cross_check_gstin_pan"
+
+  - id: "REQ-02"
+    description: "Valid PAN card of enterprise"
+    mandatory: true
+    evidence_types: ["pan_card"]
+    checks:
+      - id: "CHK-02-01"
+        type: "format_pan"
+
+  - id: "REQ-03"
+    description: "Make in India local content minimum threshold (50%)"
+    mandatory: true
+    evidence_types: ["mii_declaration"]
+    checks:
+      - id: "CHK-03-01"
+        type: "make_in_india_threshold"
+        params:
+          min_percentage: 50.0
+
+  - id: "REQ-04"
+    description: "Bidder must not be debarred or blacklisted"
+    mandatory: true
+    evidence_types: ["debarment_declaration"]
+    checks:
+      - id: "CHK-04-01"
+        type: "debarment_check"
