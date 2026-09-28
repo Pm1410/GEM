@@ -100,8 +100,8 @@
 
 ### Demo
 
-- [ ] **DEMO-01**: 3-minute demo script covering Tier A items only: problem → PASS/FAIL/REVIEW bidders → GST filing overdue → portal kill → advisory → officer action → audit tamper → evaluation numbers
-- [ ] **DEMO-02**: Hosted deployment accessible for live demo (docker compose + Render/Vercel/Railway)
+- [x] **DEMO-01**: 3-minute demo script covering Tier A items only: problem → PASS/FAIL/REVIEW bidders → GST filing overdue → portal kill → advisory → officer action → audit tamper → evaluation numbers
+- [x] **DEMO-02**: Hosted deployment accessible for live demo (docker compose + Render/Vercel/Railway)
 
 ### Security
 
@@ -198,8 +198,8 @@
 | EVAL-01 | Phase 5 | Complete |
 | EVAL-02 | Phase 5 | Complete |
 | EVAL-03 | Phase 5 | Complete |
-| DEMO-01 | Phase 6 | Pending |
-| DEMO-02 | Phase 6 | Pending |
+| DEMO-01 | Phase 6 | Complete |
+| DEMO-02 | Phase 6 | Complete |
 | SECR-01 | Phase 2 | Complete |
 | SECR-02 | Phase 2 | Complete |
 | SECR-03 | Phase 3 | Complete |

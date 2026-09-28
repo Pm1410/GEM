@@ -92,7 +92,7 @@
 
 ---
 
-## Phase 6: Demo Script & Deployment
+## Phase 6: Demo Script & Deployment [COMPLETE]
 
 **Goal:** Containerise with docker compose, deploy to hosted platform, rehearse the 3-minute demo script, and create the limitations page.
 
