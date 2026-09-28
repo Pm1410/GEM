@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Automated bid-eligibility verification platform for Government e-Marketplace (GeM) procurement. Cross-verifies bidder documents against statutory portals and tender rules with explainable audit trails.">
+  <title>GeM Bid Eligibility Verification Platform — Procurement Officer Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Executive Navigation Bar -->
+  <header class="navbar">
+    <div class="brand-section">
+      <div class="brand-logo">GeM</div>
+      <div class="brand-text">
+        <h1>Government e-Marketplace <span class="simulated-pill" id="sim-indicator">SIMULATED PORTALS</span></h1>
+        <p>Bid Verification & Eligibility Platform — SIH PS SIH26100</p>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <div class="control-group">
+        <label for="tender-select">Active Tender:</label>
+        <select id="tender-select" class="dropdown-select">
+          <option value="TNDR-GOODS-001">Workstations & Servers (Goods)</option>
+          <option value="TNDR-SERVICES-001">Cloud Migration & IT Support (Services)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="role-select">Active Role:</label>
+        <select id="role-select" class="dropdown-select">
+          <option value="officer">Procurement Officer</option>
+          <option value="evaluator">Technical Evaluator</option>
+          <option value="admin">Administrator</option>
+          <option value="auditor">Auditor (Read-Only)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Metrics Grid -->
+    <section class="metrics-grid" id="metrics-section">
+      <div class="metric-card">
+        <span class="metric-label">Total Bidders</span>
+        <span class="metric-value" id="metric-total-bidders">0</span>
+        <span class="metric-sub">Submitted proposals</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Compliant Coverage</span>
+        <span class="metric-value" id="metric-compliant-count" style="color: var(--state-pass)">0</span>
+        <span class="metric-sub">Evaluated as PASS</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Avg Compliance Score</span>
+        <span class="metric-value" id="metric-avg-score" style="color: #38BDF8">0.0%</span>
+        <span class="metric-sub">Verifiable coverage</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Critical / High Risk</span>
+        <span class="metric-value" id="metric-critical-risk" style="color: var(--state-fail)">0</span>
+        <span class="metric-sub">Requires officer scrutiny</span>
+      </div>
+    </section>
+
+    <!-- Content Grid: Bidders Table & Detail Inspector -->
+    <section class="content-grid">
+      <!-- Left Column: Bidder Table -->
+      <div class="panel-card" id="bidders-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Tender Bidder Packets</h2>
+          <span class="badge badge-unverifiable" id="bidders-count-badge">Loading...</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="bidders-table">
+            <thead>
+              <tr>
+                <th>Bidder Entity</th>
+                <th>Score</th>
+                <th>Risk Tier</th>
+                <th>Result State</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bidders-table-body">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column: Detail Inspector & Workflow -->
+      <div class="panel-card" id="detail-panel">
+        <div class="panel-header">
+          <h2 class="panel-title" id="selected-bidder-title">Bidder Eligibility Dossier</h2>
+          <span class="badge" id="selected-bidder-badge">SELECT BIDDER</span>
+        </div>
+
+        <!-- Inspector Tabs -->
+        <div class="tabs-header">
+          <button class="tab-btn active" id="tab-checklist-btn" data-tab="checklist">Evaluation Matrix</button>
+          <button class="tab-btn" id="tab-evidence-btn" data-tab="evidence">Evidence & Grounding</button>
+          <button class="tab-btn" id="tab-advisory-btn" data-tab="advisory">Advisory & Decision</button>
+          <button class="tab-btn" id="tab-audit-btn" data-tab="audit">Audit Hash Chain</button>
+        </div>
+
+        <!-- Tab 1: Checklist & Requirements Matrix -->
+        <div class="tab-content active" id="tab-checklist">
+          <div class="table-responsive">
+            <table class="data-table" id="requirements-table">
+              <thead>
+                <tr>
+                  <th>Req ID</th>
+                  <th>Verification Check</th>
+                  <th>State</th>
+                  <th>Portal / Source</th>
+                </tr>
+              </thead>
+              <tbody id="requirements-table-body">
+                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Select a bidder from the list to view compliance breakdown.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Evidence Viewer & Grounding Highlight -->
+        <div class="tab-content" id="tab-evidence">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 600;" id="evidence-filename">Submitted Document</span>
+            <span class="badge badge-pass" id="evidence-grounded-status">VERBATIM GROUNDED</span>
+          </div>
+          <div class="evidence-viewer-box" id="evidence-viewer">
+            <div id="evidence-text">Select a bidder to inspect extracted evidence and verbatim text highlights.</div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Advisory & Officer Workflow -->
+        <div class="tab-content" id="tab-advisory">
+          <div class="advisory-banner" id="advisory-container">
+            <div class="advisory-disclaimer" id="advisory-disclaimer">
+              ADVISORY: FOR PROCURING OFFICER EVALUATION ONLY — NOT AN AUTOMATED DISQUALIFICATION.
+            </div>
+            <div id="advisory-content" style="font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap;">
+              Select a bidder to generate deterministic procurement advisory.
+            </div>
+          </div>
+
+          <div class="action-box" id="officer-action-section">
+            <div style="font-weight: 700; font-size: 0.9rem;">Officer Evaluation & Formal Determination</div>
+            <div class="action-buttons">
+              <button class="btn-action btn-approve" id="action-approve" data-action="APPROVE">Approve Bid</button>
+              <button class="btn-action btn-reject" id="action-reject" data-action="REJECT">Reject Bid</button>
+              <button class="btn-action btn-clarify" id="action-clarify" data-action="REQUEST_CLARIFICATION">Request Clarification</button>
+            </div>
+            <div>
+              <textarea 
+                id="justification-input" 
+                class="justification-textarea" 
+                placeholder="Enter mandatory justification for your determination (minimum 10 characters)..."
+              ></textarea>
+              <div class="char-counter" id="char-counter">0 / 10 characters minimum</div>
+            </div>
+            <button class="btn-action btn-approve" id="action-submit" disabled>Record Determination to Audit Trail</button>
+            <div id="action-feedback" style="font-size: 0.8rem; display: none;"></div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Audit Chain Inspector -->
+        <div class="tab-content" id="tab-audit">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 600;">Cryptographic Audit Trail (SHA-256)</span>
+            <button class="btn-action" id="audit-verify-btn" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; border-color: rgba(56, 189, 248, 0.4); flex: none; padding: 0.4rem 0.8rem;">
+              Verify Chain Integrity
+            </button>
+          </div>
+          <div id="audit-status-badge" class="badge badge-pass" style="align-self: flex-start; display: none;">
+            Chain Verified: 0 Records Intact
+          </div>
+          <div class="audit-blocks-container" id="audit-blocks">
+            <div style="color: var(--text-muted); font-size: 0.85rem;">No decisions recorded yet. Decisions made by officers will form a tamper-evident hash chain here.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Smart India Hackathon 2026 (SIH PS SIH26100) — GeM Automated Bid Eligibility Verification Prototype</p>
+    <p style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-muted);">
+      Pure Deterministic Rule Engine · Zero False PASS Guarantee · Tamper-Evident SHA-256 Audit Trail
+    </p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

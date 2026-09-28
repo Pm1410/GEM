@@ -1,0 +1,525 @@
+/* ==========================================================================
+   GeM Bid Eligibility Verification Platform — Design System & Stylesheet
+   Theme: Executive Procurement Dark Glassmorphism with Curated Tokens
+   ========================================================================== */
+
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Primary GeM Palette */
+  --bg-primary: #070D18;
+  --bg-secondary: #0D1B2E;
+  --bg-card: rgba(18, 32, 54, 0.7);
+  --bg-card-hover: rgba(26, 44, 73, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(59, 130, 246, 0.3);
+  
+  /* Text & Foreground */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  
+  /* Statutory State Accents */
+  --state-pass: #10B981;
+  --state-pass-bg: rgba(16, 185, 129, 0.12);
+  --state-pass-border: rgba(16, 185, 129, 0.3);
+  
+  --state-fail: #EF4444;
+  --state-fail-bg: rgba(239, 68, 68, 0.12);
+  --state-fail-border: rgba(239, 68, 68, 0.3);
+  
+  --state-review: #F59E0B;
+  --state-review-bg: rgba(245, 158, 11, 0.12);
+  --state-review-border: rgba(245, 158, 11, 0.3);
+  
+  --state-unverifiable: #8B5CF6;
+  --state-unverifiable-bg: rgba(139, 92, 246, 0.12);
+  --state-unverifiable-border: rgba(139, 92, 246, 0.3);
+
+  /* Risk Tiers */
+  --risk-critical: #DC2626;
+  --risk-high: #EA580C;
+  --risk-medium: #D97706;
+  --risk-low: #059669;
+  
+  /* GeM National Accent */
+  --gem-orange: #FF9933;
+  --gem-blue: #138808;
+  --gem-navy: #000080;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(15, 118, 110, 0.18) 0px, transparent 50%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+
+header.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 2rem;
+  background: rgba(13, 27, 46, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.5px;
+  color: #FFFFFF;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+.brand-text h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-text p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.simulated-pill {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #FBBF24;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+select.dropdown-select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+select.dropdown-select:hover, select.dropdown-select:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.role-pill-badge {
+  background: #1E293B;
+  border: 1px solid var(--border-subtle);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #38BDF8;
+}
+
+/* ==========================================================================
+   Main Layout & Metric Cards
+   ========================================================================== */
+
+main.container {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-accent);
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.metric-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Two-Column Content Grid: Table & Inspector
+   ========================================================================== */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2rem;
+}
+
+.panel-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Bidders Table */
+.table-responsive {
+  overflow-x: auto;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+table.data-table th {
+  padding: 0.75rem 1rem;
+  background: rgba(13, 27, 46, 0.6);
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+table.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+table.data-table tr.clickable-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+table.data-table tr.clickable-row:hover {
+  background: var(--bg-card-hover);
+}
+
+table.data-table tr.selected-row {
+  background: rgba(59, 130, 246, 0.15);
+  border-left: 3px solid #3B82F6;
+}
+
+/* State & Risk Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.badge-pass { background: var(--state-pass-bg); color: var(--state-pass); border: 1px solid var(--state-pass-border); }
+.badge-fail { background: var(--state-fail-bg); color: var(--state-fail); border: 1px solid var(--state-fail-border); }
+.badge-review { background: var(--state-review-bg); color: var(--state-review); border: 1px solid var(--state-review-border); }
+.badge-unverifiable { background: var(--state-unverifiable-bg); color: var(--state-unverifiable); border: 1px solid var(--state-unverifiable-border); }
+
+.badge-risk-critical { background: rgba(220, 38, 38, 0.2); color: #F87171; border: 1px solid rgba(220, 38, 38, 0.5); }
+.badge-risk-high { background: rgba(234, 88, 12, 0.2); color: #FB923C; border: 1px solid rgba(234, 88, 12, 0.5); }
+.badge-risk-medium { background: rgba(217, 119, 6, 0.2); color: #FBBF24; border: 1px solid rgba(217, 119, 6, 0.5); }
+.badge-risk-low { background: rgba(5, 150, 105, 0.2); color: #34D399; border: 1px solid rgba(5, 150, 105, 0.5); }
+
+/* ==========================================================================
+   Detail Inspector Tabs & Panels
+   ========================================================================== */
+
+.tabs-header {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.65rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: #38BDF8;
+  border-bottom-color: #38BDF8;
+}
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+/* Advisory Banner */
+.advisory-banner {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.advisory-disclaimer {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FBBF24;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.advisory-recommendation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Evidence Viewer */
+.evidence-viewer-box {
+  background: #050B14;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: #CBD5E1;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.highlight-box {
+  background: rgba(59, 130, 246, 0.25);
+  border: 1px solid #60A5FA;
+  color: #93C5FD;
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+/* Officer Action Form */
+.action-box {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-action {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.btn-approve { background: rgba(16, 185, 129, 0.2); color: #34D399; border-color: rgba(16, 185, 129, 0.4); }
+.btn-approve:hover { background: #10B981; color: white; }
+
+.btn-reject { background: rgba(239, 68, 68, 0.2); color: #F87171; border-color: rgba(239, 68, 68, 0.4); }
+.btn-reject:hover { background: #EF4444; color: white; }
+
+.btn-clarify { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border-color: rgba(245, 158, 11, 0.4); }
+.btn-clarify:hover { background: #F59E0B; color: white; }
+
+textarea.justification-textarea {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+}
+
+textarea.justification-textarea:focus {
+  border-color: #38BDF8;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Audit Chain Visualizer */
+.audit-blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.audit-block {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid #38BDF8;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.audit-hash {
+  font-family: monospace;
+  color: #94A3B8;
+  font-size: 0.75rem;
+  word-break: break-all;
+}
+
+/* Footer */
+footer.footer {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
