@@ -348,3 +348,41 @@ def list_audit_records():
 def verify_audit():
     """Recomputes and cryptographically verifies the entire audit hash chain (AUDT-03)."""
     return verify_audit_chain(AUDIT_LOG)
+
+
+@router.get("/limitations")
+def get_system_limitations():
+    """Returns statutory disclaimers, simulated adapter disclosures, and production deployment blueprint."""
+    return {
+        "system_classification": "Deterministic Statutory Procurement Decision-Support System",
+        "deployment_paradigm": "Designed for Sovereign On-Premises Government Deployment",
+        "hosted_environment": "Simulated evaluation environment (Render/Vercel/Railway)",
+        "core_value": "Deterministic, explainable, auditable bid verification: same evidence in, same result out — never a false PASS.",
+        "legal_disclaimer": "ADVISORY — NOT A FINAL DISQUALIFICATION. This evaluation provides algorithmic evidence verification to assist the competent procurement authority. Final procurement disqualification or contract award decisions remain the sole statutory prerogative of the designated Procurement Officer in accordance with the General Financial Rules (GFR 2017) and GeM General Terms and Conditions.",
+        "simulated_adapters": {
+            "source_tag": "SIMULATED",
+            "adapters": [
+                {"name": "GSTN Adapter", "status": "SIMULATED", "capabilities": ["Registration Status", "Return Filing Compliance", "Return Period"]},
+                {"name": "Udyam MSME Adapter", "status": "SIMULATED", "capabilities": ["Registration Status", "Enterprise Category (Micro/Small)", "Major Activity"]},
+                {"name": "EPFO Adapter", "status": "SIMULATED", "capabilities": ["Establishment Verification", "Contributing Members Count"]},
+                {"name": "ESIC Adapter", "status": "SIMULATED", "capabilities": ["Employer Status", "Defaulter Registry Screening"]},
+                {"name": "Debarment Registry Adapter", "status": "SIMULATED", "capabilities": ["Scope Evaluation (Org-wide vs Category)", "Order Validity Timeline"]}
+            ],
+            "resilience": "Portal timeouts or downtime gracefully yield UNVERIFIABLE state — never a false PASS and never a false FAIL. Excluded from score denominator."
+        },
+        "synthetic_data": {
+            "rationale": "Commercial confidentiality under DPDP Act 2023 restricts use of proprietary bidder trade proposals.",
+            "coverage": "22 comprehensive bidder packets across 3 distinct tenders (Goods, Services, MSME Reserved).",
+            "statutory_accuracy": "All synthetic GSTINs strictly validate against ISO/IEC 7064 Mod-36 checksum."
+        },
+        "ai_boundary": {
+            "decision_path": "Zero LLM in the eligibility decision path. 100% deterministic pure Python rule execution.",
+            "extraction": "Bounded Tesseract OCR and PyMuPDF native extraction with mandatory verbatim text grounding.",
+            "advisory": "Deterministic template generation citing REQ-XX. Optional LLM rewrite strictly gated by regex validators with template fallback."
+        },
+        "sovereign_security": {
+            "encryption_at_rest": "AES-256-GCM authenticated cipher with SHA-256 integrity digests.",
+            "audit_trail": "Tamper-evident SHA-256 hash chain with PostgreSQL INSERT-only role enforcement.",
+            "data_retention": "DPDP Act 2023 compliant retention policy tracking."
+        }
+    }

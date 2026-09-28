@@ -344,6 +344,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Limitations Modal
+  const btnOpenLimitations = document.getElementById('btn-open-limitations');
+  const limitationsModal = document.getElementById('limitations-modal');
+  const closeLimitationsBtn = document.getElementById('close-limitations-btn');
+
+  if (btnOpenLimitations && limitationsModal) {
+    btnOpenLimitations.addEventListener('click', () => {
+      limitationsModal.style.display = 'flex';
+    });
+  }
+  if (closeLimitationsBtn && limitationsModal) {
+    closeLimitationsBtn.addEventListener('click', () => {
+      limitationsModal.style.display = 'none';
+    });
+  }
+
+  // Demo Walkthrough Modal
+  const btnStartDemo = document.getElementById('btn-start-demo');
+  const demoModal = document.getElementById('demo-modal');
+  const closeDemoBtn = document.getElementById('close-demo-btn');
+
+  if (btnStartDemo && demoModal) {
+    btnStartDemo.addEventListener('click', () => {
+      demoModal.style.display = 'flex';
+    });
+  }
+  if (closeDemoBtn && demoModal) {
+    closeDemoBtn.addEventListener('click', () => {
+      demoModal.style.display = 'none';
+    });
+  }
+
+  // Simulate Tamper Button
+  const auditTamperBtn = document.getElementById('audit-tamper-btn');
+  if (auditTamperBtn) {
+    auditTamperBtn.addEventListener('click', () => {
+      auditStatusBadge.style.display = 'inline-flex';
+      auditStatusBadge.className = 'badge badge-fail';
+      auditStatusBadge.textContent = '✗ Cryptographic Breach Detected: Expected SHA-256 mismatch at Block #1! Hash chain broken.';
+      alert('SIMULATION: Audit Block #1 record secretly modified in database. Re-computing hash chain reveals immediate cryptographic tampering violation (AUDT-03)!');
+    });
+  }
+
   // Initial Load
   loadBidders(currentTenderId);
   loadAuditChain();

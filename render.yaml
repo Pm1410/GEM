@@ -1,0 +1,29 @@
+# GeM Bid Eligibility Verification Platform (SIH26100)
+# Hosted Demonstration Deployment Descriptor (Render / Sovereign Infrastructure Blueprint)
+# IMPORTANT: This hosted demo blueprint is provided for evaluation convenance.
+# The platform is strictly designed for on-premises deployment in sovereign government data centers.
+
+services:
+  - type: web
+    name: gem-bid-verification-api
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: standard
+    region: singapore
+    envVars:
+      - key: GEM_ENVIRONMENT
+        value: demo_hosted
+      - key: GEM_SECURITY_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gem-bid-verification-db
+          property: connectionString
+    healthCheckPath: /api/health
+
+databases:
+  - name: gem-bid-verification-db
+    databaseName: gem_verification
+    user: postgres
+    plan: standard
+    region: singapore

@@ -1,0 +1,48 @@
+# GeM Bid Eligibility Verification Platform (SIH26100)
+# Multi-Container Compose Configuration
+# Note: Designed for sovereign on-premises deployment; compatible with local Docker engine.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: gem-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-gem_verification}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d gem_verification"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gem-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-gem_verification}
+      - GEM_SECURITY_KEY=${GEM_SECURITY_KEY:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+      - GEM_ENVIRONMENT=${GEM_ENVIRONMENT:-production}
+      - PYTHONDONTWRITEBYTECODE=1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  pgdata:
+    driver: local
