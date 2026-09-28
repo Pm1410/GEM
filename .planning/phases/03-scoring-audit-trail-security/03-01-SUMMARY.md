@@ -6,11 +6,11 @@
 
 ## Accomplishments
 
-1. **Frozen Compliance Scoring Engine (`scoring/engine.py`):**
+1. **Frozen Compliance Scoring Engine (`src/gem_api/scoring/engine.py`):**
    - Implemented `compute_compliance_score` using frozen weighted formula: PASS = 1.0, REVIEW = 0.5, FAIL = 0.0.
    - Enforced SCOR-03: `UNVERIFIABLE` checks are completely excluded from the score denominator, measuring verifiable compliance coverage without penalizing bidders for portal downtime.
    - Enforced SCOR-04: Mandated statutory disclaimer: "Verification summary for procurement officer review only. Cannot be used to rank bidders or substitute price evaluation."
-2. **Independent Risk Classification Engine (`scoring/risk.py`):**
+2. **Independent Risk Classification Engine (`src/gem_api/scoring/risk.py`):**
    - Implemented `evaluate_risk` classifying bidders into `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`.
    - Debarred bidders or active debarment check failures immediately yield `CRITICAL` risk regardless of compliance score.
    - Explicit mandatory failures yield `HIGH`, unresolved ambiguity/review or portal timeouts yield `MEDIUM`, and complete verification yields `LOW`.

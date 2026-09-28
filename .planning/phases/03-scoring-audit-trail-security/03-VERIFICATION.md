@@ -13,7 +13,7 @@ covered_files:
   - src/gem_api/scoring/risk.py
   - src/gem_api/security/encryption.py
   - src/gem_api/security/retention.py
-covered_digest: "v2:sha256:85a7d206da4ee932967d5e261b0bb58f31ea6bd850feb5b00dab2631c6c00e30"
+covered_digest: "v2:sha256:1759b545994574eac3349b3eabad75394eaeb213a7fbd5cf0abbd5190d5e7b3a"
 behavior_unverified: 0
 ---
 
