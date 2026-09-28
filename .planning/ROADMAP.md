@@ -75,7 +75,7 @@
 
 ---
 
-## Phase 5: Synthetic Data & Evaluation
+## Phase 5: Synthetic Data & Evaluation [COMPLETE]
 
 **Goal:** Create the synthetic dataset (3 tenders × 20+ bidder packs) with realistic documents, run the evaluation suite, and establish the manual baseline timing.
 

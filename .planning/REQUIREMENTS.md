@@ -87,16 +87,16 @@
 
 ### Synthetic Data
 
-- [ ] **DATA-01**: 3 tenders with distinct rule combinations: goods tender, services tender (needing EPFO/ESIC), MSME-preference tender
-- [ ] **DATA-02**: 20+ bidder packs as case variants: compliant, missing document, expired certificate, GSTIN-PAN mismatch, GST filing overdue, debarred, ambiguous (REVIEW), portal down (UNVERIFIABLE)
-- [ ] **DATA-03**: Documents rendered as realistic PDFs/scans (noise, skew, stamps) so OCR is genuinely exercised
-- [ ] **DATA-04**: Synthetic GSTINs generated with valid Mod-36 checksums
+- [x] **DATA-01**: 3 tenders with distinct rule combinations: goods tender, services tender (needing EPFO/ESIC), MSME-preference tender
+- [x] **DATA-02**: 20+ bidder packs as case variants: compliant, missing document, expired certificate, GSTIN-PAN mismatch, GST filing overdue, debarred, ambiguous (REVIEW), portal down (UNVERIFIABLE)
+- [x] **DATA-03**: Documents rendered as realistic PDFs/scans (noise, skew, stamps) so OCR is genuinely exercised
+- [x] **DATA-04**: Synthetic GSTINs generated with valid Mod-36 checksums
 
 ### Evaluation
 
-- [ ] **EVAL-01**: Deterministic validation results reported per check separately from OCR extraction accuracy per field
-- [ ] **EVAL-02**: Report format: "zero false-PASS observed across N synthetic cases" — no percentages from tiny samples
-- [ ] **EVAL-03**: Manual baseline: teammates time manual verification of same packs; state N and method
+- [x] **EVAL-01**: Deterministic validation results reported per check separately from OCR extraction accuracy per field
+- [x] **EVAL-02**: Report format: "zero false-PASS observed across N synthetic cases" — no percentages from tiny samples
+- [x] **EVAL-03**: Manual baseline: teammates time manual verification of same packs; state N and method
 
 ### Demo
 
@@ -191,13 +191,13 @@
 | DASH-01 | Phase 4 | Complete |
 | DASH-02 | Phase 4 | Complete |
 | DASH-03 | Phase 4 | Complete |
-| DATA-01 | Phase 5 | Pending |
-| DATA-02 | Phase 5 | Pending |
-| DATA-03 | Phase 5 | Pending |
-| DATA-04 | Phase 5 | Pending |
-| EVAL-01 | Phase 5 | Pending |
-| EVAL-02 | Phase 5 | Pending |
-| EVAL-03 | Phase 5 | Pending |
+| DATA-01 | Phase 5 | Complete |
+| DATA-02 | Phase 5 | Complete |
+| DATA-03 | Phase 5 | Complete |
+| DATA-04 | Phase 5 | Complete |
+| EVAL-01 | Phase 5 | Complete |
+| EVAL-02 | Phase 5 | Complete |
+| EVAL-03 | Phase 5 | Complete |
 | DEMO-01 | Phase 6 | Pending |
 | DEMO-02 | Phase 6 | Pending |
 | SECR-01 | Phase 2 | Complete |
