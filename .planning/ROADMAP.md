@@ -5,7 +5,7 @@
 **Total Phases:** 6
 **Requirements Coverage:** 57/57 ✓
 
-## Phase 1: Schema, Rule Engine & Validators
+## Phase 1: Schema, Rule Engine & Validators [COMPLETE]
 
 **Goal:** Establish the data foundation — database schema, rule engine core with YAML config, and all format validators with cross-checks. Everything deterministic, everything unit-tested.
 
@@ -22,7 +22,7 @@
 
 ---
 
-## Phase 2: Portal Adapters, Extraction & Result States
+## Phase 2: Portal Adapters, Extraction & Result States [COMPLETE]
 
 **Goal:** Build the simulated portal layer with injectable failure modes, the document extraction pipeline, and implement all four result states (PASS, FAIL, REVIEW, UNVERIFIABLE) with correct semantics.
 

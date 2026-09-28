@@ -8,14 +8,14 @@
 ### Portal Adapters
 
 - [x] **PORT-01**: System provides a `PortalAdapter` interface with `lookup(id_value) → PortalResult` returning status, fields, fetched_at, latency_ms, and source ('SIMULATED' | 'LIVE')
-- [ ] **PORT-02**: MockGSTN adapter returns registration status (ACTIVE/INACTIVE) and return filing status (COMPLIANT/OVERDUE) with last return type, period, and date
-- [ ] **PORT-03**: MockUdyam adapter returns MSME registration status and enterprise category
-- [ ] **PORT-04**: MockEPFO adapter returns establishment registration status (conditional on tender category)
-- [ ] **PORT-05**: MockESIC adapter returns employer registration status (conditional on tender category)
-- [ ] **PORT-06**: MockDebarment adapter returns debarment status with scope (organisation-wide, category, time-bound) and dates
-- [ ] **PORT-07**: All simulated adapters support injectable latency, failure modes (timeout, error), and stale/cached responses
+- [x] **PORT-02**: MockGSTN adapter returns registration status (ACTIVE/INACTIVE) and return filing status (COMPLIANT/OVERDUE) with last return type, period, and date
+- [x] **PORT-03**: MockUdyam adapter returns MSME registration status and enterprise category
+- [x] **PORT-04**: MockEPFO adapter returns establishment registration status (conditional on tender category)
+- [x] **PORT-05**: MockESIC adapter returns employer registration status (conditional on tender category)
+- [x] **PORT-06**: MockDebarment adapter returns debarment status with scope (organisation-wide, category, time-bound) and dates
+- [x] **PORT-07**: All simulated adapters support injectable latency, failure modes (timeout, error), and stale/cached responses
 - [ ] **PORT-08**: Portal panel displays SIMULATED ADAPTER label, response data, latency, and fetched_at timestamp
-- [ ] **PORT-09**: When portal is down, result becomes UNVERIFIABLE (not PASS), cached snapshot shown with age
+- [x] **PORT-09**: When portal is down, result becomes UNVERIFIABLE (not PASS), cached snapshot shown with age
 
 ### Validators
 
@@ -37,18 +37,18 @@
 
 ### Result States
 
-- [ ] **RSLT-01**: PASS — all checks satisfied, evidence attached
-- [ ] **RSLT-02**: FAIL — explicit violation (bad checksum, expired, mismatch, debarred, filing overdue), deterministic and explainable; not a disqualification
-- [ ] **RSLT-03**: REVIEW — required field missing, unreadable, ambiguous, or LLM-extracted value not found verbatim in source text
-- [ ] **RSLT-04**: UNVERIFIABLE — portal timeout/down, external check could not run; retry with backoff; cached snapshot with age shown
+- [x] **RSLT-01**: PASS — all checks satisfied, evidence attached
+- [x] **RSLT-02**: FAIL — explicit violation (bad checksum, expired, mismatch, debarred, filing overdue), deterministic and explainable; not a disqualification
+- [x] **RSLT-03**: REVIEW — required field missing, unreadable, ambiguous, or LLM-extracted value not found verbatim in source text
+- [x] **RSLT-04**: UNVERIFIABLE — portal timeout/down, external check could not run; retry with backoff; cached snapshot with age shown
 
 ### Extraction
 
-- [ ] **EXTR-01**: PDF/scan upload with file type and size validation
-- [ ] **EXTR-02**: Text sanitisation (strip hidden text, macros, non-visible content)
-- [ ] **EXTR-03**: Regex/template extraction first; OCR (Tesseract + OpenCV preprocessing) for scans; model fallback for unstructured text (e.g., OEM letters)
-- [ ] **EXTR-04**: Grounding rule: extracted value must appear verbatim in source text, else result = REVIEW
-- [ ] **EXTR-05**: Missing-info detection: compare required evidence per tender rule with extracted fields, emit findings
+- [x] **EXTR-01**: PDF/scan upload with file type and size validation
+- [x] **EXTR-02**: Text sanitisation (strip hidden text, macros, non-visible content)
+- [x] **EXTR-03**: Regex/template extraction first; OCR (Tesseract + OpenCV preprocessing) for scans; model fallback for unstructured text (e.g., OEM letters)
+- [x] **EXTR-04**: Grounding rule: extracted value must appear verbatim in source text, else result = REVIEW
+- [x] **EXTR-05**: Missing-info detection: compare required evidence per tender rule with extracted fields, emit findings
 
 ### Scoring
 
@@ -105,8 +105,8 @@
 
 ### Security
 
-- [ ] **SECR-01**: File type/size validation on upload
-- [ ] **SECR-02**: Text sanitisation to prevent injection
+- [x] **SECR-01**: File type/size validation on upload
+- [x] **SECR-02**: Text sanitisation to prevent injection
 - [ ] **SECR-03**: Encryption at rest for stored documents
 - [ ] **SECR-04**: Retention policy aligned with DPDP Act 2023 principles
 
@@ -142,14 +142,14 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | PORT-01 | Phase 1 | Complete |
-| PORT-02 | Phase 2 | Pending |
-| PORT-03 | Phase 2 | Pending |
-| PORT-04 | Phase 2 | Pending |
-| PORT-05 | Phase 2 | Pending |
-| PORT-06 | Phase 2 | Pending |
-| PORT-07 | Phase 2 | Pending |
+| PORT-02 | Phase 2 | Complete |
+| PORT-03 | Phase 2 | Complete |
+| PORT-04 | Phase 2 | Complete |
+| PORT-05 | Phase 2 | Complete |
+| PORT-06 | Phase 2 | Complete |
+| PORT-07 | Phase 2 | Complete |
 | PORT-08 | Phase 4 | Pending |
-| PORT-09 | Phase 2 | Pending |
+| PORT-09 | Phase 2 | Complete |
 | VALD-01 | Phase 1 | Complete |
 | VALD-02 | Phase 1 | Complete |
 | VALD-03 | Phase 1 | Complete |
@@ -162,15 +162,15 @@
 | RULE-05 | Phase 1 | Complete |
 | RULE-06 | Phase 1 | Complete |
 | RULE-07 | Phase 1 | Complete |
-| RSLT-01 | Phase 2 | Pending |
-| RSLT-02 | Phase 2 | Pending |
-| RSLT-03 | Phase 2 | Pending |
-| RSLT-04 | Phase 2 | Pending |
-| EXTR-01 | Phase 2 | Pending |
-| EXTR-02 | Phase 2 | Pending |
-| EXTR-03 | Phase 2 | Pending |
-| EXTR-04 | Phase 2 | Pending |
-| EXTR-05 | Phase 2 | Pending |
+| RSLT-01 | Phase 2 | Complete |
+| RSLT-02 | Phase 2 | Complete |
+| RSLT-03 | Phase 2 | Complete |
+| RSLT-04 | Phase 2 | Complete |
+| EXTR-01 | Phase 2 | Complete |
+| EXTR-02 | Phase 2 | Complete |
+| EXTR-03 | Phase 2 | Complete |
+| EXTR-04 | Phase 2 | Complete |
+| EXTR-05 | Phase 2 | Complete |
 | SCOR-01 | Phase 3 | Pending |
 | SCOR-02 | Phase 3 | Pending |
 | SCOR-03 | Phase 3 | Pending |
@@ -200,8 +200,8 @@
 | EVAL-03 | Phase 5 | Pending |
 | DEMO-01 | Phase 6 | Pending |
 | DEMO-02 | Phase 6 | Pending |
-| SECR-01 | Phase 2 | Pending |
-| SECR-02 | Phase 2 | Pending |
+| SECR-01 | Phase 2 | Complete |
+| SECR-02 | Phase 2 | Complete |
 | SECR-03 | Phase 3 | Pending |
 | SECR-04 | Phase 3 | Pending |
 
