@@ -86,3 +86,49 @@ def test_api_limitations_endpoint():
     assert len(data["simulated_adapters"]["adapters"]) >= 5
     assert "Zero LLM" in data["ai_boundary"]["decision_path"]
     assert "AES-256-GCM" in data["sovereign_security"]["encryption_at_rest"]
+
+
+def test_demo_script_content_and_structure():
+    """Verify DEMO_SCRIPT.md contains complete 3-minute sequence points and timestamps (DEMO-01)."""
+    script_path = Path("DEMO_SCRIPT.md")
+    assert script_path.exists(), "DEMO_SCRIPT.md must exist at repository root."
+
+    content = script_path.read_text()
+    assert "00:00 – 00:30" in content
+    assert "00:30 – 01:05" in content
+    assert "01:05 – 01:35" in content
+    assert "01:35 – 02:05" in content
+    assert "02:05 – 02:35" in content
+    assert "02:35 – 03:00" in content
+    assert "BP-04" in content
+    assert "BP-08" in content
+    assert "BP-01" in content
+    assert "Simulate Tamper" in content
+    assert "Quick Judge Q&A Cheat Sheet" in content
+
+
+def test_demo_walkthrough_execution():
+    """Verify programmatic execution of all 6 demo milestones with zero errors (DEMO-01)."""
+    from gem_api.demo.walkthrough import run_demo_walkthrough
+
+    results = run_demo_walkthrough(verbose=False)
+    assert len(results) == 6, f"Expected 6 demo milestones, got {len(results)}"
+    assert all(r.status == "PASSED" for r in results)
+
+    # Check milestone specifics
+    assert results[1].details["state"] == "FAIL"  # Overdue return catch
+    assert results[2].details["state"] == "UNVERIFIABLE"  # Portal timeout
+    assert results[4].details["is_tampered_detected"] is True  # Tamper caught
+    assert results[5].details["false_pass_count"] == 0  # Zero False PASS
+
+
+def test_demo_cli_entry_point(capsys):
+    """Verify CLI entry point runs walkthrough cleanly with exit code 0."""
+    from gem_api.demo.cli import main
+
+    with pytest.raises(SystemExit) as exc_info:
+        main()
+    assert exc_info.value.code == 0
+    captured = capsys.readouterr()
+    assert "All 6 demo milestones successfully verified." in captured.out
+
