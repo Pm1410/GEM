@@ -14,7 +14,7 @@
 - [x] **PORT-05**: MockESIC adapter returns employer registration status (conditional on tender category)
 - [x] **PORT-06**: MockDebarment adapter returns debarment status with scope (organisation-wide, category, time-bound) and dates
 - [x] **PORT-07**: All simulated adapters support injectable latency, failure modes (timeout, error), and stale/cached responses
-- [ ] **PORT-08**: Portal panel displays SIMULATED ADAPTER label, response data, latency, and fetched_at timestamp
+- [x] **PORT-08**: Portal panel displays SIMULATED ADAPTER label, response data, latency, and fetched_at timestamp
 - [x] **PORT-09**: When portal is down, result becomes UNVERIFIABLE (not PASS), cached snapshot shown with age
 
 ### Validators
@@ -52,38 +52,38 @@
 
 ### Scoring
 
-- [ ] **SCOR-01**: Compliance score computed by frozen weighted formula (documented, deterministic)
-- [ ] **SCOR-02**: Risk level computed independently from result states (not just inverted score)
-- [ ] **SCOR-03**: UNVERIFIABLE checks count as 0 in denominator (score reflects verifiable coverage only)
-- [ ] **SCOR-04**: Score is a verification summary — cannot be used to rank bidders; price evaluation is separate
+- [x] **SCOR-01**: Compliance score computed by frozen weighted formula (documented, deterministic)
+- [x] **SCOR-02**: Risk level computed independently from result states (not just inverted score)
+- [x] **SCOR-03**: UNVERIFIABLE checks count as 0 in denominator (score reflects verifiable coverage only)
+- [x] **SCOR-04**: Score is a verification summary — cannot be used to rank bidders; price evaluation is separate
 
 ### Advisory
 
-- [ ] **ADVS-01**: Deterministic template builds officer summary from structured rule results
-- [ ] **ADVS-02**: Advisory cites existing requirement IDs (REQ-XX format)
-- [ ] **ADVS-03**: Optional model rewrites advisory wording; if validation fails, fall back to template
-- [ ] **ADVS-04**: Advisory is labelled as "advisory" — not a decision
+- [x] **ADVS-01**: Deterministic template builds officer summary from structured rule results
+- [x] **ADVS-02**: Advisory cites existing requirement IDs (REQ-XX format)
+- [x] **ADVS-03**: Optional model rewrites advisory wording; if validation fails, fall back to template
+- [x] **ADVS-04**: Advisory is labelled as "advisory" — not a decision
 
 ### Officer Workflow
 
-- [ ] **OFCR-01**: Officer can view per-bidder compliance results with requirement table
-- [ ] **OFCR-02**: Officer can drill down to evidence with highlighted extraction regions
-- [ ] **OFCR-03**: Officer can choose: Approve, Reject, or Request Clarification
-- [ ] **OFCR-04**: Justification is mandatory on every officer action
-- [ ] **OFCR-05**: RBAC: officer, evaluator, admin, auditor (read-only) roles enforced on API and UI
+- [x] **OFCR-01**: Officer can view per-bidder compliance results with requirement table
+- [x] **OFCR-02**: Officer can drill down to evidence with highlighted extraction regions
+- [x] **OFCR-03**: Officer can choose: Approve, Reject, or Request Clarification
+- [x] **OFCR-04**: Justification is mandatory on every officer action
+- [x] **OFCR-05**: RBAC: officer, evaluator, admin, auditor (read-only) roles enforced on API and UI
 
 ### Audit Trail
 
-- [ ] **AUDT-01**: Hash chain: each record = sha256(prev_hash + payload) with tender_id, tender_version, rule_set_version, requirement_results, evidence_hashes, score, risk, advisory_text_hash, officer_decision + justification, timestamp
-- [ ] **AUDT-02**: Database role for audit table: INSERT only (no UPDATE/DELETE)
-- [ ] **AUDT-03**: Verify endpoint recomputes chain and reports first broken record with expected vs computed hash
-- [ ] **AUDT-04**: Each audit record stores tender version and rule-set version used
+- [x] **AUDT-01**: Hash chain: each record = sha256(prev_hash + payload) with tender_id, tender_version, rule_set_version, requirement_results, evidence_hashes, score, risk, advisory_text_hash, officer_decision + justification, timestamp
+- [x] **AUDT-02**: Database role for audit table: INSERT only (no UPDATE/DELETE)
+- [x] **AUDT-03**: Verify endpoint recomputes chain and reports first broken record with expected vs computed hash
+- [x] **AUDT-04**: Each audit record stores tender version and rule-set version used
 
 ### Dashboard
 
-- [ ] **DASH-01**: Per-tender bidder overview with score, risk level, and state counts (PASS/FAIL/REVIEW/UNVERIFIABLE)
-- [ ] **DASH-02**: Requirement table showing each check, its result state, and evidence
-- [ ] **DASH-03**: Evidence viewer with highlighted extraction region showing extracted value in context
+- [x] **DASH-01**: Per-tender bidder overview with score, risk level, and state counts (PASS/FAIL/REVIEW/UNVERIFIABLE)
+- [x] **DASH-02**: Requirement table showing each check, its result state, and evidence
+- [x] **DASH-03**: Evidence viewer with highlighted extraction region showing extracted value in context
 
 ### Synthetic Data
 
@@ -107,8 +107,8 @@
 
 - [x] **SECR-01**: File type/size validation on upload
 - [x] **SECR-02**: Text sanitisation to prevent injection
-- [ ] **SECR-03**: Encryption at rest for stored documents
-- [ ] **SECR-04**: Retention policy aligned with DPDP Act 2023 principles
+- [x] **SECR-03**: Encryption at rest for stored documents
+- [x] **SECR-04**: Retention policy aligned with DPDP Act 2023 principles
 
 ## v2 Requirements
 
@@ -148,7 +148,7 @@
 | PORT-05 | Phase 2 | Complete |
 | PORT-06 | Phase 2 | Complete |
 | PORT-07 | Phase 2 | Complete |
-| PORT-08 | Phase 4 | Pending |
+| PORT-08 | Phase 4 | Complete |
 | PORT-09 | Phase 2 | Complete |
 | VALD-01 | Phase 1 | Complete |
 | VALD-02 | Phase 1 | Complete |
@@ -171,26 +171,26 @@
 | EXTR-03 | Phase 2 | Complete |
 | EXTR-04 | Phase 2 | Complete |
 | EXTR-05 | Phase 2 | Complete |
-| SCOR-01 | Phase 3 | Pending |
-| SCOR-02 | Phase 3 | Pending |
-| SCOR-03 | Phase 3 | Pending |
-| SCOR-04 | Phase 3 | Pending |
-| ADVS-01 | Phase 4 | Pending |
-| ADVS-02 | Phase 4 | Pending |
-| ADVS-03 | Phase 4 | Pending |
-| ADVS-04 | Phase 4 | Pending |
-| OFCR-01 | Phase 4 | Pending |
-| OFCR-02 | Phase 4 | Pending |
-| OFCR-03 | Phase 4 | Pending |
-| OFCR-04 | Phase 4 | Pending |
-| OFCR-05 | Phase 4 | Pending |
-| AUDT-01 | Phase 3 | Pending |
-| AUDT-02 | Phase 3 | Pending |
-| AUDT-03 | Phase 3 | Pending |
-| AUDT-04 | Phase 3 | Pending |
-| DASH-01 | Phase 4 | Pending |
-| DASH-02 | Phase 4 | Pending |
-| DASH-03 | Phase 4 | Pending |
+| SCOR-01 | Phase 3 | Complete |
+| SCOR-02 | Phase 3 | Complete |
+| SCOR-03 | Phase 3 | Complete |
+| SCOR-04 | Phase 3 | Complete |
+| ADVS-01 | Phase 4 | Complete |
+| ADVS-02 | Phase 4 | Complete |
+| ADVS-03 | Phase 4 | Complete |
+| ADVS-04 | Phase 4 | Complete |
+| OFCR-01 | Phase 4 | Complete |
+| OFCR-02 | Phase 4 | Complete |
+| OFCR-03 | Phase 4 | Complete |
+| OFCR-04 | Phase 4 | Complete |
+| OFCR-05 | Phase 4 | Complete |
+| AUDT-01 | Phase 3 | Complete |
+| AUDT-02 | Phase 3 | Complete |
+| AUDT-03 | Phase 3 | Complete |
+| AUDT-04 | Phase 3 | Complete |
+| DASH-01 | Phase 4 | Complete |
+| DASH-02 | Phase 4 | Complete |
+| DASH-03 | Phase 4 | Complete |
 | DATA-01 | Phase 5 | Pending |
 | DATA-02 | Phase 5 | Pending |
 | DATA-03 | Phase 5 | Pending |
@@ -202,8 +202,8 @@
 | DEMO-02 | Phase 6 | Pending |
 | SECR-01 | Phase 2 | Complete |
 | SECR-02 | Phase 2 | Complete |
-| SECR-03 | Phase 3 | Pending |
-| SECR-04 | Phase 3 | Pending |
+| SECR-03 | Phase 3 | Complete |
+| SECR-04 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 57 total
