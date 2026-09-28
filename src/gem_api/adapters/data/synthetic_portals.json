@@ -1,0 +1,182 @@
+{
+  "gstin": {
+    "27AAACT2727Q1ZW": {
+      "status": "ACTIVE",
+      "legal_name": "Tata Consultancy Services Limited",
+      "trade_name": "TCS",
+      "taxpayer_type": "Regular",
+      "registration_date": "2017-07-01",
+      "filing_status": "COMPLIANT",
+      "last_return_type": "GSTR-3B",
+      "last_return_period": "2026-08",
+      "last_filing_date": "2026-09-18",
+      "state_code": "27",
+      "pan": "AAACT2727Q"
+    },
+    "07AABCB1234F1Z5": {
+      "status": "ACTIVE",
+      "legal_name": "Bharat Tech Solutions Private Limited",
+      "trade_name": "Bharat Tech",
+      "taxpayer_type": "Regular",
+      "registration_date": "2019-03-15",
+      "filing_status": "OVERDUE",
+      "last_return_type": "GSTR-3B",
+      "last_return_period": "2025-11",
+      "last_filing_date": "2025-12-10",
+      "state_code": "07",
+      "pan": "AABCB1234F"
+    },
+    "29ABCDE1234F1Z5": {
+      "status": "INACTIVE",
+      "legal_name": "Defunct Logistics Private Limited",
+      "trade_name": "Defunct Logistics",
+      "taxpayer_type": "Regular",
+      "registration_date": "2018-05-20",
+      "cancellation_date": "2025-06-30",
+      "filing_status": "OVERDUE",
+      "last_return_type": "GSTR-3B",
+      "last_return_period": "2025-04",
+      "last_filing_date": "2025-05-15",
+      "state_code": "29",
+      "pan": "ABCDE1234F"
+    },
+    "24AABCK9999K1Z2": {
+      "status": "ACTIVE",
+      "legal_name": "Kalyani Infotech Private Limited",
+      "trade_name": "Kalyani Tech",
+      "taxpayer_type": "Regular",
+      "registration_date": "2020-01-10",
+      "filing_status": "COMPLIANT",
+      "last_return_type": "GSTR-3B",
+      "last_return_period": "2026-08",
+      "last_filing_date": "2026-09-15",
+      "state_code": "24",
+      "pan": "AABCK9999K"
+    }
+  },
+  "udyam": {
+    "UDYAM-MH-12-0012345": {
+      "status": "ACTIVE",
+      "enterprise_name": "Apex Engineering Works",
+      "enterprise_category": "MICRO",
+      "major_activity": "MANUFACTURING",
+      "incorporation_date": "2015-04-12",
+      "registration_date": "2020-08-15",
+      "pan": "ABCDE1234F"
+    },
+    "UDYAM-DL-05-0098765": {
+      "status": "ACTIVE",
+      "enterprise_name": "Delhi Digital Services",
+      "enterprise_category": "SMALL",
+      "major_activity": "SERVICES",
+      "incorporation_date": "2018-09-01",
+      "registration_date": "2020-11-20",
+      "pan": "AABCB1234F"
+    },
+    "UDYAM-KA-01-0054321": {
+      "status": "ACTIVE",
+      "enterprise_name": "Southern Infotech Private Limited",
+      "enterprise_category": "MEDIUM",
+      "major_activity": "SERVICES",
+      "incorporation_date": "2012-02-14",
+      "registration_date": "2021-01-05",
+      "pan": "AAACT2727Q"
+    },
+    "UDYAM-UP-20-0011223": {
+      "status": "CANCELLED",
+      "enterprise_name": "Old Craft Enterprises",
+      "enterprise_category": "MICRO",
+      "major_activity": "MANUFACTURING",
+      "incorporation_date": "2010-06-18",
+      "registration_date": "2020-07-22",
+      "pan": "ABCDE5678G"
+    }
+  },
+  "epfo": {
+    "MH/BAN/0012345/000": {
+      "status": "ACTIVE",
+      "establishment_name": "Apex Engineering Works",
+      "coverage_date": "2016-01-01",
+      "last_wage_month": "2026-08",
+      "members_contributed": 42
+    },
+    "DL/CPM/0098765/000": {
+      "status": "ACTIVE",
+      "establishment_name": "Delhi Digital Services",
+      "coverage_date": "2019-01-01",
+      "last_wage_month": "2026-08",
+      "members_contributed": 115
+    },
+    "KA/BOM/0054321/000": {
+      "status": "INACTIVE",
+      "establishment_name": "Southern Infotech Private Limited",
+      "coverage_date": "2014-05-01",
+      "last_wage_month": "2025-03",
+      "members_contributed": 0
+    }
+  },
+  "esic": {
+    "31001234560000101": {
+      "status": "ACTIVE",
+      "employer_name": "Apex Engineering Works",
+      "registration_date": "2016-02-15",
+      "last_contribution_month": "2026-08",
+      "compliance_status": "COMPLIANT"
+    },
+    "11009876540000202": {
+      "status": "ACTIVE",
+      "employer_name": "Delhi Digital Services",
+      "registration_date": "2019-02-10",
+      "last_contribution_month": "2026-08",
+      "compliance_status": "COMPLIANT"
+    },
+    "53005432100000303": {
+      "status": "INACTIVE",
+      "employer_name": "Southern Infotech Private Limited",
+      "registration_date": "2014-06-01",
+      "last_contribution_month": "2025-02",
+      "compliance_status": "DEFAULTER"
+    }
+  },
+  "debarment": {
+    "AABCK9999K": {
+      "is_debarred": true,
+      "status": "DEBARRED",
+      "records": [
+        {
+          "scope": "org_wide",
+          "authority": "Ministry of Commerce and Industry",
+          "order_number": "MCI/DEB/2025/891",
+          "start_date": "2025-01-15",
+          "end_date": "2028-01-14",
+          "reason": "Submission of forged financial certificates"
+        }
+      ]
+    },
+    "ABCDE5678G": {
+      "is_debarred": true,
+      "status": "DEBARRED",
+      "records": [
+        {
+          "scope": "category",
+          "category": "IT Hardware",
+          "authority": "GeM Debarment Committee",
+          "order_number": "GEM/VIG/2026/044",
+          "start_date": "2026-02-01",
+          "end_date": "2027-01-31",
+          "reason": "Repeated supply of counterfeit components"
+        }
+      ]
+    },
+    "AAACT2727Q": {
+      "is_debarred": false,
+      "status": "CLEARED",
+      "records": []
+    },
+    "AABCB1234F": {
+      "is_debarred": false,
+      "status": "CLEARED",
+      "records": []
+    }
+  }
+}
