@@ -1,0 +1,62 @@
+tender_id: "TNDR-2026-MSME-001"
+version: "1.0.0"
+rule_set_version: "rules-2026.1"
+title: "Procurement of Office Stationery and Ergonomic Furniture (MSME Reserved)"
+tender_category: "goods"
+bid_opening_date: "2026-10-20"
+estimated_value: 2500000.0
+local_content_threshold: 20.0
+
+requirements:
+  - id: "REQ-MSME-UDYAM"
+    description: "Valid MSME Udyam Registration Certificate in Micro or Small category"
+    mandatory: true
+    evidence_types:
+      - "udyam_certificate"
+    checks:
+      - id: "CHK-UDYAM-FMT"
+        type: "format_udyam"
+      - id: "CHK-PORTAL-UDYAM"
+        type: "portal_udyam_check"
+
+  - id: "REQ-GSTIN-STATUTORY"
+    description: "Valid GSTIN registration and compliant return filing status"
+    mandatory: true
+    evidence_types:
+      - "gst_certificate"
+    checks:
+      - id: "CHK-GSTIN-FMT"
+        type: "format_gstin"
+      - id: "CHK-PORTAL-GSTN"
+        type: "portal_gstn_check"
+
+  - id: "REQ-PAN-STATUTORY"
+    description: "Valid PAN with mandatory cross-verification against GSTIN"
+    mandatory: true
+    evidence_types:
+      - "pan_card"
+    checks:
+      - id: "CHK-PAN-FMT"
+        type: "format_pan"
+      - id: "CHK-X-GSTIN-PAN"
+        type: "cross_check_gstin_pan"
+
+  - id: "REQ-MII-LOCAL"
+    description: "Make in India local content self-declaration meeting tender threshold (min 20%)"
+    mandatory: true
+    evidence_types:
+      - "local_content_declaration"
+    checks:
+      - id: "CHK-MII"
+        type: "make_in_india_threshold"
+        params:
+          min_percentage: 20.0
+
+  - id: "REQ-DEBARMENT-STATUS"
+    description: "Bidder must not be subject to active debarment or blacklisting orders"
+    mandatory: true
+    evidence_types:
+      - "portal_record"
+    checks:
+      - id: "CHK-DEBARMENT"
+        type: "debarment_check"
