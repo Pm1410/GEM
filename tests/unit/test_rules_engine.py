@@ -62,8 +62,12 @@ def test_tender_evaluation_compliant_bidder(sample_valid_gstin, sample_valid_pan
         evidence={
             "gstin": sample_valid_gstin,
             "pan": sample_valid_pan,
+            "cert_expiry": "2027-12-31",
             "local_content_percentage": 65.0,
             "debarment_records": []
+        },
+        portal_results={
+            "gstin": {"status": "ACTIVE", "source": "SIMULATED", "fields": {"status": "ACTIVE", "filing_status": "COMPLIANT"}}
         }
     )
 

@@ -33,6 +33,8 @@ requirements:
     checks:
       - id: "CHK-03-01"
         type: "epfo_registration_check"
+      - id: "CHK-03-02"
+        type: "portal_epfo_check"
 
   - id: "REQ-04"
     description: "ESIC employer registration (mandatory for services category)"
@@ -43,6 +45,8 @@ requirements:
     checks:
       - id: "CHK-04-01"
         type: "esic_registration_check"
+      - id: "CHK-04-02"
+        type: "portal_esic_check"
 
   - id: "REQ-05"
     description: "Non-debarment confirmation"

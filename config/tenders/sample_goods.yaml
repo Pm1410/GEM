@@ -3,7 +3,7 @@ version: "1.0.0"
 rule_set_version: "2026.1"
 title: "Procurement of Heavy-Duty Solar Inverters"
 tender_category: "goods"
-bid_opening_date: "2026-03-15"
+bid_opening_date: "2026-10-15"
 estimated_value: 2500000.00
 local_content_threshold: 50.0
 
@@ -17,6 +17,10 @@ requirements:
         type: "format_gstin"
       - id: "CHK-01-02"
         type: "cross_check_gstin_pan"
+      - id: "CHK-01-03"
+        type: "certificate_validity"
+      - id: "CHK-01-04"
+        type: "portal_gstn_check"
 
   - id: "REQ-02"
     description: "Valid PAN card of enterprise"
