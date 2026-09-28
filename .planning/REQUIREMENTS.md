@@ -7,7 +7,7 @@
 
 ### Portal Adapters
 
-- [ ] **PORT-01**: System provides a `PortalAdapter` interface with `lookup(id_value) → PortalResult` returning status, fields, fetched_at, latency_ms, and source ('SIMULATED' | 'LIVE')
+- [x] **PORT-01**: System provides a `PortalAdapter` interface with `lookup(id_value) → PortalResult` returning status, fields, fetched_at, latency_ms, and source ('SIMULATED' | 'LIVE')
 - [ ] **PORT-02**: MockGSTN adapter returns registration status (ACTIVE/INACTIVE) and return filing status (COMPLIANT/OVERDUE) with last return type, period, and date
 - [ ] **PORT-03**: MockUdyam adapter returns MSME registration status and enterprise category
 - [ ] **PORT-04**: MockEPFO adapter returns establishment registration status (conditional on tender category)
@@ -19,21 +19,21 @@
 
 ### Validators
 
-- [ ] **VALD-01**: GSTIN format validator: 15-char alphanumeric, state code (pos 1-2), PAN (pos 3-12), entity code (pos 13), default 'Z' (pos 14), Mod-36 checksum (pos 15)
-- [ ] **VALD-02**: GSTIN-PAN cross-check: characters 3-12 of GSTIN must match the supplied PAN document
-- [ ] **VALD-03**: PAN format validator: 10-char `[A-Z]{5}[0-9]{4}[A-Z]` with entity type at position 4
-- [ ] **VALD-04**: Udyam registration number format validator: `UDYAM-XX-00-0000000` (19-char)
-- [ ] **VALD-05**: Certificate validity comparison against bid opening date (not current date)
+- [x] **VALD-01**: GSTIN format validator: 15-char alphanumeric, state code (pos 1-2), PAN (pos 3-12), entity code (pos 13), default 'Z' (pos 14), Mod-36 checksum (pos 15)
+- [x] **VALD-02**: GSTIN-PAN cross-check: characters 3-12 of GSTIN must match the supplied PAN document
+- [x] **VALD-03**: PAN format validator: 10-char `[A-Z]{5}[0-9]{4}[A-Z]` with entity type at position 4
+- [x] **VALD-04**: Udyam registration number format validator: `UDYAM-XX-00-0000000` (19-char)
+- [x] **VALD-05**: Certificate validity comparison against bid opening date (not current date)
 
 ### Rule Engine
 
-- [ ] **RULE-01**: Versioned YAML tender rule configuration with tender ID, version, and rule_set_version
-- [ ] **RULE-02**: Per-requirement configuration: ID, mandatory flag, applies_if condition, evidence types, checks list, on_fail/on_missing/on_portal_down actions
-- [ ] **RULE-03**: Conditional requirement applicability (e.g., MSME mandatory vs preference per tender; EPFO/ESIC by tender category)
-- [ ] **RULE-04**: Make in India local-content threshold rule configurable per tender
-- [ ] **RULE-05**: Debarment check with scope evaluation (organisation-wide, category-specific, time-bound)
-- [ ] **RULE-06**: Rule engine is pure Python functions — deterministic, no LLM, unit-tested
-- [ ] **RULE-07**: Rule library is versioned; rules are reviewed, not auto-generated
+- [x] **RULE-01**: Versioned YAML tender rule configuration with tender ID, version, and rule_set_version
+- [x] **RULE-02**: Per-requirement configuration: ID, mandatory flag, applies_if condition, evidence types, checks list, on_fail/on_missing/on_portal_down actions
+- [x] **RULE-03**: Conditional requirement applicability (e.g., MSME mandatory vs preference per tender; EPFO/ESIC by tender category)
+- [x] **RULE-04**: Make in India local-content threshold rule configurable per tender
+- [x] **RULE-05**: Debarment check with scope evaluation (organisation-wide, category-specific, time-bound)
+- [x] **RULE-06**: Rule engine is pure Python functions — deterministic, no LLM, unit-tested
+- [x] **RULE-07**: Rule library is versioned; rules are reviewed, not auto-generated
 
 ### Result States
 
@@ -141,7 +141,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PORT-01 | Phase 1 | Pending |
+| PORT-01 | Phase 1 | Complete |
 | PORT-02 | Phase 2 | Pending |
 | PORT-03 | Phase 2 | Pending |
 | PORT-04 | Phase 2 | Pending |
@@ -150,18 +150,18 @@
 | PORT-07 | Phase 2 | Pending |
 | PORT-08 | Phase 4 | Pending |
 | PORT-09 | Phase 2 | Pending |
-| VALD-01 | Phase 1 | Pending |
-| VALD-02 | Phase 1 | Pending |
-| VALD-03 | Phase 1 | Pending |
-| VALD-04 | Phase 1 | Pending |
-| VALD-05 | Phase 1 | Pending |
-| RULE-01 | Phase 1 | Pending |
-| RULE-02 | Phase 1 | Pending |
-| RULE-03 | Phase 1 | Pending |
-| RULE-04 | Phase 1 | Pending |
-| RULE-05 | Phase 1 | Pending |
-| RULE-06 | Phase 1 | Pending |
-| RULE-07 | Phase 1 | Pending |
+| VALD-01 | Phase 1 | Complete |
+| VALD-02 | Phase 1 | Complete |
+| VALD-03 | Phase 1 | Complete |
+| VALD-04 | Phase 1 | Complete |
+| VALD-05 | Phase 1 | Complete |
+| RULE-01 | Phase 1 | Complete |
+| RULE-02 | Phase 1 | Complete |
+| RULE-03 | Phase 1 | Complete |
+| RULE-04 | Phase 1 | Complete |
+| RULE-05 | Phase 1 | Complete |
+| RULE-06 | Phase 1 | Complete |
+| RULE-07 | Phase 1 | Complete |
 | RSLT-01 | Phase 2 | Pending |
 | RSLT-02 | Phase 2 | Pending |
 | RSLT-03 | Phase 2 | Pending |
