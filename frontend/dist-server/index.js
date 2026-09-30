@@ -1,6 +1,7 @@
 // server-core.ts
 import express2 from "express";
-import path from "path";
+import path2 from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 
 // src/server/routes.ts
@@ -589,6 +590,10 @@ function queryUdyamPortal(udyamNo) {
   };
 }
 
+// src/server/dataStore.ts
+import fs from "fs";
+import path from "path";
+
 // src/server/advisoryService.ts
 import { GoogleGenAI } from "@google/genai";
 async function generateAdvisory(req, result, bidderName, forceAi = false) {
@@ -652,8 +657,9 @@ Provide a concise, professional explanation (2-3 sentences max) and recommended 
   "explanation": "...",
   "suggestedAction": "..."
 }`;
+    const modelName = process.env.GEMINI_MODEL || "gemini-2.5-flash";
     const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
+      model: modelName,
       contents: prompt,
       config: {
         responseMimeType: "application/json"
@@ -683,6 +689,7 @@ Provide a concise, professional explanation (2-3 sentences max) and recommended 
 }
 
 // src/server/dataStore.ts
+var PERSIST_FILE = path.resolve(process.cwd(), "persisted_bids_state.json");
 var currentUser = {
   id: "usr-001",
   name: "P. Sengupta",
@@ -1041,6 +1048,74 @@ var tenders = [
     totalBidders: 16,
     progressPercent: 0,
     requirements: requirementsTender1.slice(0, 16)
+  },
+  {
+    id: "TND-IOCL-2026-0112",
+    tenderNumber: "IOCL/ENG/2026/112",
+    title: "Pipeline Cathodic Protection & Corrosion Monitoring System",
+    department: "IOCL (Indian Oil Corporation Limited)",
+    organisation: "Ministry of Petroleum & Natural Gas",
+    description: "Impressed current cathodic protection (ICCP) systems with remote transformer rectifier units along Paradip-Hyderabad pipeline section.",
+    openingDate: "24 Sep 2026",
+    closingDate: "25 Oct 2026",
+    status: "VERIFICATION",
+    currentVersion: 1,
+    ruleSetVersion: "1.2",
+    requirementsCount: 14,
+    totalBidders: 18,
+    progressPercent: 55,
+    requirements: requirementsTender1.slice(0, 14)
+  },
+  {
+    id: "TND-ONGC-2026-0304",
+    tenderNumber: "ONGC/OFF/2026/304",
+    title: "Offshore Supply Vessel Logistics & Crew Transport Services",
+    department: "ONGC (Oil and Natural Gas Corporation)",
+    organisation: "Ministry of Petroleum & Natural Gas",
+    description: "Charter hire of 2 DP-2 dynamic positioning platform supply vessels for Mumbai High offshore asset field operations.",
+    openingDate: "30 Sep 2026",
+    closingDate: "10 Nov 2026",
+    status: "DRAFT",
+    currentVersion: 1,
+    ruleSetVersion: "1.0",
+    requirementsCount: 15,
+    totalBidders: 9,
+    progressPercent: 0,
+    requirements: requirementsTender1.slice(0, 15)
+  },
+  {
+    id: "TND-GAIL-2025-0890",
+    tenderNumber: "GAIL/VAL/2025/890",
+    title: "Natural Gas Compressor Station Ball Valves & Actuators",
+    department: "GAIL (India) Limited",
+    organisation: "Ministry of Petroleum & Natural Gas",
+    description: "Supply of API 6D trunnion-mounted pipeline ball valves for Jagdishpur-Haldia-Bokaro-Dhamra natural gas pipeline (JHBDPL).",
+    openingDate: "10 Aug 2025",
+    closingDate: "15 Sep 2025",
+    status: "CLOSED",
+    currentVersion: 3,
+    ruleSetVersion: "1.4",
+    requirementsCount: 18,
+    totalBidders: 32,
+    progressPercent: 100,
+    requirements: requirementsTender1
+  },
+  {
+    id: "TND-BHEL-2025-0551",
+    tenderNumber: "BHEL/TRN/2025/551",
+    title: "765kV Ultra-High Voltage Generator Transformer Overhaul",
+    department: "BHEL (Bharat Heavy Electricals Limited)",
+    organisation: "Ministry of Heavy Industries",
+    description: "Specialized maintenance, vacuum dry-out, and diagnostic bushing testing of 765kV 500MVA generator step-up transformers.",
+    openingDate: "01 Jul 2025",
+    closingDate: "05 Aug 2025",
+    status: "CLOSED",
+    currentVersion: 2,
+    ruleSetVersion: "1.2",
+    requirementsCount: 16,
+    totalBidders: 27,
+    progressPercent: 100,
+    requirements: requirementsTender1.slice(0, 16)
   }
 ];
 var docGstABC = {
@@ -1220,9 +1295,9 @@ var sampleBids = [
       state: "Maharashtra"
     },
     submittedAt: "2026-09-28T10:10:00Z",
-    status: "IN_VERIFICATION",
-    complianceScore: 68,
-    riskLevel: "MEDIUM",
+    status: "VERIFIED",
+    complianceScore: 98,
+    riskLevel: "LOW",
     documents: [docGstABC],
     requirementResults: []
   },
@@ -1320,11 +1395,163 @@ var sampleBids = [
     riskLevel: "HIGH",
     documents: [docGstABC],
     requirementResults: []
+  },
+  {
+    id: "BID-007",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-007",
+    bidder: {
+      id: "BDR-007",
+      legalName: "Larsen & Toubro Heavy Infrastructure",
+      gstin: "27AAACL0123L1ZM",
+      pan: "AAACL0123L",
+      cin: "L99999MH1946PLC004768",
+      udyam: "UDYAM-MH-19-0023451",
+      epfoCode: "MHBOM0045678000",
+      email: "tenders@larsentoubro.com",
+      phone: "+91 22 6752 5656",
+      city: "Mumbai",
+      state: "Maharashtra"
+    },
+    submittedAt: "2026-09-28T16:15:00Z",
+    status: "VERIFIED",
+    complianceScore: 99,
+    riskLevel: "LOW",
+    documents: [docGstABC],
+    requirementResults: []
+  },
+  {
+    id: "BID-008",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-008",
+    bidder: {
+      id: "BDR-008",
+      legalName: "Tata Projects Limited",
+      gstin: "36AAACT1987Q1Z5",
+      pan: "AAACT1987Q",
+      cin: "U45200TG1979PLC002450",
+      udyam: "UDYAM-TS-09-0098765",
+      epfoCode: "TSHYD0022334000",
+      email: "procurement@tataprojects.com",
+      phone: "+91 40 6623 8800",
+      city: "Hyderabad",
+      state: "Telangana"
+    },
+    submittedAt: "2026-09-28T16:45:00Z",
+    status: "VERIFIED",
+    complianceScore: 96,
+    riskLevel: "LOW",
+    documents: [docGstABC],
+    requirementResults: []
+  },
+  {
+    id: "BID-009",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-009",
+    bidder: {
+      id: "BDR-009",
+      legalName: "Afcons Infrastructure Limited",
+      gstin: "27AAACA1234A1Z9",
+      pan: "AAACA1234A",
+      cin: "U45200MH1976PLC019335",
+      udyam: "UDYAM-MH-19-0011223",
+      epfoCode: "MHBOM0098761000",
+      email: "bids@afcons.com",
+      phone: "+91 22 6719 1000",
+      city: "Mumbai",
+      state: "Maharashtra"
+    },
+    submittedAt: "2026-09-28T17:10:00Z",
+    status: "VERIFIED",
+    complianceScore: 94,
+    riskLevel: "LOW",
+    documents: [docGstABC],
+    requirementResults: []
+  },
+  {
+    id: "BID-010",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-010",
+    bidder: {
+      id: "BDR-010",
+      legalName: "Godrej Construction Division",
+      gstin: "27AAACG0001G1Z3",
+      pan: "AAACG0001G",
+      cin: "L28931MH1932PLC001828",
+      udyam: "UDYAM-MH-19-0044332",
+      epfoCode: "MHBOM0077665000",
+      email: "construction@godrej.com",
+      phone: "+91 22 6796 5656",
+      city: "Mumbai",
+      state: "Maharashtra"
+    },
+    submittedAt: "2026-09-28T17:35:00Z",
+    status: "VERIFIED",
+    complianceScore: 91,
+    riskLevel: "LOW",
+    documents: [docGstABC],
+    requirementResults: []
+  },
+  {
+    id: "BID-011",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-011",
+    bidder: {
+      id: "BDR-011",
+      legalName: "KEC International Limited",
+      gstin: "27AAACK1122K1Z8",
+      pan: "AAACK1122K",
+      cin: "L45200MH2005PLC152061",
+      udyam: "UDYAM-MH-19-0077889",
+      epfoCode: "MHBOM0033221000",
+      email: "tenders@kecrpg.com",
+      phone: "+91 22 6667 0200",
+      city: "Mumbai",
+      state: "Maharashtra"
+    },
+    submittedAt: "2026-09-28T18:00:00Z",
+    status: "IN_VERIFICATION",
+    complianceScore: 78,
+    riskLevel: "MEDIUM",
+    documents: [docGstABC],
+    requirementResults: []
+  },
+  {
+    id: "BID-012",
+    tenderId: "TND-GEM-2025-0012",
+    bidderId: "BDR-012",
+    bidder: {
+      id: "BDR-012",
+      legalName: "JMC Projects (India) Limited",
+      gstin: "24AAACJ5566J1Z1",
+      pan: "AAACJ5566J",
+      cin: "L45200GJ1986PLC008717",
+      udyam: "UDYAM-GJ-01-0088991",
+      epfoCode: "GJAHD0055443000",
+      email: "contracts@jmcprojects.com",
+      phone: "+91 79 3001 1500",
+      city: "Ahmedabad",
+      state: "Gujarat"
+    },
+    submittedAt: "2026-09-28T18:25:00Z",
+    status: "NEEDS_ATTENTION",
+    complianceScore: 52,
+    riskLevel: "HIGH",
+    documents: [docGstABC],
+    requirementResults: []
   }
 ];
-async function initializeBid1Evaluation() {
+async function initializeBid1Evaluation(forceDefault = false) {
   const bid = sampleBids[0];
   const reqs = requirementsTender1;
+  const existingDecisions = /* @__PURE__ */ new Map();
+  if (!forceDefault && bid.requirementResults) {
+    for (const r of bid.requirementResults) {
+      if (r.officerDecision) {
+        existingDecisions.set(r.requirementId, r.officerDecision);
+      }
+    }
+  }
   const results = [];
   for (const req of reqs) {
     let result;
@@ -1382,12 +1609,16 @@ async function initializeBid1Evaluation() {
         generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
         isAiEnhanced: adv.isAiEnhanced
       };
-      result.officerDecision = {
-        disposition: "REQUEST_CLARIFICATION",
-        justification: "CIN not found in MCA database. Requested bidder to provide incorporation certificate with verified RoC extract.",
-        decidedBy: currentUser.name,
-        decidedAt: "2026-09-28T10:45:00Z"
-      };
+      if (existingDecisions.has(req.id)) {
+        result.officerDecision = existingDecisions.get(req.id);
+      } else {
+        result.officerDecision = {
+          disposition: "REQUEST_CLARIFICATION",
+          justification: "CIN not found in MCA database. Requested bidder to provide incorporation certificate with verified RoC extract.",
+          decidedBy: currentUser.name,
+          decidedAt: "2026-09-28T10:45:00Z"
+        };
+      }
     } else if (req.code === "PAN_001") {
       result = evaluateRequirement({
         requirement: req,
@@ -1597,14 +1828,17 @@ async function initializeBid1Evaluation() {
         ]
       };
     }
+    if (existingDecisions.has(req.id)) {
+      result.officerDecision = existingDecisions.get(req.id);
+    }
     results.push(result);
   }
   bid.requirementResults = results;
   bid.complianceScore = calculateComplianceScore(results);
   bid.riskLevel = calculateRiskLevel(reqs, results);
 }
-async function initializeAllBidsEvaluation() {
-  await initializeBid1Evaluation();
+async function initializeAllBidsEvaluation(forceDefault = false) {
+  await initializeBid1Evaluation(forceDefault);
   const reqs = requirementsTender1;
   const bid2 = sampleBids[1];
   if (bid2) {
@@ -1806,8 +2040,123 @@ async function initializeAllBidsEvaluation() {
     bid6.complianceScore = 64;
     bid6.riskLevel = "HIGH";
   }
+  for (let i = 6; i < sampleBids.length; i++) {
+    const b = sampleBids[i];
+    if (b && (!b.requirementResults || b.requirementResults.length === 0)) {
+      b.requirementResults = reqs.map((req, idx) => {
+        const isFail = b.status === "NEEDS_ATTENTION" && (idx === 0 || idx === 2);
+        const isReview = b.status === "IN_VERIFICATION" && idx === 10;
+        const state = isFail ? "FAIL" : isReview ? "REVIEW" : "PASS";
+        return {
+          requirementId: req.id,
+          state,
+          scoreValue: state === "PASS" ? 1 : state === "REVIEW" ? 0.5 : 0,
+          weight: req.mandatory ? 3 : 1,
+          reason: state === "PASS" ? "Full statutory compliance verified against portal registers and certified certificates." : state === "FAIL" ? "Statutory non-compliance detected." : "Flagged for officer verification.",
+          evidence: [
+            {
+              id: `ev-${b.id.toLowerCase()}-${req.code.toLowerCase()}`,
+              documentId: `doc-${b.id.toLowerCase()}-cert`,
+              documentName: `${b.bidder.legalName.replace(/\s+/g, "_")}_BidPack.pdf`,
+              pageNumber: 1,
+              boundingBox: { x: 20, y: 35, width: 55, height: 10 },
+              sourceText: `Statutory verification for ${req.title}`,
+              fieldName: req.checksRequired[0] || "COMPLIANCE",
+              extractedValue: "VERIFIED_COMPLIANT",
+              extractionMethod: "REGEX",
+              confidence: 0.98,
+              sha256: "7c9812df0821",
+              grounded: true
+            }
+          ],
+          validationChecks: [
+            {
+              id: `chk-${b.id.toLowerCase()}-${req.code}`,
+              checkCode: req.checksRequired[0] || "CHECK",
+              description: `Verification for ${req.title}`,
+              inputValue: state === "PASS" ? "Valid and current" : state === "FAIL" ? "Non-compliant" : "Manual inspection required",
+              expectedValue: "Compliant record",
+              result: state,
+              reason: state === "PASS" ? "Criteria satisfied" : state === "FAIL" ? "Breach identified" : "Awaiting review",
+              source: `${b.bidder.legalName}_BidPack.pdf`
+            }
+          ]
+        };
+      });
+    }
+  }
 }
-initializeAllBidsEvaluation().catch((err) => console.error("Error initializing seed evaluation:", err));
+function saveStateToDisk() {
+  try {
+    const data = JSON.stringify(sampleBids, null, 2);
+    fs.writeFileSync(PERSIST_FILE, data, "utf-8");
+  } catch (err) {
+    console.warn("[DataStore] Failed to write state to disk:", err);
+  }
+}
+function loadStateFromDisk() {
+  try {
+    if (fs.existsSync(PERSIST_FILE)) {
+      const raw = fs.readFileSync(PERSIST_FILE, "utf-8");
+      const loaded = JSON.parse(raw);
+      if (Array.isArray(loaded) && loaded.length > 0) {
+        for (const savedBid of loaded) {
+          const match = sampleBids.find((b) => b.id === savedBid.id);
+          if (match) {
+            if (savedBid.requirementResults) match.requirementResults = savedBid.requirementResults;
+            if (savedBid.complianceScore !== void 0) match.complianceScore = savedBid.complianceScore;
+            if (savedBid.riskLevel) match.riskLevel = savedBid.riskLevel;
+            if (savedBid.status) match.status = savedBid.status;
+            if (savedBid.overallDecision) match.overallDecision = savedBid.overallDecision;
+          }
+        }
+        return true;
+      }
+    }
+  } catch (err) {
+    console.warn("[DataStore] Failed to load state from disk:", err);
+  }
+  return false;
+}
+async function resetStateToDefault() {
+  try {
+    if (fs.existsSync(PERSIST_FILE)) {
+      fs.unlinkSync(PERSIST_FILE);
+    }
+  } catch (err) {
+    console.warn("[DataStore] Error removing state file:", err);
+  }
+  const defaultStatusMap = {
+    "BID-001": "NEEDS_ATTENTION",
+    "BID-002": "VERIFIED",
+    "BID-003": "VERIFIED",
+    "BID-004": "IN_VERIFICATION",
+    "BID-005": "NEEDS_ATTENTION",
+    "BID-006": "NEEDS_ATTENTION",
+    "BID-007": "VERIFIED",
+    "BID-008": "VERIFIED",
+    "BID-009": "VERIFIED",
+    "BID-010": "VERIFIED",
+    "BID-011": "IN_VERIFICATION",
+    "BID-012": "NEEDS_ATTENTION"
+  };
+  for (const bid of sampleBids) {
+    delete bid.overallDecision;
+    bid.status = defaultStatusMap[bid.id] || "IN_VERIFICATION";
+    if (bid.requirementResults) {
+      for (const r of bid.requirementResults) {
+        delete r.officerDecision;
+      }
+    }
+  }
+  await initializeAllBidsEvaluation(true);
+}
+(async () => {
+  const restored = loadStateFromDisk();
+  if (!restored) {
+    await initializeAllBidsEvaluation();
+  }
+})().catch((err) => console.error("Error initializing data store:", err));
 
 // src/server/auditService.ts
 import crypto2 from "crypto";
@@ -1982,6 +2331,27 @@ var AuditService = class {
 var auditService = new AuditService();
 
 // src/server/routes.ts
+var FASTAPI_URL = process.env.FASTAPI_URL || "http://localhost:8000";
+async function tryFastApiEvaluation(bidId) {
+  try {
+    const res = await fetch(`${FASTAPI_URL}/api/bidders/${bidId}/evaluation`, {
+      signal: AbortSignal.timeout(3e3)
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return {
+      score: data.score?.score ?? null,
+      riskLevel: data.risk?.level ?? null,
+      overallState: data.overall_state ?? null,
+      requirements: data.requirements?.map((r) => ({
+        req_id: r.requirement_id,
+        state: r.state
+      })) ?? []
+    };
+  } catch {
+    return null;
+  }
+}
 var router = express.Router();
 var activeUser = { ...currentUser };
 router.get("/auth/me", (_req, res) => {
@@ -2079,16 +2449,52 @@ router.get("/tenders/:id/bidders", (req, res) => {
     return;
   }
   const bids = sampleBids.filter((b) => b.tenderId === tender.id);
+  const needsAttention = bids.filter((b) => b.status === "NEEDS_ATTENTION").length;
+  const inReview = bids.filter((b) => b.status === "IN_VERIFICATION").length;
+  const verified = bids.filter((b) => b.status === "VERIFIED" || b.status === "REVIEWED").length;
   res.json({
     tender,
     bids,
     counts: {
-      all: 45,
-      needsAttention: 6,
-      inReview: 12,
-      verified: 31
+      all: bids.length,
+      needsAttention,
+      inReview,
+      verified
     }
   });
+});
+router.post("/tenders", (req, res) => {
+  const { title, tenderNumber, department, organisation, description, category, openingDate, closingDate, ruleSetVersion } = req.body;
+  if (!title || !tenderNumber) {
+    res.status(400).json({ error: "Title and Tender Reference Number are mandatory." });
+    return;
+  }
+  const cleanNumber = tenderNumber.trim().toUpperCase();
+  const existing = tenders.find((t) => t.tenderNumber === cleanNumber);
+  if (existing) {
+    res.status(400).json({ error: `Tender ${cleanNumber} already exists in registry.` });
+    return;
+  }
+  const newTender = {
+    id: `TND-${Date.now()}`,
+    tenderNumber: cleanNumber,
+    title: title.trim(),
+    department: department?.trim() || "Procurement Directorate",
+    organisation: organisation?.trim() || "Government e-Marketplace",
+    description: description?.trim() || `Tender for ${title}. Configured for deterministic statutory verification under GFR 2017.`,
+    openingDate: openingDate || (/* @__PURE__ */ new Date()).toISOString().slice(0, 10),
+    closingDate: closingDate || "2026-12-31",
+    status: "VERIFICATION",
+    currentVersion: 1,
+    ruleSetVersion: ruleSetVersion || "1.3",
+    requirementsCount: 18,
+    totalBidders: 0,
+    progressPercent: 0,
+    requirements: tenders[0]?.requirements || []
+  };
+  tenders.unshift(newTender);
+  saveStateToDisk();
+  res.status(201).json({ success: true, tender: newTender });
 });
 router.get("/bids/:id", (req, res) => {
   const bid = sampleBids.find((b) => b.id === req.params.id);
@@ -2111,6 +2517,13 @@ router.post("/bids/:id/verify", async (req, res) => {
     return;
   }
   await initializeBid1Evaluation();
+  let engineSource = "EXPRESS_LOCAL";
+  const fastApiResult = await tryFastApiEvaluation(bid.id);
+  if (fastApiResult) {
+    if (fastApiResult.score !== null) bid.complianceScore = fastApiResult.score;
+    if (fastApiResult.riskLevel) bid.riskLevel = fastApiResult.riskLevel;
+    engineSource = "FASTAPI_PYTHON";
+  }
   auditService.appendEvent({
     timestamp: (/* @__PURE__ */ new Date()).toISOString(),
     tenderId: tender.id,
@@ -2124,10 +2537,11 @@ router.post("/bids/:id/verify", async (req, res) => {
       role: activeUser.role,
       email: activeUser.email
     },
-    details: `Deterministic verification executed for ${tender.requirements.length} requirements. Result: ${bid.requirementResults.filter((r) => r.state === "PASS").length} PASS, ${bid.requirementResults.filter((r) => r.state === "FAIL").length} FAIL.`,
+    details: `Deterministic verification [${engineSource}] for ${tender.requirements.length} requirements. Result: ${bid.requirementResults.filter((r) => r.state === "PASS").length} PASS, ${bid.requirementResults.filter((r) => r.state === "FAIL").length} FAIL.`,
     score: bid.complianceScore,
     risk: bid.riskLevel
   });
+  saveStateToDisk();
   res.json({
     bidId: bid.id,
     complianceScore: bid.complianceScore,
@@ -2135,7 +2549,8 @@ router.post("/bids/:id/verify", async (req, res) => {
     results: bid.requirementResults,
     verifiedAt: (/* @__PURE__ */ new Date()).toISOString(),
     tenderVersion: tender.currentVersion,
-    ruleSetVersion: tender.ruleSetVersion
+    ruleSetVersion: tender.ruleSetVersion,
+    engineSource
   });
 });
 router.post("/bids/:id/decision", (req, res) => {
@@ -2216,6 +2631,7 @@ router.post("/bids/:id/decision", (req, res) => {
       justification
     });
   }
+  saveStateToDisk();
   res.json({
     success: true,
     bid,
@@ -2257,6 +2673,14 @@ router.post("/audit/tamper", (req, res) => {
 router.post("/audit/reset", (_req, res) => {
   auditService.resetToValidState();
   res.json({ success: true, message: "Audit chain reset to verified state" });
+});
+router.post("/admin/reset-demo", async (_req, res) => {
+  await resetStateToDefault();
+  auditService.resetToValidState();
+  res.json({
+    success: true,
+    message: "All synthetic bidder datasets, officer decisions, and audit chain reset to initial baseline."
+  });
 });
 router.get("/portals", (_req, res) => {
   res.json({
@@ -2383,10 +2807,80 @@ router.get("/evaluation", (_req, res) => {
     ]
   });
 });
+router.get("/limitations", (_req, res) => {
+  res.json({
+    system_classification: "Deterministic Statutory Procurement Decision-Support System",
+    deployment_paradigm: "Designed for Sovereign On-Premises Government Deployment",
+    hosted_environment: "Simulated evaluation environment (Express + Vite + FastAPI)",
+    core_value: "Deterministic, explainable, auditable bid verification: same evidence in, same result out \u2014 never a false PASS.",
+    legal_disclaimer: "ADVISORY \u2014 NOT A FINAL DISQUALIFICATION. This evaluation provides algorithmic evidence verification to assist the competent procurement authority. Final procurement disqualification or contract award decisions remain the sole statutory prerogative of the designated Procurement Officer in accordance with the General Financial Rules (GFR 2017) and GeM General Terms and Conditions.",
+    simulated_adapters: {
+      source_tag: "SIMULATED",
+      adapters: [
+        {
+          name: "GSTN Adapter",
+          status: "SIMULATED",
+          capabilities: ["Registration Status", "Return Filing Compliance", "Return Period"]
+        },
+        {
+          name: "MCA21 Registry Adapter",
+          status: "SIMULATED",
+          capabilities: ["CIN Lookup", "Company Active Status", "RoC Record"]
+        },
+        {
+          name: "Udyam MSME Adapter",
+          status: "SIMULATED",
+          capabilities: ["Registration Status", "Enterprise Category (Micro/Small)", "Major Activity"]
+        },
+        {
+          name: "EPFO Adapter",
+          status: "SIMULATED",
+          capabilities: ["Establishment Verification", "Contributing Members Count"]
+        },
+        {
+          name: "ESIC Adapter",
+          status: "SIMULATED",
+          capabilities: ["Employer Status", "Defaulter Registry Screening"]
+        },
+        {
+          name: "Debarment Registry Adapter",
+          status: "SIMULATED",
+          capabilities: ["Scope Evaluation (Org-wide vs Category)", "Order Validity Timeline"]
+        }
+      ],
+      resilience: "Portal timeouts or downtime gracefully yield UNVERIFIABLE state \u2014 never a false PASS and never a false FAIL. Excluded from score denominator."
+    },
+    synthetic_data: {
+      rationale: "Commercial confidentiality under DPDP Act 2023 restricts use of proprietary bidder trade proposals.",
+      coverage: "6 comprehensive bidder packets across 3 distinct tenders (Goods, Services, Construction).",
+      statutory_accuracy: "All synthetic GSTINs strictly validate against GSTN Mod-36 checksum algorithm."
+    },
+    ai_boundary: {
+      decision_path: "Zero LLM in the eligibility decision path. 100% deterministic TypeScript + Python rule execution.",
+      extraction: "Bounded Tesseract OCR and PyMuPDF native extraction with mandatory verbatim text grounding.",
+      advisory: "Deterministic template generation citing requirement codes. Optional Gemini rewrite strictly gated by regex validators with template fallback."
+    },
+    sovereign_security: {
+      encryption_at_rest: "AES-256-GCM authenticated cipher with SHA-256 integrity digests.",
+      audit_trail: "Tamper-evident SHA-256 hash chain with INSERT-only role enforcement.",
+      data_retention: "DPDP Act 2023 compliant retention policy tracking."
+    },
+    tech_stack: {
+      frontend: "React 19 + Vite 8 + TailwindCSS 4",
+      express_server: "Express 4 + TypeScript (Node.js)",
+      python_backend: "FastAPI 0.100+ (Python) \u2014 Rule Engine & Scoring",
+      database: "PostgreSQL (production) / In-memory (demo)",
+      ocr: "PyMuPDF (native) + Tesseract OCR + OpenCV",
+      matching: "rapidfuzz token-set-ratio"
+    }
+  });
+});
 var routes_default = router;
 
 // server-core.ts
 dotenv.config();
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path2.dirname(__filename);
 async function startServer() {
   const app = express2();
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3e3;
@@ -2401,14 +2895,15 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.resolve(process.cwd(), "dist");
+    const distPath = path2.resolve(process.cwd(), "dist");
     app.use(express2.static(distPath));
     app.get("*", (_req, res) => {
-      res.sendFile(path.resolve(distPath, "index.html"));
+      res.sendFile(path2.resolve(distPath, "index.html"));
     });
   }
   app.listen(port, "0.0.0.0", () => {
-    console.log(`[TenderGuard] Server running on http://0.0.0.0:${port}`);
+    console.log(`[TenderGuard] Frontend server running on http://0.0.0.0:${port}`);
+    console.log(`[TenderGuard] FastAPI backend expected at ${process.env.FASTAPI_URL || "http://localhost:8000"}`);
   });
 }
 startServer().catch((err) => {
