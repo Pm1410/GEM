@@ -28,6 +28,9 @@ import {
   Filter,
   Sun,
   Moon,
+  BookOpen,
+  FileText,
+  Info,
 } from 'lucide-react';
 import { AdapterStatus, UserRole } from '../types';
 
@@ -45,6 +48,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [activeSection, setActiveSection] = useState<'ALL' | 'RULES' | 'ADAPTERS' | 'AUDIT' | 'ROLES'>('ALL');
   const [selectedRuleCode, setSelectedRuleCode] = useState<string>('CIN_EXISTS');
   const [ruleCategoryFilter, setRuleCategoryFilter] = useState<'ALL' | 'STATUTORY' | 'FINANCIAL' | 'TECHNICAL'>('ALL');
+  const [ruleViewMode, setRuleViewMode] = useState<'OFFICER' | 'PYTHON'>('OFFICER');
   const [testInput, setTestInput] = useState<string>('U45201TN2016PTC112345');
   const [testResult, setTestResult] = useState<{ state: 'PASS' | 'FAIL' | 'REVIEW'; reason: string } | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
@@ -168,6 +172,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: 'U45201TN2016PTC112345',
+      standard: 'Companies Act, 2013 — Section 7(2) & MCA21 Corporate Registry',
+      summary: 'Verifies the bidder is a lawfully incorporated corporate entity and confirms its operational standing on the Ministry of Corporate Affairs portal.',
+      passMessage: 'Company incorporation confirmed; active operational status verified in national MCA21 database.',
+      errorMessages: [
+        {
+          trigger: 'Malformed CIN Format',
+          message: 'Malformed 21-digit CIN string format. Must adhere to [UL][0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}.',
+          severity: 'FAIL',
+        },
+        {
+          trigger: 'Entity Inactive or Under Strike-Off',
+          message: 'CIN not found in MCA database or entity listed as Inactive, Dormant, or Under Strike-Off.',
+          severity: 'FAIL',
+        },
+      ],
+      procedure: [
+        '1. Structural validation of 21-character Corporate Identity Number (Listing, Industry, State, Year, RoC, Serial).',
+        '2. Authoritative query to MCA21 registry gateway.',
+        '3. Entity status verification (strictly requires ACTIVE status).',
+      ],
       logic: `def verify_cin(cin_string: str, evidence_doc: PDFEvidence) -> VerificationResult:
     # 1. Regex & Pattern Validation (21 characters)
     # Format: [UL][0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}
@@ -192,6 +216,31 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: '22AAAAA0000A1Z5',
+      standard: 'Central Goods and Services Tax (CGST) Act, 2017 & GSTN System',
+      summary: 'Confirms valid GST registration, verifies the Mod-36 mathematical checksum digit, checks structural PAN parity, and verifies monthly return compliance.',
+      passMessage: 'Compliant active taxpayer record verified with zero overdue GSTR-3B monthly return filings.',
+      errorMessages: [
+        {
+          trigger: 'Checksum Failure',
+          message: 'Invalid Mod-36 checksum character at 15th position of GSTIN.',
+          severity: 'FAIL',
+        },
+        {
+          trigger: 'Embedded PAN Mismatch',
+          message: 'GSTIN embedded PAN (positions 3-12) does not match standalone PAN card submission.',
+          severity: 'FAIL',
+        },
+        {
+          trigger: 'Return Filing Overdue',
+          message: 'GSTR-3B monthly tax filings are overdue or suspended on GSTN portal.',
+          severity: 'FAIL',
+        },
+      ],
+      procedure: [
+        '1. Algorithmic Mod-36 checksum mathematical validation on 15-character GSTIN.',
+        '2. Structural cross-verification between embedded PAN (chars 3-12) and bidder PAN proof.',
+        '3. Live query to GSTN portal for monthly GSTR-3B filing compliance standing.',
+      ],
       logic: `def verify_gstin(gstin: str, pan: str, returns: list) -> VerificationResult:
     # 1. Mod-36 Checksum verification
     if not validate_mod36_checksum(gstin):
@@ -216,6 +265,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: '07EEEEE4444E5Z0',
+      standard: 'General Financial Rules (GFR 2017) Rule 151 & CPPP National Debarment Register',
+      summary: 'Screens the bidder and its directors against all national blacklists, central vigilance registries, and public procurement debarment orders.',
+      passMessage: 'Entity cleared on National Debarment Register (No active blacklisting orders).',
+      errorMessages: [
+        {
+          trigger: 'Statutory Debarment Order Found',
+          message: 'Entity or key personnel currently debarred / blacklisted by a Ministry under GFR 151.',
+          severity: 'FAIL',
+        },
+      ],
+      procedure: [
+        '1. Query National Debarment Register using bidder PAN, CIN, and Registered Name.',
+        '2. Verify order number, issuing authority, and operational validity dates.',
+        '3. Enforce mandatory statutory disqualification under GFR Rule 151 if an active ban exists.',
+      ],
       logic: `def verify_debarment(entity_name: str, pan: str, cin: str) -> VerificationResult:
     # Cross-reference against GFR 151 Blacklisting & Debarment Registry
     match = debarment_registry.find(pan=pan, cin=cin)
@@ -234,6 +298,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: 'INR 42,50,00,000',
+      standard: 'GeM Eligibility Criteria Clause 4.1 & CA Audited Statements with UDIN',
+      summary: 'Confirms the bidder possesses commercial scale by evaluating audited annual turnover figures across the 3 preceding financial years.',
+      passMessage: 'Average 3-year turnover exceeds mandatory threshold of ₹30.00 Crores.',
+      errorMessages: [
+        {
+          trigger: 'Financial Threshold Shortfall',
+          message: 'Audited 3-year average turnover is below the required threshold of ₹30.00 Crores.',
+          severity: 'FAIL',
+        },
+      ],
+      procedure: [
+        '1. Extract audited annual turnover values from uploaded Profit & Loss statements.',
+        '2. Calculate 3-year arithmetic average.',
+        '3. Confirm figure meets or exceeds ₹30.00 Crores requirement with CA UDIN verification.',
+      ],
       logic: `def verify_turnover(avg_turnover: float, threshold: float = 300000000.0) -> VerificationResult:
     # Tender requires average turnover >= Rs. 30.00 Crores
     if avg_turnover < threshold:
@@ -251,6 +330,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: 'INR 18,20,00,000',
+      standard: 'General Financial Rules (GFR 2017) Rule 173 & Solvency Standard',
+      summary: 'Verifies the bidder has positive equity capital and net worth to ensure contract execution viability and prevent contractor insolvency risk.',
+      passMessage: 'Positive net worth certified by Chartered Accountant with zero negative reserves.',
+      errorMessages: [
+        {
+          trigger: 'Negative / Zero Net Worth',
+          message: 'Negative or zero net worth disclosed in audited balance sheet (insolvency risk).',
+          severity: 'FAIL',
+        },
+      ],
+      procedure: [
+        '1. Extract paid-up share capital, reserves, and surplus from audited balance sheet.',
+        '2. Verify Net Worth > ₹0.00.',
+        '3. Confirm absence of NCLT corporate insolvency resolution proceedings.',
+      ],
       logic: `def verify_networth(networth_value: float) -> VerificationResult:
     # Must be strictly positive (> 0.00) certified by statutory auditor
     if networth_value <= 0:
@@ -265,6 +359,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       weight: 3,
       mandatory: true,
       defaultInput: 'MAF-HP-CPCL-2025-098',
+      standard: 'GeM General Terms & Conditions (GTC) Clause 12 — Supply Chain Authorization',
+      summary: 'Validates authentic Manufacturer Authorization Form (MAF) to ensure genuine hardware, factory warranty, and direct manufacturer support.',
+      passMessage: 'Valid Manufacturer Authorization Form confirmed with authentic OEM authorized signatory seal.',
+      errorMessages: [
+        {
+          trigger: 'Unverified / Blurred OEM Endorsement',
+          message: 'OEM endorsement stamp impression blurred or unverified with OEM portal; technical review required.',
+          severity: 'REVIEW',
+        },
+      ],
+      procedure: [
+        '1. Verify MAF specifically cites the target GeM / CPCL tender reference number.',
+        '2. Confirm digital signature and corporate seal of authorized OEM representative.',
+        '3. Assign REVIEW state for manual officer clarification if endorsement is unclear.',
+      ],
       logic: `def verify_oem_authorization(maf_cert: Document) -> VerificationResult:
     # Verify OEM digital signature and serial validity
     if not maf_cert.has_authorized_signatory_seal():
@@ -572,91 +681,186 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   </span>
                 </div>
 
-                {/* Python Execution Logic Block */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-[#5F6675]">
-                    <span className="font-extrabold uppercase tracking-wider">
-                      Deterministic Execution Implementation (Python Engine)
-                    </span>
-                    <span className="font-mono-tech text-[11px]">Rule Engine v1.3</span>
+                {/* View Mode Switcher: Non-Technical Officer Guide vs Technical Source Code */}
+                <div className="space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-[#E5DFD9]">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setRuleViewMode('OFFICER')}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                          ruleViewMode === 'OFFICER'
+                            ? 'bg-[#124E59] text-white shadow-xs'
+                            : 'bg-[#F4EFEB] text-[#5F6675] hover:bg-[#E5DFD9]'
+                        }`}
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Officer Rule Guide & Error Triggers (Non-Technical)</span>
+                      </button>
+                      <button
+                        onClick={() => setRuleViewMode('PYTHON')}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                          ruleViewMode === 'PYTHON'
+                            ? 'bg-[#124E59] text-white shadow-xs'
+                            : 'bg-[#F4EFEB] text-[#5F6675] hover:bg-[#E5DFD9]'
+                        }`}
+                      >
+                        <Code2 className="w-3.5 h-3.5" />
+                        <span>Python Source Code (Auditors)</span>
+                      </button>
+                    </div>
+                    <span className="text-[11px] font-mono-tech text-[#5F6675]">Rule Engine v1.3</span>
                   </div>
 
-                  {/* IDE-Grade Syntax Highlighted Code Viewer Container */}
-                  <div className={`rounded-2xl border transition-colors overflow-hidden shadow-xs ${
-                    codeTheme === 'dark' ? 'bg-[#181824] border-slate-700/80 text-slate-100' : 'bg-[#F8F6F2] border-[#E5DFD9] text-[#2A2826]'
-                  }`}>
-                    {/* Window Title Bar */}
-                    <div className={`flex items-center justify-between px-3.5 py-2.5 border-b text-xs ${
-                      codeTheme === 'dark' ? 'bg-slate-900/60 border-slate-700/80' : 'bg-[#F0ECE6] border-[#E5DFD9]'
-                    }`}>
-                      <div className="flex items-center gap-2">
-                        {/* OS Window Dots */}
-                        <div className="flex items-center gap-1.5 mr-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-rose-400/80" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+                  {ruleViewMode === 'OFFICER' ? (
+                    /* Human-Friendly Officer & Non-Technical View */
+                    <div className="space-y-3.5 animate-fade-in">
+                      {/* Statutory Purpose */}
+                      <div className="p-4 rounded-2xl bg-[#FBF9F6] border border-[#E5DFD9] space-y-2 shadow-2xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#124E59] flex items-center gap-1.5">
+                            <BookOpen className="w-3.5 h-3.5" />
+                            Statutory Requirement & Purpose
+                          </span>
+                          <span className="text-[10px] font-mono-tech px-2 py-0.5 rounded bg-white text-[#5F6675] border border-[#E5DFD9]">
+                            {activeRule.standard}
+                          </span>
                         </div>
-                        <FileCode className="w-3.5 h-3.5 text-[#124E59]" />
-                        <span className="font-mono-tech font-bold text-[11px]">
-                          rules/statutory/{activeRule.code.toLowerCase()}.py
-                        </span>
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono-tech font-semibold ${
-                          codeTheme === 'dark' ? 'bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white text-[#5F6675] border border-[#E5DFD9]'
-                        }`}>
-                          Python 3.12 (Statutory Rule)
-                        </span>
+                        <p className="text-xs text-[#2A2826] font-sans font-medium leading-relaxed">
+                          {activeRule.summary}
+                        </p>
                       </div>
 
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => setCodeTheme(codeTheme === 'light' ? 'dark' : 'light')}
-                          className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
-                            codeTheme === 'dark'
-                              ? 'bg-slate-800 text-amber-300 hover:bg-slate-700'
-                              : 'bg-white text-[#5F6675] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
-                          }`}
-                          title={`Switch to ${codeTheme === 'light' ? 'Dark IDE' : 'Light Institutional'} Theme`}
-                        >
-                          {codeTheme === 'light' ? (
-                            <>
-                              <Moon className="w-3.5 h-3.5 text-indigo-600" />
-                              <span className="text-[10px] font-mono-tech">Dark IDE</span>
-                            </>
-                          ) : (
-                            <>
-                              <Sun className="w-3.5 h-3.5 text-amber-400" />
-                              <span className="text-[10px] font-mono-tech">Light Paper</span>
-                            </>
-                          )}
-                        </button>
-                        <button
-                          onClick={() => handleCopyCode(activeRule.logic)}
-                          className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-mono-tech flex items-center gap-1.5 transition-colors cursor-pointer ${
-                            codeTheme === 'dark'
-                              ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
-                              : 'bg-white text-[#2A2826] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
-                          }`}
-                        >
-                          {copiedCode ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-500" />
-                              <span className="text-emerald-600 font-bold">Copied</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-[#5F6675]" />
-                              <span>Copy</span>
-                            </>
-                          )}
-                        </button>
+                      {/* Procedural Steps */}
+                      <div className="p-4 rounded-2xl bg-white border border-[#E5DFD9] space-y-2.5 shadow-2xs">
+                        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#5F6675] block">
+                          Automated Verification Workflow
+                        </span>
+                        <div className="space-y-1.5">
+                          {activeRule.procedure.map((step, sIdx) => (
+                            <div key={sIdx} className="flex items-start gap-2.5 p-2 rounded-xl bg-[#FBF9F6] border border-[#E5DFD9] text-xs">
+                              <span className="w-4 h-4 rounded-full bg-[#124E59]/10 text-[#124E59] font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5 font-mono-tech">
+                                {sIdx + 1}
+                              </span>
+                              <span className="text-[#2A2826] font-medium font-sans leading-relaxed">
+                                {step}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Approval & Rejection Error Messages Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        {/* Approval Condition */}
+                        <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2 shadow-2xs">
+                          <div className="flex items-center gap-2 text-emerald-900 font-extrabold uppercase text-[11px]">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                            <span>Compliance Condition (PASS)</span>
+                          </div>
+                          <p className="text-emerald-950 font-medium font-sans text-xs leading-relaxed">
+                            {activeRule.passMessage}
+                          </p>
+                        </div>
+
+                        {/* Rejection Error Triggers */}
+                        <div className="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2.5 shadow-2xs">
+                          <div className="flex items-center gap-2 text-rose-900 font-extrabold uppercase text-[11px]">
+                            <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                            <span>Rejection Triggers & Error Messages (FAIL)</span>
+                          </div>
+                          <div className="space-y-2">
+                            {activeRule.errorMessages.map((err, eIdx) => (
+                              <div key={eIdx} className="p-2.5 rounded-xl bg-white/90 border border-rose-200 space-y-0.5">
+                                <span className="font-extrabold text-[11px] text-rose-800 uppercase block">
+                                  ⚠️ {err.trigger}
+                                </span>
+                                <span className="text-[11px] font-mono-tech text-rose-950 block leading-snug">
+                                  &ldquo;{err.message}&rdquo;
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  ) : (
+                    /* IDE-Grade Syntax Highlighted Code Viewer Container (for Technical Auditors) */
+                    <div className={`rounded-2xl border transition-colors overflow-hidden shadow-xs animate-fade-in ${
+                      codeTheme === 'dark' ? 'bg-[#181824] border-slate-700/80 text-slate-100' : 'bg-[#F8F6F2] border-[#E5DFD9] text-[#2A2826]'
+                    }`}>
+                      {/* Window Title Bar */}
+                      <div className={`flex items-center justify-between px-3.5 py-2.5 border-b text-xs ${
+                        codeTheme === 'dark' ? 'bg-slate-900/60 border-slate-700/80' : 'bg-[#F0ECE6] border-[#E5DFD9]'
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          {/* OS Window Dots */}
+                          <div className="flex items-center gap-1.5 mr-1.5">
+                            <div className="w-2.5 h-2.5 rounded-full bg-rose-400/80" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+                          </div>
+                          <FileCode className="w-3.5 h-3.5 text-[#124E59]" />
+                          <span className="font-mono-tech font-bold text-[11px]">
+                            rules/statutory/{activeRule.code.toLowerCase()}.py
+                          </span>
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono-tech font-semibold ${
+                            codeTheme === 'dark' ? 'bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white text-[#5F6675] border border-[#E5DFD9]'
+                          }`}>
+                            Python 3.12 (Statutory Rule)
+                          </span>
+                        </div>
 
-                    {/* Syntax Highlighted Code Body */}
-                    <div className="p-4 text-xs overflow-x-auto leading-relaxed font-mono-tech max-h-[360px] overflow-y-auto">
-                      {highlightPythonCode(activeRule.logic, codeTheme === 'dark')}
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => setCodeTheme(codeTheme === 'light' ? 'dark' : 'light')}
+                            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
+                              codeTheme === 'dark'
+                                ? 'bg-slate-800 text-amber-300 hover:bg-slate-700'
+                                : 'bg-white text-[#5F6675] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
+                            }`}
+                            title={`Switch to ${codeTheme === 'light' ? 'Dark IDE' : 'Light Institutional'} Theme`}
+                          >
+                            {codeTheme === 'light' ? (
+                              <>
+                                <Moon className="w-3.5 h-3.5 text-indigo-600" />
+                                <span className="text-[10px] font-mono-tech">Dark IDE</span>
+                              </>
+                            ) : (
+                              <>
+                                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                                <span className="text-[10px] font-mono-tech">Light Paper</span>
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={() => handleCopyCode(activeRule.logic)}
+                            className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-mono-tech flex items-center gap-1.5 transition-colors cursor-pointer ${
+                              codeTheme === 'dark'
+                                ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                                : 'bg-white text-[#2A2826] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
+                            }`}
+                          >
+                            {copiedCode ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                <span className="text-emerald-600 font-bold">Copied</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5 text-[#5F6675]" />
+                                <span>Copy</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Syntax Highlighted Code Body */}
+                      <div className="p-4 text-xs overflow-x-auto leading-relaxed font-mono-tech max-h-[360px] overflow-y-auto">
+                        {highlightPythonCode(activeRule.logic, codeTheme === 'dark')}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Live Interactive Rule Simulator */}
