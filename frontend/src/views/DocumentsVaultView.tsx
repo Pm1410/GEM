@@ -72,7 +72,7 @@ export const DocumentsVaultView: React.FC<DocumentsVaultViewProps> = ({
           title: 'Ministry of Corporate Affairs - Certificate of Incorporation',
           textSnippet: 'GOVERNMENT OF INDIA\nMINISTRY OF CORPORATE AFFAIRS\nThe Corporate Identity Number of the company is U45201TN2016PTC112345.',
           regions: [
-            { label: 'CIN', value: 'U45201TN2016PTC112345', box: { x: 22, y: 52, width: 56, height: 9 } },
+            { label: 'CIN', value: 'U45201TN2016PTC112345', box: { x: 8, y: 60, width: 84, height: 7 } },
           ],
         },
       ],

@@ -26,6 +26,8 @@ import {
   Activity,
   ArrowRight,
   Filter,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { AdapterStatus, UserRole } from '../types';
 
@@ -50,6 +52,82 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [updatingPortal, setUpdatingPortal] = useState<string | null>(null);
   const [roleChangeNotice, setRoleChangeNotice] = useState<string | null>(null);
   const [copiedHash, setCopiedHash] = useState(false);
+  const [codeTheme, setCodeTheme] = useState<'light' | 'dark'>('light');
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  const handleCopyCode = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  const highlightPythonCode = (code: string, isDark: boolean) => {
+    return code.split('\n').map((line, lineIdx) => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('#')) {
+        return (
+          <div key={lineIdx} className="flex leading-relaxed">
+            <span className={`w-8 select-none text-right pr-3 shrink-0 ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
+              {lineIdx + 1}
+            </span>
+            <span className={`${isDark ? 'text-slate-400' : 'text-slate-500'} italic font-mono-tech`}>
+              {line}
+            </span>
+          </div>
+        );
+      }
+
+      const tokens = line.split(/(".*?"|'.*?'|\bdef\b|\bif\b|\bnot\b|\breturn\b|\bfor\b|\bin\b|\bany\b|\belse\b|\belif\b|\bstr\b|\bfloat\b|\blist\b|\bint\b|\bVerificationResult\b|\bPDFEvidence\b|\bCIN_REGEX\b)/g);
+
+      return (
+        <div key={lineIdx} className="flex leading-relaxed hover:bg-slate-500/5 rounded">
+          <span className={`w-8 select-none text-right pr-3 shrink-0 ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
+            {lineIdx + 1}
+          </span>
+          <span className="font-mono-tech whitespace-pre">
+            {tokens.map((token, tokIdx) => {
+              if (/^["'].*["']$/.test(token)) {
+                if (token.includes('FAIL')) {
+                  return (
+                    <span key={tokIdx} className="font-bold text-rose-500 bg-rose-500/10 px-1 rounded">
+                      {token}
+                    </span>
+                  );
+                }
+                if (token.includes('PASS')) {
+                  return (
+                    <span key={tokIdx} className="font-bold text-emerald-500 bg-emerald-500/10 px-1 rounded">
+                      {token}
+                    </span>
+                  );
+                }
+                return (
+                  <span key={tokIdx} className={isDark ? 'text-emerald-400' : 'text-emerald-700'}>
+                    {token}
+                  </span>
+                );
+              }
+              if (/^(def|if|not|return|for|in|any|else|elif)$/.test(token)) {
+                return (
+                  <span key={tokIdx} className={`font-bold ${isDark ? 'text-purple-400' : 'text-indigo-600'}`}>
+                    {token}
+                  </span>
+                );
+              }
+              if (/^(str|float|list|int|VerificationResult|PDFEvidence|CIN_REGEX)$/.test(token)) {
+                return (
+                  <span key={tokIdx} className={`font-semibold ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>
+                    {token}
+                  </span>
+                );
+              }
+              return <span key={tokIdx} className={isDark ? 'text-slate-200' : 'text-[#2A2826]'}>{token}</span>;
+            })}
+          </span>
+        </div>
+      );
+    });
+  };
 
   // Fetch simulated portal states
   const fetchPortals = async () => {
@@ -503,9 +581,82 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     <span className="font-mono-tech text-[11px]">Rule Engine v1.3</span>
                   </div>
 
-                  <pre className="p-4 rounded-xl bg-[#2A2826] text-[#FEFAF7] text-xs overflow-x-auto leading-relaxed font-mono-tech border border-[#2A2826]">
-                    {activeRule.logic}
-                  </pre>
+                  {/* IDE-Grade Syntax Highlighted Code Viewer Container */}
+                  <div className={`rounded-2xl border transition-colors overflow-hidden shadow-xs ${
+                    codeTheme === 'dark' ? 'bg-[#181824] border-slate-700/80 text-slate-100' : 'bg-[#F8F6F2] border-[#E5DFD9] text-[#2A2826]'
+                  }`}>
+                    {/* Window Title Bar */}
+                    <div className={`flex items-center justify-between px-3.5 py-2.5 border-b text-xs ${
+                      codeTheme === 'dark' ? 'bg-slate-900/60 border-slate-700/80' : 'bg-[#F0ECE6] border-[#E5DFD9]'
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        {/* OS Window Dots */}
+                        <div className="flex items-center gap-1.5 mr-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-rose-400/80" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+                        </div>
+                        <FileCode className="w-3.5 h-3.5 text-[#124E59]" />
+                        <span className="font-mono-tech font-bold text-[11px]">
+                          rules/statutory/{activeRule.code.toLowerCase()}.py
+                        </span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono-tech font-semibold ${
+                          codeTheme === 'dark' ? 'bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white text-[#5F6675] border border-[#E5DFD9]'
+                        }`}>
+                          Python 3.12 (Statutory Rule)
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => setCodeTheme(codeTheme === 'light' ? 'dark' : 'light')}
+                          className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
+                            codeTheme === 'dark'
+                              ? 'bg-slate-800 text-amber-300 hover:bg-slate-700'
+                              : 'bg-white text-[#5F6675] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
+                          }`}
+                          title={`Switch to ${codeTheme === 'light' ? 'Dark IDE' : 'Light Institutional'} Theme`}
+                        >
+                          {codeTheme === 'light' ? (
+                            <>
+                              <Moon className="w-3.5 h-3.5 text-indigo-600" />
+                              <span className="text-[10px] font-mono-tech">Dark IDE</span>
+                            </>
+                          ) : (
+                            <>
+                              <Sun className="w-3.5 h-3.5 text-amber-400" />
+                              <span className="text-[10px] font-mono-tech">Light Paper</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleCopyCode(activeRule.logic)}
+                          className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-mono-tech flex items-center gap-1.5 transition-colors cursor-pointer ${
+                            codeTheme === 'dark'
+                              ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                              : 'bg-white text-[#2A2826] hover:bg-[#E5DFD9] border border-[#E5DFD9]'
+                          }`}
+                        >
+                          {copiedCode ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-500" />
+                              <span className="text-emerald-600 font-bold">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-[#5F6675]" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Syntax Highlighted Code Body */}
+                    <div className="p-4 text-xs overflow-x-auto leading-relaxed font-mono-tech max-h-[360px] overflow-y-auto">
+                      {highlightPythonCode(activeRule.logic, codeTheme === 'dark')}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Live Interactive Rule Simulator */}
@@ -542,14 +693,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     <div
                       className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 animate-fade-in ${
                         testResult.state === 'PASS'
-                          ? 'bg-[#124E59]/10 text-[#124E59] border-[#124E59]/30'
-                          : 'bg-[#2A2826]/10 text-[#2A2826] border-[#2A2826]/30'
+                          ? 'bg-emerald-50/90 text-emerald-900 border-emerald-300 shadow-2xs'
+                          : 'bg-rose-50/90 text-rose-900 border-rose-300 shadow-2xs'
                       }`}
                     >
                       {testResult.state === 'PASS' ? (
-                        <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
                       )}
                       <div>
                         <span className="font-extrabold block">Outcome: {testResult.state}</span>

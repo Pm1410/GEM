@@ -164,20 +164,74 @@ export const DocumentEvidenceViewer: React.FC<DocumentEvidenceViewerProps> = ({
 
             {/* Document Body Text Representation */}
             <div className="space-y-3 text-xs leading-relaxed text-[#413F3D]/90 font-mono-tech">
-              {activePageData ? (
-                activePageData.textSnippet.split('\n').map((line, idx) => (
-                  <p
-                    key={idx}
-                    className={
-                      line.includes('Registration') || line.includes('CERTIFICATE') || line.includes('Number')
-                        ? 'font-bold text-[#413F3D]'
-                        : 'text-[#413F3D]/80'
-                    }
-                  >
-                    {line}
-                  </p>
-                ))
-              ) : (
+              {activePageData ? (() => {
+                const isEvidencePage = selectedEvidence && selectedEvidence.pageNumber === currentPage;
+                const targetValue = isEvidencePage && selectedEvidence.extractedValue ? selectedEvidence.extractedValue.trim() : '';
+                const targetSource = isEvidencePage && selectedEvidence.sourceText ? selectedEvidence.sourceText.trim() : '';
+                let hasInlineMatch = false;
+
+                return activePageData.textSnippet.split('\n').map((line, idx) => {
+                  // 1. Exact match for extracted entity value (e.g. CIN, PAN, GSTIN)
+                  if (targetValue && targetValue.length >= 3 && line.includes(targetValue)) {
+                    hasInlineMatch = true;
+                    const matchIdx = line.indexOf(targetValue);
+                    const before = line.substring(0, matchIdx);
+                    const match = line.substring(matchIdx, matchIdx + targetValue.length);
+                    const after = line.substring(matchIdx + targetValue.length);
+
+                    return (
+                      <p
+                        key={idx}
+                        className="relative py-1 px-2 -mx-2 rounded-md bg-[#154D57]/5 border-l-2 border-[#154D57] font-bold text-[#413F3D] transition-all"
+                      >
+                        <span>{before}</span>
+                        <span className="relative inline-flex items-center mx-1 my-0.5 align-baseline">
+                          {/* Exact OCR Detected Bounding Box */}
+                          <span className="relative z-10 px-2 py-0.5 rounded border-2 border-[#154D57] bg-[#154D57]/20 text-[#154D57] font-extrabold shadow-sm ring-2 ring-[#154D57]/30 animate-pulse">
+                            {/* Floating Tooltip Label anchored directly on detected value */}
+                            <span className="absolute -top-6 left-0 px-2 py-0.5 rounded text-[10px] font-bold font-mono-tech tracking-wide whitespace-nowrap bg-[#154D57] text-[#FEFAF7] shadow-md flex items-center gap-1.5 z-20 pointer-events-auto">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                              <span>{selectedEvidence?.fieldName}: {selectedEvidence?.extractedValue}</span>
+                            </span>
+                            {match}
+                          </span>
+                        </span>
+                        <span>{after}</span>
+                      </p>
+                    );
+                  }
+
+                  // 2. Fallback match for sourceText clause
+                  if (!hasInlineMatch && targetSource && line.includes(targetSource) && line.length > 10) {
+                    hasInlineMatch = true;
+                    return (
+                      <p
+                        key={idx}
+                        className="relative py-1 px-2 -mx-2 rounded-md bg-[#154D57]/10 border-2 border-[#154D57] font-bold text-[#154D57] shadow-xs"
+                      >
+                        <span className="absolute -top-6 left-0 px-2 py-0.5 rounded text-[10px] font-bold font-mono-tech tracking-wide whitespace-nowrap bg-[#154D57] text-[#FEFAF7] shadow-md flex items-center gap-1.5 z-20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                          <span>{selectedEvidence?.fieldName}: {selectedEvidence?.extractedValue}</span>
+                        </span>
+                        {line}
+                      </p>
+                    );
+                  }
+
+                  return (
+                    <p
+                      key={idx}
+                      className={
+                        line.includes('Registration') || line.includes('CERTIFICATE') || line.includes('Number')
+                          ? 'font-bold text-[#413F3D]'
+                          : 'text-[#413F3D]/80'
+                      }
+                    >
+                      {line}
+                    </p>
+                  );
+                });
+              })() : (
                 <div className="text-center py-12 text-[#697184]">
                   <p>Certified Document Page {currentPage}</p>
                   <p className="text-[11px] mt-2">Verification signature & security watermark valid.</p>
@@ -192,10 +246,11 @@ export const DocumentEvidenceViewer: React.FC<DocumentEvidenceViewerProps> = ({
               </div>
             </div>
 
-            {/* HIGHLIGHTED EVIDENCE BOUNDING BOX OVERLAY */}
+            {/* HIGHLIGHTED EVIDENCE BOUNDING BOX OVERLAY (fallback if not matched directly in text snippet) */}
             {selectedEvidence &&
               selectedEvidence.pageNumber === currentPage &&
-              selectedEvidence.boundingBox && (
+              selectedEvidence.boundingBox &&
+              (!activePageData || (!activePageData.textSnippet.includes(selectedEvidence.extractedValue) && !activePageData.textSnippet.includes(selectedEvidence.sourceText))) && (
                 <div
                   className="absolute pointer-events-none border-2 rounded-xs transition-all duration-300 animate-pulse"
                   style={{

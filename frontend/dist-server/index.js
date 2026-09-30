@@ -1588,7 +1588,7 @@ async function initializeBid1Evaluation(forceDefault = false) {
             documentId: docCinABC.id,
             documentName: docCinABC.filename,
             pageNumber: 1,
-            boundingBox: { x: 22, y: 52, width: 56, height: 9 },
+            boundingBox: { x: 8, y: 60, width: 84, height: 7 },
             sourceText: "The Corporate Identity Number of the company is U45201TN2016PTC112345.",
             fieldName: "CIN",
             extractedValue: bid.bidder.cin,
