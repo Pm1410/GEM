@@ -15,6 +15,7 @@ For demo, run both:
 """
 
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -50,6 +51,18 @@ app.include_router(api_router)
 # Mount static assets if directory exists (for standalone deployment)
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.get("/api/health", tags=["Health"])
+@app.get("/health", tags=["Health"])
+def healthcheck():
+    """Healthcheck probe for Docker, Render, and orchestrators."""
+    return {
+        "status": "healthy",
+        "service": "gem-bid-verification-api",
+        "version": "1.0.0",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
 
 
 @app.get("/", include_in_schema=False)

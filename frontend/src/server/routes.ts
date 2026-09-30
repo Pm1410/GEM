@@ -5,6 +5,8 @@ import {
   currentUser,
   allUsers,
   initializeBid1Evaluation,
+  saveStateToDisk,
+  resetStateToDefault,
 } from './dataStore';
 import {
   evaluateRequirement,
@@ -241,6 +243,8 @@ router.post('/bids/:id/verify', async (req: Request, res: Response) => {
     risk: bid.riskLevel,
   });
 
+  saveStateToDisk();
+
   res.json({
     bidId: bid.id,
     complianceScore: bid.complianceScore,
@@ -347,6 +351,8 @@ router.post('/bids/:id/decision', (req: Request, res: Response) => {
     });
   }
 
+  saveStateToDisk();
+
   res.json({
     success: true,
     bid,
@@ -403,6 +409,15 @@ router.post('/audit/tamper', (req: Request, res: Response) => {
 router.post('/audit/reset', (_req: Request, res: Response) => {
   auditService.resetToValidState();
   res.json({ success: true, message: 'Audit chain reset to verified state' });
+});
+
+router.post('/admin/reset-demo', async (_req: Request, res: Response) => {
+  await resetStateToDefault();
+  auditService.resetToValidState();
+  res.json({
+    success: true,
+    message: 'All synthetic bidder datasets, officer decisions, and audit chain reset to initial baseline.',
+  });
 });
 
 // --- SIMULATED EXTERNAL PORTAL CONTROLS ---

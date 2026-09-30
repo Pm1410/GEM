@@ -18,8 +18,12 @@ import {
   queryUdyamPortal,
   queryDebarmentRegistry,
 } from './portalAdapters';
+import fs from 'fs';
+import path from 'path';
 import { generateAdvisory } from './advisoryService';
 import { auditService } from './auditService';
+
+const PERSIST_FILE = path.resolve(process.cwd(), 'persisted_bids_state.json');
 
 export const currentUser: User = {
   id: 'usr-001',
@@ -681,9 +685,20 @@ export const sampleBids: Bid[] = [
  * - Score: 72/100
  * - Risk: HIGH (due to mandatory FAIL on CIN_001 and GST_001)
  */
-export async function initializeBid1Evaluation(): Promise<void> {
+export async function initializeBid1Evaluation(forceDefault: boolean = false): Promise<void> {
   const bid = sampleBids[0];
   const reqs = requirementsTender1;
+  const existingDecisions = new Map<string, any>();
+
+  // Preserve any officer decisions already made unless explicitly forcing default
+  if (!forceDefault && bid.requirementResults) {
+    for (const r of bid.requirementResults) {
+      if (r.officerDecision) {
+        existingDecisions.set(r.requirementId, r.officerDecision);
+      }
+    }
+  }
+
   const results: RequirementResult[] = [];
 
   for (const req of reqs) {
@@ -746,13 +761,17 @@ export async function initializeBid1Evaluation(): Promise<void> {
         generatedAt: new Date().toISOString(),
         isAiEnhanced: adv.isAiEnhanced,
       };
-      // Pre-set existing officer clarification request
-      result.officerDecision = {
-        disposition: 'REQUEST_CLARIFICATION',
-        justification: 'CIN not found in MCA database. Requested bidder to provide incorporation certificate with verified RoC extract.',
-        decidedBy: currentUser.name,
-        decidedAt: '2026-09-28T10:45:00Z',
-      };
+      // Preserve officer decision if already entered by user, otherwise set initial default
+      if (existingDecisions.has(req.id)) {
+        result.officerDecision = existingDecisions.get(req.id);
+      } else {
+        result.officerDecision = {
+          disposition: 'REQUEST_CLARIFICATION',
+          justification: 'CIN not found in MCA database. Requested bidder to provide incorporation certificate with verified RoC extract.',
+          decidedBy: currentUser.name,
+          decidedAt: '2026-09-28T10:45:00Z',
+        };
+      }
     } else if (req.code === 'PAN_001') {
       result = evaluateRequirement({
         requirement: req,
@@ -967,6 +986,10 @@ export async function initializeBid1Evaluation(): Promise<void> {
       };
     }
 
+    if (existingDecisions.has(req.id)) {
+      result.officerDecision = existingDecisions.get(req.id);
+    }
+
     results.push(result);
   }
 
@@ -976,8 +999,8 @@ export async function initializeBid1Evaluation(): Promise<void> {
 }
 
 // Self-initialize all bids on module load
-export async function initializeAllBidsEvaluation(): Promise<void> {
-  await initializeBid1Evaluation();
+export async function initializeAllBidsEvaluation(forceDefault: boolean = false): Promise<void> {
+  await initializeBid1Evaluation(forceDefault);
 
   const reqs = requirementsTender1;
 
@@ -1192,5 +1215,74 @@ export async function initializeAllBidsEvaluation(): Promise<void> {
   }
 }
 
-// Self-initialize on module load
-initializeAllBidsEvaluation().catch((err) => console.error('Error initializing seed evaluation:', err));
+/**
+ * Persist current in-memory bids state to disk so officer changes survive server restarts.
+ */
+export function saveStateToDisk(): void {
+  try {
+    const data = JSON.stringify(sampleBids, null, 2);
+    fs.writeFileSync(PERSIST_FILE, data, 'utf-8');
+  } catch (err) {
+    console.warn('[DataStore] Failed to write state to disk:', err);
+  }
+}
+
+/**
+ * Load persisted bids state from disk if present.
+ */
+export function loadStateFromDisk(): boolean {
+  try {
+    if (fs.existsSync(PERSIST_FILE)) {
+      const raw = fs.readFileSync(PERSIST_FILE, 'utf-8');
+      const loaded: Bid[] = JSON.parse(raw);
+      if (Array.isArray(loaded) && loaded.length > 0) {
+        for (const savedBid of loaded) {
+          const match = sampleBids.find((b) => b.id === savedBid.id);
+          if (match) {
+            if (savedBid.requirementResults) match.requirementResults = savedBid.requirementResults;
+            if (savedBid.complianceScore !== undefined) match.complianceScore = savedBid.complianceScore;
+            if (savedBid.riskLevel) match.riskLevel = savedBid.riskLevel;
+            if (savedBid.status) match.status = savedBid.status;
+            if (savedBid.overallDecision) match.overallDecision = savedBid.overallDecision;
+          }
+        }
+        return true;
+      }
+    }
+  } catch (err) {
+    console.warn('[DataStore] Failed to load state from disk:', err);
+  }
+  return false;
+}
+
+/**
+ * Reset all bids back to initial synthetic state and remove persisted state file.
+ */
+export async function resetStateToDefault(): Promise<void> {
+  try {
+    if (fs.existsSync(PERSIST_FILE)) {
+      fs.unlinkSync(PERSIST_FILE);
+    }
+  } catch (err) {
+    console.warn('[DataStore] Error removing state file:', err);
+  }
+
+  for (const bid of sampleBids) {
+    delete (bid as any).overallDecision;
+    bid.status = bid.id === 'BID-001' ? 'NEEDS_ATTENTION' : 'IN_VERIFICATION';
+    if (bid.requirementResults) {
+      for (const r of bid.requirementResults) {
+        delete r.officerDecision;
+      }
+    }
+  }
+  await initializeAllBidsEvaluation(true);
+}
+
+// Self-initialize on module load: restore persisted state if available, or compute initial seed
+(async () => {
+  const restored = loadStateFromDisk();
+  if (!restored) {
+    await initializeAllBidsEvaluation();
+  }
+})().catch((err) => console.error('Error initializing data store:', err));

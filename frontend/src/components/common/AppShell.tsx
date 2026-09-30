@@ -18,6 +18,7 @@ import {
   Building2,
   Activity,
   ShieldCheck,
+  RotateCcw,
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 
@@ -158,10 +159,22 @@ export const AppShell: React.FC<AppShellProps> = ({
                   </button>
                 ))}
 
-                <div className="border-t border-[#E5DFD9] mt-2 pt-2">
+                <div className="border-t border-[#E5DFD9] mt-2 pt-2 space-y-1">
+                  <button
+                    onClick={async () => {
+                      if (window.confirm('Reset all synthetic bidder datasets, officer decisions, and audit chain to clean baseline?')) {
+                        await fetch('/api/admin/reset-demo', { method: 'POST' });
+                        window.location.reload();
+                      }
+                    }}
+                    className="w-full px-4 py-2 text-left text-amber-700 hover:bg-amber-50 flex items-center gap-2 cursor-pointer font-bold rounded-lg transition-colors"
+                  >
+                    <RotateCcw className="w-4 h-4 text-amber-600" />
+                    <span>Reset Demo Baseline</span>
+                  </button>
                   <button
                     onClick={onLogout}
-                    className="w-full px-4 py-2 text-left text-[#2A2826] hover:bg-[#F4EFEB] flex items-center gap-2 cursor-pointer font-bold"
+                    className="w-full px-4 py-2 text-left text-[#2A2826] hover:bg-[#F4EFEB] flex items-center gap-2 cursor-pointer font-bold rounded-lg transition-colors"
                   >
                     <LogOut className="w-4 h-4 text-[#5F6675]" />
                     <span>Sign Out</span>

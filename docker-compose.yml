@@ -43,6 +43,22 @@ services:
       timeout: 5s
       retries: 3
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gem-frontend
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - FASTAPI_URL=http://api:8000
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-MY_GEMINI_API_KEY}
+
 volumes:
   pgdata:
     driver: local

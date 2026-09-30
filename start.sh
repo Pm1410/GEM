@@ -12,8 +12,19 @@ echo "  Frontend (React/Vite):  http://localhost:3000"
 echo "  Backend (FastAPI):       http://localhost:8000"
 echo "  API Docs:                http://localhost:8000/docs"
 echo ""
+
+# Kill any existing processes on our ports to prevent EADDRINUSE
+echo "Cleaning up any existing processes on ports 3000 and 8000..."
+pkill -f "uvicorn gem_api" 2>/dev/null || true
+pkill -f "tsx server" 2>/dev/null || true
+pkill -f "vite" 2>/dev/null || true
+fuser -k 3000/tcp 2>/dev/null || true
+fuser -k 8000/tcp 2>/dev/null || true
+sleep 1
+echo ""
 echo "Starting services..."
 echo ""
+
 
 # Check if Python virtualenv exists
 if [ ! -d ".venv" ]; then

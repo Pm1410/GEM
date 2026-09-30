@@ -21,6 +21,25 @@ services:
           property: connectionString
     healthCheckPath: /api/health
 
+  - type: web
+    name: gem-bid-verification-frontend
+    runtime: node
+    rootDir: frontend
+    plan: standard
+    region: singapore
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npm run dev
+    envVars:
+      - key: FASTAPI_URL
+        fromService:
+          type: web
+          name: gem-bid-verification-api
+          property: host
+      - key: PORT
+        value: 3000
+      - key: GEMINI_API_KEY
+        sync: false
+
 databases:
   - name: gem-bid-verification-db
     databaseName: gem_verification
