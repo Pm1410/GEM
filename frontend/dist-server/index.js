@@ -2331,7 +2331,8 @@ var AuditService = class {
 var auditService = new AuditService();
 
 // src/server/routes.ts
-var FASTAPI_URL = process.env.FASTAPI_URL || "http://localhost:8000";
+var rawFastApiUrl = process.env.FASTAPI_URL || "http://localhost:8000";
+var FASTAPI_URL = rawFastApiUrl.startsWith("http://") || rawFastApiUrl.startsWith("https://") ? rawFastApiUrl : `http://${rawFastApiUrl}`;
 async function tryFastApiEvaluation(bidId) {
   try {
     const res = await fetch(`${FASTAPI_URL}/api/bidders/${bidId}/evaluation`, {

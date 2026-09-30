@@ -36,5 +36,6 @@ EXPOSE 8000
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/api/health || exit 1
 
-# Default ASGI server execution
-CMD ["uvicorn", "gem_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Default ASGI server execution (supports dynamic cloud PORT with 8000 fallback)
+CMD ["sh", "-c", "uvicorn gem_api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+

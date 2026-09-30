@@ -25,7 +25,11 @@ import { generateAdvisory } from './advisoryService';
 import { OfficerDisposition, UserRole } from './domain';
 
 // FastAPI backend URL for Python rule engine bridge
-const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000';
+const rawFastApiUrl = process.env.FASTAPI_URL || 'http://localhost:8000';
+const FASTAPI_URL = rawFastApiUrl.startsWith('http://') || rawFastApiUrl.startsWith('https://')
+  ? rawFastApiUrl
+  : `http://${rawFastApiUrl}`;
+
 
 /**
  * Attempt to call FastAPI backend for evaluation.

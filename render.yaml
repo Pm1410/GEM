@@ -28,21 +28,21 @@ services:
     plan: free
     region: singapore
     buildCommand: npm install --legacy-peer-deps && npm run build
-    startCommand: npm run dev
+    startCommand: node dist-server/index.js
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: FASTAPI_URL
         fromService:
           type: web
           name: gem-bid-verification-api
           property: host
-      - key: PORT
-        value: 3000
       - key: GEMINI_API_KEY
         sync: false
 
 databases:
   - name: gem-bid-verification-db
     databaseName: gem_verification
-    user: postgres
     plan: free
     region: singapore
+
