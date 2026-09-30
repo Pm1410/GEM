@@ -189,10 +189,10 @@ export const TenderOverviewView: React.FC<TenderOverviewViewProps> = ({
             TOTAL SUBMITTED BIDS
           </span>
           <span className="text-3xl sm:text-4xl font-black text-[#2A2826] font-mono-tech block mt-1">
-            45
+            {tender.totalBidders || 12}
           </span>
           <span className="text-xs text-[#2A2826] block pt-1 font-bold font-mono-tech">
-            6 Flagged Critical Attention
+            Active Scrutiny & Verification
           </span>
         </div>
 
@@ -255,7 +255,7 @@ export const TenderOverviewView: React.FC<TenderOverviewViewProps> = ({
                 onClick={() => onNavigateBidders(tender.id)}
                 className="text-xs font-bold font-mono-tech text-[#124E59] hover:underline flex items-center gap-1 cursor-pointer"
               >
-                <span>View All 45</span>
+                <span>View All Bidders</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

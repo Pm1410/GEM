@@ -186,7 +186,7 @@ export const BiddersView: React.FC<BiddersViewProps> = ({
             TOTAL SUBMISSIONS
           </span>
           <span className="text-3xl sm:text-4xl font-black text-[#2A2826] font-mono-tech block mt-1">
-            {bids.length || 45}
+            {bids.length}
           </span>
           <span className="text-xs text-[#5F6675] block pt-1 font-medium">
             Active under technical scrutiny
@@ -199,7 +199,7 @@ export const BiddersView: React.FC<BiddersViewProps> = ({
             FULLY COMPLIANT PASS
           </span>
           <span className="text-3xl sm:text-4xl font-black text-[#124E59] font-mono-tech block mt-1">
-            {verifiedCount || 31}
+            {verifiedCount}
           </span>
           <span className="text-xs text-[#124E59] block pt-1 font-bold">
             All statutory criteria satisfied
@@ -212,7 +212,7 @@ export const BiddersView: React.FC<BiddersViewProps> = ({
             CRITICAL ATTENTION
           </span>
           <span className="text-3xl sm:text-4xl font-black text-[#2A2826] font-mono-tech block mt-1">
-            {needsAttentionCount || 6}
+            {needsAttentionCount}
           </span>
           <span className="text-xs text-[#2A2826] block pt-1 font-bold">
             MCA & Tax breaches detected
@@ -225,7 +225,7 @@ export const BiddersView: React.FC<BiddersViewProps> = ({
             UNDER ACTIVE REVIEW
           </span>
           <span className="text-3xl sm:text-4xl font-black text-[#2A2826] font-mono-tech block mt-1">
-            {inReviewCount || 8}
+            {inReviewCount}
           </span>
           <span className="text-xs text-[#5F6675] block pt-1 font-medium">
             Awaiting committee disposition
@@ -238,10 +238,10 @@ export const BiddersView: React.FC<BiddersViewProps> = ({
         {/* Status Filter Tabs */}
         <div className="flex items-center gap-1.5 font-mono-tech text-xs overflow-x-auto pb-1 sm:pb-0">
           {[
-            { id: 'ALL', label: 'All Bids', count: bids.length || 45 },
-            { id: 'NEEDS_ATTENTION', label: 'Needs Attention', count: needsAttentionCount || 6 },
-            { id: 'IN_REVIEW', label: 'In Review', count: inReviewCount || 8 },
-            { id: 'VERIFIED', label: 'Verified', count: verifiedCount || 31 },
+            { id: 'ALL', label: 'All Bids', count: bids.length },
+            { id: 'NEEDS_ATTENTION', label: 'Needs Attention', count: needsAttentionCount },
+            { id: 'IN_REVIEW', label: 'In Review', count: inReviewCount },
+            { id: 'VERIFIED', label: 'Verified', count: verifiedCount },
           ].map((tab) => (
             <button
               key={tab.id}

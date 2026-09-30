@@ -103,7 +103,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, onNavigate }
             onClick={() => onNavigate('bidders')}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#E5DFD9] hover:bg-[#F4EFEB] text-xs font-bold font-mono-tech text-[#2A2826] transition-colors cursor-pointer shadow-2xs"
           >
-            <span>All Bidders Queue (45)</span>
+            <span>All Bidders Queue</span>
           </button>
           <button
             onClick={() => onNavigate('audit')}

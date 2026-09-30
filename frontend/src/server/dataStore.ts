@@ -389,6 +389,74 @@ export const tenders: Tender[] = [
     progressPercent: 0,
     requirements: requirementsTender1.slice(0, 16),
   },
+  {
+    id: 'TND-IOCL-2026-0112',
+    tenderNumber: 'IOCL/ENG/2026/112',
+    title: 'Pipeline Cathodic Protection & Corrosion Monitoring System',
+    department: 'IOCL (Indian Oil Corporation Limited)',
+    organisation: 'Ministry of Petroleum & Natural Gas',
+    description: 'Impressed current cathodic protection (ICCP) systems with remote transformer rectifier units along Paradip-Hyderabad pipeline section.',
+    openingDate: '24 Sep 2026',
+    closingDate: '25 Oct 2026',
+    status: 'VERIFICATION',
+    currentVersion: 1,
+    ruleSetVersion: '1.2',
+    requirementsCount: 14,
+    totalBidders: 18,
+    progressPercent: 55,
+    requirements: requirementsTender1.slice(0, 14),
+  },
+  {
+    id: 'TND-ONGC-2026-0304',
+    tenderNumber: 'ONGC/OFF/2026/304',
+    title: 'Offshore Supply Vessel Logistics & Crew Transport Services',
+    department: 'ONGC (Oil and Natural Gas Corporation)',
+    organisation: 'Ministry of Petroleum & Natural Gas',
+    description: 'Charter hire of 2 DP-2 dynamic positioning platform supply vessels for Mumbai High offshore asset field operations.',
+    openingDate: '30 Sep 2026',
+    closingDate: '10 Nov 2026',
+    status: 'DRAFT',
+    currentVersion: 1,
+    ruleSetVersion: '1.0',
+    requirementsCount: 15,
+    totalBidders: 9,
+    progressPercent: 0,
+    requirements: requirementsTender1.slice(0, 15),
+  },
+  {
+    id: 'TND-GAIL-2025-0890',
+    tenderNumber: 'GAIL/VAL/2025/890',
+    title: 'Natural Gas Compressor Station Ball Valves & Actuators',
+    department: 'GAIL (India) Limited',
+    organisation: 'Ministry of Petroleum & Natural Gas',
+    description: 'Supply of API 6D trunnion-mounted pipeline ball valves for Jagdishpur-Haldia-Bokaro-Dhamra natural gas pipeline (JHBDPL).',
+    openingDate: '10 Aug 2025',
+    closingDate: '15 Sep 2025',
+    status: 'CLOSED',
+    currentVersion: 3,
+    ruleSetVersion: '1.4',
+    requirementsCount: 18,
+    totalBidders: 32,
+    progressPercent: 100,
+    requirements: requirementsTender1,
+  },
+  {
+    id: 'TND-BHEL-2025-0551',
+    tenderNumber: 'BHEL/TRN/2025/551',
+    title: '765kV Ultra-High Voltage Generator Transformer Overhaul',
+    department: 'BHEL (Bharat Heavy Electricals Limited)',
+    organisation: 'Ministry of Heavy Industries',
+    description: 'Specialized maintenance, vacuum dry-out, and diagnostic bushing testing of 765kV 500MVA generator step-up transformers.',
+    openingDate: '01 Jul 2025',
+    closingDate: '05 Aug 2025',
+    status: 'CLOSED',
+    currentVersion: 2,
+    ruleSetVersion: '1.2',
+    requirementsCount: 16,
+    totalBidders: 27,
+    progressPercent: 100,
+    requirements: requirementsTender1.slice(0, 16),
+  },
 ];
 
 // Seed Documents for Bidder 1: ABC Infra Solutions
@@ -572,9 +640,9 @@ export const sampleBids: Bid[] = [
       state: 'Maharashtra',
     },
     submittedAt: '2026-09-28T10:10:00Z',
-    status: 'IN_VERIFICATION',
-    complianceScore: 68,
-    riskLevel: 'MEDIUM',
+    status: 'VERIFIED',
+    complianceScore: 98,
+    riskLevel: 'LOW',
     documents: [docGstABC],
     requirementResults: [],
   },
@@ -668,6 +736,150 @@ export const sampleBids: Bid[] = [
     submittedAt: '2026-09-28T15:30:00Z',
     status: 'NEEDS_ATTENTION',
     complianceScore: 64,
+    riskLevel: 'HIGH',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-007',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-007',
+    bidder: {
+      id: 'BDR-007',
+      legalName: 'Larsen & Toubro Heavy Infrastructure',
+      gstin: '27AAACL0123L1ZM',
+      pan: 'AAACL0123L',
+      cin: 'L99999MH1946PLC004768',
+      udyam: 'UDYAM-MH-19-0023451',
+      epfoCode: 'MHBOM0045678000',
+      email: 'tenders@larsentoubro.com',
+      phone: '+91 22 6752 5656',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+    },
+    submittedAt: '2026-09-28T16:15:00Z',
+    status: 'VERIFIED',
+    complianceScore: 99,
+    riskLevel: 'LOW',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-008',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-008',
+    bidder: {
+      id: 'BDR-008',
+      legalName: 'Tata Projects Limited',
+      gstin: '36AAACT1987Q1Z5',
+      pan: 'AAACT1987Q',
+      cin: 'U45200TG1979PLC002450',
+      udyam: 'UDYAM-TS-09-0098765',
+      epfoCode: 'TSHYD0022334000',
+      email: 'procurement@tataprojects.com',
+      phone: '+91 40 6623 8800',
+      city: 'Hyderabad',
+      state: 'Telangana',
+    },
+    submittedAt: '2026-09-28T16:45:00Z',
+    status: 'VERIFIED',
+    complianceScore: 96,
+    riskLevel: 'LOW',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-009',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-009',
+    bidder: {
+      id: 'BDR-009',
+      legalName: 'Afcons Infrastructure Limited',
+      gstin: '27AAACA1234A1Z9',
+      pan: 'AAACA1234A',
+      cin: 'U45200MH1976PLC019335',
+      udyam: 'UDYAM-MH-19-0011223',
+      epfoCode: 'MHBOM0098761000',
+      email: 'bids@afcons.com',
+      phone: '+91 22 6719 1000',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+    },
+    submittedAt: '2026-09-28T17:10:00Z',
+    status: 'VERIFIED',
+    complianceScore: 94,
+    riskLevel: 'LOW',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-010',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-010',
+    bidder: {
+      id: 'BDR-010',
+      legalName: 'Godrej Construction Division',
+      gstin: '27AAACG0001G1Z3',
+      pan: 'AAACG0001G',
+      cin: 'L28931MH1932PLC001828',
+      udyam: 'UDYAM-MH-19-0044332',
+      epfoCode: 'MHBOM0077665000',
+      email: 'construction@godrej.com',
+      phone: '+91 22 6796 5656',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+    },
+    submittedAt: '2026-09-28T17:35:00Z',
+    status: 'VERIFIED',
+    complianceScore: 91,
+    riskLevel: 'LOW',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-011',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-011',
+    bidder: {
+      id: 'BDR-011',
+      legalName: 'KEC International Limited',
+      gstin: '27AAACK1122K1Z8',
+      pan: 'AAACK1122K',
+      cin: 'L45200MH2005PLC152061',
+      udyam: 'UDYAM-MH-19-0077889',
+      epfoCode: 'MHBOM0033221000',
+      email: 'tenders@kecrpg.com',
+      phone: '+91 22 6667 0200',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+    },
+    submittedAt: '2026-09-28T18:00:00Z',
+    status: 'IN_VERIFICATION',
+    complianceScore: 78,
+    riskLevel: 'MEDIUM',
+    documents: [docGstABC],
+    requirementResults: [],
+  },
+  {
+    id: 'BID-012',
+    tenderId: 'TND-GEM-2025-0012',
+    bidderId: 'BDR-012',
+    bidder: {
+      id: 'BDR-012',
+      legalName: 'JMC Projects (India) Limited',
+      gstin: '24AAACJ5566J1Z1',
+      pan: 'AAACJ5566J',
+      cin: 'L45200GJ1986PLC008717',
+      udyam: 'UDYAM-GJ-01-0088991',
+      epfoCode: 'GJAHD0055443000',
+      email: 'contracts@jmcprojects.com',
+      phone: '+91 79 3001 1500',
+      city: 'Ahmedabad',
+      state: 'Gujarat',
+    },
+    submittedAt: '2026-09-28T18:25:00Z',
+    status: 'NEEDS_ATTENTION',
+    complianceScore: 52,
     riskLevel: 'HIGH',
     documents: [docGstABC],
     requirementResults: [],
@@ -1213,6 +1425,57 @@ export async function initializeAllBidsEvaluation(forceDefault: boolean = false)
     bid6.complianceScore = 64;
     bid6.riskLevel = 'HIGH';
   }
+
+  // Initialize remaining expanded bidders (BID-007 to BID-012)
+  for (let i = 6; i < sampleBids.length; i++) {
+    const b = sampleBids[i];
+    if (b && (!b.requirementResults || b.requirementResults.length === 0)) {
+      b.requirementResults = reqs.map((req, idx) => {
+        const isFail = b.status === 'NEEDS_ATTENTION' && (idx === 0 || idx === 2);
+        const isReview = b.status === 'IN_VERIFICATION' && idx === 10;
+        const state = isFail ? 'FAIL' : isReview ? 'REVIEW' : 'PASS';
+        return {
+          requirementId: req.id,
+          state,
+          scoreValue: state === 'PASS' ? 1.0 : state === 'REVIEW' ? 0.5 : 0.0,
+          weight: req.mandatory ? 3 : 1,
+          reason: state === 'PASS'
+            ? 'Full statutory compliance verified against portal registers and certified certificates.'
+            : state === 'FAIL'
+            ? 'Statutory non-compliance detected.'
+            : 'Flagged for officer verification.',
+          evidence: [
+            {
+              id: `ev-${b.id.toLowerCase()}-${req.code.toLowerCase()}`,
+              documentId: `doc-${b.id.toLowerCase()}-cert`,
+              documentName: `${b.bidder.legalName.replace(/\s+/g, '_')}_BidPack.pdf`,
+              pageNumber: 1,
+              boundingBox: { x: 20, y: 35, width: 55, height: 10 },
+              sourceText: `Statutory verification for ${req.title}`,
+              fieldName: req.checksRequired[0] || 'COMPLIANCE',
+              extractedValue: 'VERIFIED_COMPLIANT',
+              extractionMethod: 'REGEX',
+              confidence: 0.98,
+              sha256: '7c9812df0821',
+              grounded: true,
+            },
+          ],
+          validationChecks: [
+            {
+              id: `chk-${b.id.toLowerCase()}-${req.code}`,
+              checkCode: req.checksRequired[0] || 'CHECK',
+              description: `Verification for ${req.title}`,
+              inputValue: state === 'PASS' ? 'Valid and current' : state === 'FAIL' ? 'Non-compliant' : 'Manual inspection required',
+              expectedValue: 'Compliant record',
+              result: state,
+              reason: state === 'PASS' ? 'Criteria satisfied' : state === 'FAIL' ? 'Breach identified' : 'Awaiting review',
+              source: `${b.bidder.legalName}_BidPack.pdf`,
+            },
+          ],
+        };
+      });
+    }
+  }
 }
 
 /**
@@ -1267,9 +1530,24 @@ export async function resetStateToDefault(): Promise<void> {
     console.warn('[DataStore] Error removing state file:', err);
   }
 
+  const defaultStatusMap: Record<string, 'VERIFIED' | 'NEEDS_ATTENTION' | 'IN_VERIFICATION'> = {
+    'BID-001': 'NEEDS_ATTENTION',
+    'BID-002': 'VERIFIED',
+    'BID-003': 'VERIFIED',
+    'BID-004': 'IN_VERIFICATION',
+    'BID-005': 'NEEDS_ATTENTION',
+    'BID-006': 'NEEDS_ATTENTION',
+    'BID-007': 'VERIFIED',
+    'BID-008': 'VERIFIED',
+    'BID-009': 'VERIFIED',
+    'BID-010': 'VERIFIED',
+    'BID-011': 'IN_VERIFICATION',
+    'BID-012': 'NEEDS_ATTENTION',
+  };
+
   for (const bid of sampleBids) {
     delete (bid as any).overallDecision;
-    bid.status = bid.id === 'BID-001' ? 'NEEDS_ATTENTION' : 'IN_VERIFICATION';
+    bid.status = defaultStatusMap[bid.id] || 'IN_VERIFICATION';
     if (bid.requirementResults) {
       for (const r of bid.requirementResults) {
         delete r.officerDecision;

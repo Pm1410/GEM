@@ -170,16 +170,54 @@ router.get('/tenders/:id/bidders', (req: Request, res: Response) => {
     return;
   }
   const bids = sampleBids.filter((b) => b.tenderId === tender.id);
+  const needsAttention = bids.filter((b) => b.status === 'NEEDS_ATTENTION').length;
+  const inReview = bids.filter((b) => b.status === 'IN_VERIFICATION').length;
+  const verified = bids.filter((b) => b.status === 'VERIFIED' || b.status === 'REVIEWED').length;
+
   res.json({
     tender,
     bids,
     counts: {
-      all: 45,
-      needsAttention: 6,
-      inReview: 12,
-      verified: 31,
+      all: bids.length,
+      needsAttention,
+      inReview,
+      verified,
     },
   });
+});
+
+router.post('/tenders', (req: Request, res: Response) => {
+  const { title, tenderNumber, department, organisation, description, category, openingDate, closingDate, ruleSetVersion } = req.body;
+  if (!title || !tenderNumber) {
+    res.status(400).json({ error: 'Title and Tender Reference Number are mandatory.' });
+    return;
+  }
+  const cleanNumber = tenderNumber.trim().toUpperCase();
+  const existing = tenders.find((t) => t.tenderNumber === cleanNumber);
+  if (existing) {
+    res.status(400).json({ error: `Tender ${cleanNumber} already exists in registry.` });
+    return;
+  }
+  const newTender: any = {
+    id: `TND-${Date.now()}`,
+    tenderNumber: cleanNumber,
+    title: title.trim(),
+    department: department?.trim() || 'Procurement Directorate',
+    organisation: organisation?.trim() || 'Government e-Marketplace',
+    description: description?.trim() || `Tender for ${title}. Configured for deterministic statutory verification under GFR 2017.`,
+    openingDate: openingDate || new Date().toISOString().slice(0, 10),
+    closingDate: closingDate || '2026-12-31',
+    status: 'VERIFICATION',
+    currentVersion: 1,
+    ruleSetVersion: ruleSetVersion || '1.3',
+    requirementsCount: 18,
+    totalBidders: 0,
+    progressPercent: 0,
+    requirements: tenders[0]?.requirements || [],
+  };
+  tenders.unshift(newTender);
+  saveStateToDisk();
+  res.status(201).json({ success: true, tender: newTender });
 });
 
 // --- BIDS & VERIFICATION ---
