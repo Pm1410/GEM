@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install Python package dependencies
 COPY pyproject.toml /app/
 RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir uvicorn && \
     pip install --no-cache-dir .
 
 # Copy project configuration, source code, and migration definitions
@@ -37,5 +38,6 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/api/health || exit 1
 
 # Default ASGI server execution (supports dynamic cloud PORT with 8000 fallback)
-CMD ["sh", "-c", "uvicorn gem_api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "python -m uvicorn gem_api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+
 
