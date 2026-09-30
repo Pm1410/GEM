@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --tg-bg-base: #FBF9F6;
+    --tg-bg-warm: #F4EFEB;
+    --tg-white: #FFFFFF;
+    --tg-brand-teal: #124E59;
+    --tg-brand-teal-dark: #0A323A;
+    --tg-brand-teal-light: #E8F2F4;
+    --tg-accent-taupe: #B7A08B;
+    --tg-border: #E5DFD9;
+    --tg-charcoal: #2A2826;
+    --tg-slate: #5F6675;
+  }
+
+  body {
+    background-color: #FBF9F6;
+    color: #2A2826;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  .font-mono-tech {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-feature-settings: "zero" 1;
+  }
+}
+
+/* Radiant Ambient Environment (Soft Ivory, Silk Paper, Luminous Glow) */
+.bg-ambient-grain {
+  background-color: #FBF9F6;
+  background-image: 
+    radial-gradient(circle at 12% 15%, rgba(21, 77, 87, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 88% 12%, rgba(183, 160, 139, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 60%),
+    radial-gradient(circle at 80% 85%, rgba(18, 78, 89, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 20% 85%, rgba(183, 160, 139, 0.12) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Crisp Modern Card & Window Elevation */
+.glass-window {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 223, 217, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(42, 40, 38, 0.04), 0 2px 6px -1px rgba(42, 40, 38, 0.02);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E5DFD9;
+}
+
+.glass-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E2DC;
+  box-shadow: 0 1px 3px rgba(42, 40, 38, 0.04);
+}
+
+.glass-modal {
+  background: #FFFFFF;
+  border: 1px solid #D6CEC5;
+  box-shadow: 0 24px 48px -12px rgba(42, 40, 38, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(244, 239, 235, 0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D6CEC5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B7A08B;
+}

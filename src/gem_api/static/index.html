@@ -5,16 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Automated bid-eligibility verification platform for Government e-Marketplace (GeM) procurement. Cross-verifies bidder documents against statutory portals and tender rules with explainable audit trails.">
   <title>GeM Bid Eligibility Verification Platform — Procurement Officer Dashboard</title>
+  
+  <!-- Elevated Institutional Typography: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <!-- Executive Navigation Bar -->
+  <!-- Government of India Top Identity Header -->
+  <div class="gov-top-bar">
+    <div class="gov-top-stripe"></div>
+    <div class="gov-top-content">
+      <div class="emblem-group">
+        <svg class="emblem-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+        </svg>
+        <span>भारत सरकार</span> · <span>Government of India</span> · <span>Ministry of Commerce and Industry</span>
+      </div>
+      <div class="portal-badge">
+        <span class="live-dot"></span>
+        <span>SIH PS SIH26100 · GeM v1.0.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar (Official GeM Portal) -->
   <header class="navbar">
     <div class="brand-section">
-      <div class="brand-logo">GeM</div>
+      <div class="brand-emblem-badge">GeM</div>
       <div class="brand-text">
         <h1>Government e-Marketplace <span class="simulated-pill" id="sim-indicator">SIMULATED PORTALS</span></h1>
-        <p>Bid Verification & Eligibility Platform — SIH PS SIH26100</p>
+        <p>Statutory Bid Eligibility Verification & Decision-Support System</p>
       </div>
     </div>
 
@@ -37,45 +60,84 @@
         </select>
       </div>
 
-      <button class="btn-action" id="btn-open-limitations" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.4); padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer;">System Limitations</button>
-      <button class="btn-action" id="btn-start-demo" style="background: linear-gradient(135deg, #2563EB, #1D4ED8); color: white; border: none; padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">▶ 3-Min Hackathon Demo</button>
+      <button class="btn-nav-outline" id="btn-open-limitations">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        System Disclosures
+      </button>
+      <button class="btn-nav-primary" id="btn-start-demo">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        3-Min Hackathon Demo
+      </button>
     </div>
   </header>
 
   <!-- Main Container -->
   <main class="container">
-    <!-- Metrics Grid -->
+    <!-- Executive KPI Metrics Grid (Clean Minimalist Monochromatic Cards) -->
     <section class="metrics-grid" id="metrics-section">
       <div class="metric-card">
-        <span class="metric-label">Total Bidders</span>
+        <div class="metric-card-header">
+          <span class="metric-label">Total Bidders</span>
+          <div class="metric-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+        </div>
         <span class="metric-value" id="metric-total-bidders">0</span>
-        <span class="metric-sub">Submitted proposals</span>
+        <span class="metric-sub">Submitted technical proposals</span>
       </div>
+
       <div class="metric-card">
-        <span class="metric-label">Compliant Coverage</span>
-        <span class="metric-value" id="metric-compliant-count" style="color: var(--state-pass)">0</span>
-        <span class="metric-sub">Evaluated as PASS</span>
+        <div class="metric-card-header">
+          <span class="metric-label">Compliant Coverage</span>
+          <div class="metric-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+        <span class="metric-value" id="metric-compliant-count">0</span>
+        <span class="metric-sub">Evaluated as statutory PASS</span>
       </div>
+
       <div class="metric-card">
-        <span class="metric-label">Avg Compliance Score</span>
-        <span class="metric-value" id="metric-avg-score" style="color: #38BDF8">0.0%</span>
-        <span class="metric-sub">Verifiable coverage</span>
+        <div class="metric-card-header">
+          <span class="metric-label">Avg Compliance Score</span>
+          <div class="metric-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          </div>
+        </div>
+        <span class="metric-value" id="metric-avg-score">0.0%</span>
+        <span class="metric-sub">Verifiable criteria coverage</span>
       </div>
+
       <div class="metric-card">
-        <span class="metric-label">Critical / High Risk</span>
-        <span class="metric-value" id="metric-critical-risk" style="color: var(--state-fail)">0</span>
-        <span class="metric-sub">Requires officer scrutiny</span>
+        <div class="metric-card-header">
+          <span class="metric-label">Critical / High Risk</span>
+          <div class="metric-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+        </div>
+        <span class="metric-value" id="metric-critical-risk">0</span>
+        <span class="metric-sub">Requires procurement officer scrutiny</span>
       </div>
     </section>
 
-    <!-- Content Grid: Bidders Table & Detail Inspector -->
+    <!-- Content Grid: Bidders Table & Detail Dossier Inspector -->
     <section class="content-grid">
       <!-- Left Column: Bidder Table -->
       <div class="panel-card" id="bidders-panel">
         <div class="panel-header">
-          <h2 class="panel-title">Tender Bidder Packets</h2>
+          <h2 class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Tender Bidder Packets
+          </h2>
           <span class="badge badge-unverifiable" id="bidders-count-badge">Loading...</span>
         </div>
+
+        <div class="table-filter-bar">
+          <div class="search-input-box">
+            <input type="text" id="bidder-search-input" class="search-input" placeholder="Filter bidder entity, GSTIN, or ID...">
+          </div>
+        </div>
+
         <div class="table-responsive">
           <table class="data-table" id="bidders-table">
             <thead>
@@ -94,7 +156,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Detail Inspector & Workflow -->
+      <!-- Right Column: Detail Dossier Inspector & Workflow -->
       <div class="panel-card" id="detail-panel">
         <div class="panel-header">
           <h2 class="panel-title" id="selected-bidder-title">Bidder Eligibility Dossier</h2>
@@ -103,10 +165,22 @@
 
         <!-- Inspector Tabs -->
         <div class="tabs-header">
-          <button class="tab-btn active" id="tab-checklist-btn" data-tab="checklist">Evaluation Matrix</button>
-          <button class="tab-btn" id="tab-evidence-btn" data-tab="evidence">Evidence & Grounding</button>
-          <button class="tab-btn" id="tab-advisory-btn" data-tab="advisory">Advisory & Decision</button>
-          <button class="tab-btn" id="tab-audit-btn" data-tab="audit">Audit Hash Chain</button>
+          <button class="tab-btn active" id="tab-checklist-btn" data-tab="checklist">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Evaluation Matrix
+          </button>
+          <button class="tab-btn" id="tab-evidence-btn" data-tab="evidence">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="11" cy="14" r="2"/></svg>
+            Evidence & Grounding
+          </button>
+          <button class="tab-btn" id="tab-advisory-btn" data-tab="advisory">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Advisory & Decision
+          </button>
+          <button class="tab-btn" id="tab-audit-btn" data-tab="audit">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Audit Hash Chain
+          </button>
         </div>
 
         <!-- Tab 1: Checklist & Requirements Matrix -->
@@ -122,7 +196,7 @@
                 </tr>
               </thead>
               <tbody id="requirements-table-body">
-                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Select a bidder from the list to view compliance breakdown.</td></tr>
+                <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Select a bidder from the list to view compliance breakdown.</td></tr>
               </tbody>
             </table>
           </div>
@@ -130,9 +204,9 @@
 
         <!-- Tab 2: Evidence Viewer & Grounding Highlight -->
         <div class="tab-content" id="tab-evidence">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.85rem; font-weight: 600;" id="evidence-filename">Submitted Document</span>
-            <span class="badge badge-pass" id="evidence-grounded-status">VERBATIM GROUNDED</span>
+          <div class="evidence-header-bar">
+            <span class="evidence-filename-label" id="evidence-filename">Submitted Document</span>
+            <span class="badge badge-pass" id="evidence-grounded-status">VERBATIM GROUNDED 100%</span>
           </div>
           <div class="evidence-viewer-box" id="evidence-viewer">
             <div id="evidence-text">Select a bidder to inspect extracted evidence and verbatim text highlights.</div>
@@ -145,13 +219,13 @@
             <div class="advisory-disclaimer" id="advisory-disclaimer">
               ADVISORY: FOR PROCURING OFFICER EVALUATION ONLY — NOT AN AUTOMATED DISQUALIFICATION.
             </div>
-            <div id="advisory-content" style="font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap;">
+            <div id="advisory-content" style="font-size: 0.81rem; line-height: 1.6; white-space: pre-wrap; color: var(--text-secondary);">
               Select a bidder to generate deterministic procurement advisory.
             </div>
           </div>
 
           <div class="action-box" id="officer-action-section">
-            <div style="font-weight: 700; font-size: 0.9rem;">Officer Evaluation & Formal Determination</div>
+            <div class="action-header-title">Officer Statutory Determination (GFR 2017 Section 8)</div>
             <div class="action-buttons">
               <button class="btn-action btn-approve" id="action-approve" data-action="APPROVE">Approve Bid</button>
               <button class="btn-action btn-reject" id="action-reject" data-action="REJECT">Reject Bid</button>
@@ -165,29 +239,25 @@
               ></textarea>
               <div class="char-counter" id="char-counter">0 / 10 characters minimum</div>
             </div>
-            <button class="btn-action btn-approve" id="action-submit" disabled>Record Determination to Audit Trail</button>
+            <button class="btn-submit-action" id="action-submit" disabled>Record Determination to Audit Trail</button>
             <div id="action-feedback" style="font-size: 0.8rem; display: none;"></div>
           </div>
         </div>
 
         <!-- Tab 4: Audit Chain Inspector -->
         <div class="tab-content" id="tab-audit">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.85rem; font-weight: 600;">Cryptographic Audit Trail (SHA-256)</span>
+          <div class="audit-controls-bar">
+            <span style="font-size: 0.84rem; font-weight: 700; color: var(--slate-900);">Cryptographic Audit Trail (SHA-256)</span>
             <div style="display: flex; gap: 0.5rem;">
-              <button class="btn-action" id="audit-verify-btn" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; border-color: rgba(56, 189, 248, 0.4); flex: none; padding: 0.4rem 0.8rem;">
-                Verify Chain Integrity
-              </button>
-              <button class="btn-action" id="audit-tamper-btn" style="background: rgba(239, 68, 68, 0.2); color: #EF4444; border-color: rgba(239, 68, 68, 0.4); flex: none; padding: 0.4rem 0.8rem;">
-                Simulate Tamper
-              </button>
+              <button class="btn-audit-verify" id="audit-verify-btn">Verify Chain Integrity</button>
+              <button class="btn-audit-tamper" id="audit-tamper-btn">Simulate Tamper</button>
             </div>
           </div>
           <div id="audit-status-badge" class="badge badge-pass" style="align-self: flex-start; display: none;">
             Chain Verified: 0 Records Intact
           </div>
           <div class="audit-blocks-container" id="audit-blocks">
-            <div style="color: var(--text-muted); font-size: 0.85rem;">No decisions recorded yet. Decisions made by officers will form a tamper-evident hash chain here.</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;">No decisions recorded yet. Decisions made by officers will form a tamper-evident hash chain here.</div>
           </div>
         </div>
       </div>
@@ -195,31 +265,31 @@
   </main>
 
   <!-- System Limitations & Production Blueprint Modal -->
-  <div id="limitations-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: var(--bg-secondary); border: 1px solid var(--border-accent); border-radius: var(--radius-lg); max-width: 800px; width: 90%; max-height: 85vh; overflow-y: auto; padding: 2rem; box-shadow: var(--shadow-lg);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+  <div id="limitations-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
         <div>
-          <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">System Limitations & Production Blueprint</h2>
-          <p style="font-size: 0.8rem; color: var(--text-muted);">Institutional Disclosures & Statutory Architecture (SIH PS SIH26100)</p>
+          <h2>System Limitations & Production Blueprint</h2>
+          <p>Institutional Disclosures & Statutory Architecture (SIH PS SIH26100)</p>
         </div>
-        <button id="close-limitations-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <button id="close-limitations-btn" class="modal-close-btn">&times;</button>
       </div>
 
-      <div id="limitations-body" style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 1rem;">
-        <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--state-review); padding: 0.8rem; border-radius: 4px;">
-          <strong style="color: var(--state-review);">LEGAL DISCLAIMER:</strong>
-          ADVISORY — NOT A FINAL DISQUALIFICATION. This evaluation provides algorithmic evidence verification to assist the competent procurement authority. Final contract award decisions remain the sole statutory prerogative of the designated Procurement Officer.
+      <div class="modal-body">
+        <div class="legal-callout-box">
+          <strong style="color: var(--slate-900);">LEGAL DISCLAIMER:</strong>
+          ADVISORY — NOT A FINAL DISQUALIFICATION. This evaluation provides algorithmic evidence verification to assist the competent procurement authority. Final contract award decisions remain the sole statutory prerogative of the designated Procurement Officer in accordance with GFR 2017.
         </div>
         <div>
-          <h3 style="color: var(--text-primary); font-size: 0.95rem; margin-bottom: 0.4rem;">1. Simulated External Portals (Labelled: SIMULATED)</h3>
+          <h3 style="color: var(--slate-900); font-size: 0.92rem; margin-bottom: 0.35rem;">1. Simulated External Portals (Labelled: SIMULATED)</h3>
           <p>Production portal access (GSTN, Udyam, EPFO, ESIC, Debarment) requires licensed GSP agreements and sovereign VPN endpoints. This prototype implements decoupled mock adapters with injectable latency and failures. Portal timeouts yield <code>UNVERIFIABLE</code> state, never false PASS or premature rejection.</p>
         </div>
         <div>
-          <h3 style="color: var(--text-primary); font-size: 0.95rem; margin-bottom: 0.4rem;">2. Synthetic Bidder Packs (22 Distinct Cases)</h3>
+          <h3 style="color: var(--slate-900); font-size: 0.92rem; margin-bottom: 0.35rem;">2. Synthetic Bidder Packs (22 Distinct Cases)</h3>
           <p>Commercial confidentiality under DPDP Act 2023 prohibits utilizing live proprietary bids. 22 synthetic bidder packets across Goods, Services, and MSME Reserved tenders rigorously evaluate compliant cases, expired dates, overdue return filings, and debarments with valid ISO/IEC 7064 Mod-36 checksums.</p>
         </div>
         <div>
-          <h3 style="color: var(--text-primary); font-size: 0.95rem; margin-bottom: 0.4rem;">3. Sovereign On-Premises Architecture</h3>
+          <h3 style="color: var(--slate-900); font-size: 0.92rem; margin-bottom: 0.35rem;">3. Sovereign On-Premises Architecture</h3>
           <p>Designed for deployment within government secure enclaves (NIC/MeghRaj cloud) with local Tesseract OCR, AES-256-GCM encrypted document storage, and PostgreSQL INSERT-only role enforcement for tamper-evident audit logging.</p>
         </div>
       </div>
@@ -227,50 +297,50 @@
   </div>
 
   <!-- 3-Minute Hackathon Demo Guide Modal -->
-  <div id="demo-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: var(--bg-secondary); border: 1px solid rgba(59, 130, 246, 0.5); border-radius: var(--radius-lg); max-width: 850px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 2rem; box-shadow: var(--shadow-lg);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+  <div id="demo-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
         <div>
-          <h2 style="font-size: 1.3rem; font-weight: 700; color: #38BDF8;">3-Minute Hackathon Demo Walkthrough Guide</h2>
-          <p style="font-size: 0.8rem; color: var(--text-muted);">Judges Presentation Blueprint (SIH PS SIH26100)</p>
+          <h2>3-Minute Hackathon Demo Walkthrough Guide</h2>
+          <p>Judges Presentation Blueprint (SIH PS SIH26100)</p>
         </div>
-        <button id="close-demo-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <button id="close-demo-btn" class="modal-close-btn">&times;</button>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.86rem; color: var(--text-secondary);">
-        <div style="padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #38BDF8; border-radius: 4px;">
-          <strong style="color: #38BDF8;">00:00 - 00:30 | Problem & Core Guarantee:</strong>
+      <div class="modal-body">
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">00:00 - 00:30 | Problem & Core Guarantee:</strong>
           Manual GeM bid verification takes ~18 minutes per packet with high risk of human error or false PASS. Our platform guarantees deterministic, tamper-evident bid verification: same evidence in, same result out — never a false PASS.
         </div>
-        <div style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--state-fail); border-radius: 4px;">
-          <strong style="color: var(--state-fail);">00:30 - 01:05 | Statutory GST Overdue Catch:</strong>
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">00:30 - 01:05 | Statutory GST Overdue Catch:</strong>
           Select <em>Bharat Tech Solutions (BP-04)</em>. Even though bidder uploaded a digital GST certificate with valid format, the platform queries GSTN portal in real time and catches <strong>OVERDUE GSTR-3B filings</strong>, immediately triggering a statutory FAIL!
         </div>
-        <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-left: 4px solid var(--state-unverifiable); border-radius: 4px;">
-          <strong style="color: var(--state-unverifiable);">01:05 - 01:35 | Portal Resilience & Kill Switch:</strong>
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">01:05 - 01:35 | Portal Resilience & Kill Switch:</strong>
           Select <em>Unverified Network Works (BP-08)</em>. Demonstrates portal timeout/outage. State gracefully transitions to <strong>UNVERIFIABLE</strong>. Never false PASS, never false FAIL. Excluded from denominator.
         </div>
-        <div style="padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--state-review); border-radius: 4px;">
-          <strong style="color: var(--state-review);">01:35 - 02:05 | Deterministic Advisory & Officer Action:</strong>
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">01:35 - 02:05 | Deterministic Advisory & Officer Action:</strong>
           Inspect Legal Advisory citing exact requirement IDs (REQ-XX). Demonstrate officer action workflow requiring mandatory 10+ character justification before recording to audit ledger.
         </div>
-        <div style="padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--state-pass); border-radius: 4px;">
-          <strong style="color: var(--state-pass);">02:05 - 02:35 | Tamper-Evident SHA-256 Audit Trail:</strong>
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">02:05 - 02:35 | Tamper-Evident SHA-256 Audit Trail:</strong>
           Click <em>Verify Chain Integrity</em> to compute hashes in real time. Click <em>Simulate Tamper</em> to alter an in-memory block and watch the chain immediately flag cryptographic corruption!
         </div>
-        <div style="padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-left: 4px solid white; border-radius: 4px;">
-          <strong style="color: white;">02:35 - 03:00 | Rigorous Evaluation Numbers:</strong>
+        <div class="demo-step-box">
+          <strong style="color: var(--slate-900);">02:35 - 03:00 | Rigorous Evaluation Numbers:</strong>
           Zero false-PASS across 22 synthetic test cases. 100% precision. Automated verification in 2.6 ms (>10,000x faster than 18-minute manual baseline).
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Official Institutional Footer -->
   <footer class="footer">
-    <p>Smart India Hackathon 2026 (SIH PS SIH26100) — GeM Automated Bid Eligibility Verification Prototype</p>
-    <p style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-muted);">
-      Pure Deterministic Rule Engine · Zero False PASS Guarantee · Tamper-Evident SHA-256 Audit Trail
+    <p class="footer-tagline">Smart India Hackathon 2026 (SIH PS SIH26100) — GeM Automated Bid Eligibility Verification System</p>
+    <p style="margin-top: 0.35rem; font-size: 0.72rem; color: var(--text-muted);">
+      Government e-Marketplace · Deterministic Statutory Rule Engine · Zero False PASS Guarantee · Cryptographic SHA-256 Audit Trail
     </p>
   </footer>
 

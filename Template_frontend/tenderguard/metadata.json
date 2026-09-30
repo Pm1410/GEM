@@ -1,0 +1,6 @@
+{
+  "name": "TenderGuard",
+  "description": "AI-Assisted Bid Compliance Verification Platform for Transparent Procurement",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,90 +1,180 @@
 /* ==========================================================================
-   GeM Bid Eligibility Verification Platform — Design System & Stylesheet
-   Theme: Executive Procurement Dark Glassmorphism with Curated Tokens
+   GeM Bid Eligibility Verification Platform — Apple-Inspired Interface
+   Layout: 30 / 70 Master-Detail Split Screen
+   Theme: Apple Precision Light (macOS & Apple.com Design Aesthetics)
+   Typography: SF Pro Display / Plus Jakarta Sans & JetBrains Mono
    ========================================================================== */
 
 :root {
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  /* Primary GeM Palette */
-  --bg-primary: #070D18;
-  --bg-secondary: #0D1B2E;
-  --bg-card: rgba(18, 32, 54, 0.7);
-  --bg-card-hover: rgba(26, 44, 73, 0.85);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(59, 130, 246, 0.3);
-  
-  /* Text & Foreground */
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  
-  /* Statutory State Accents */
-  --state-pass: #10B981;
-  --state-pass-bg: rgba(16, 185, 129, 0.12);
-  --state-pass-border: rgba(16, 185, 129, 0.3);
-  
-  --state-fail: #EF4444;
-  --state-fail-bg: rgba(239, 68, 68, 0.12);
-  --state-fail-border: rgba(239, 68, 68, 0.3);
-  
-  --state-review: #F59E0B;
-  --state-review-bg: rgba(245, 158, 11, 0.12);
-  --state-review-border: rgba(245, 158, 11, 0.3);
-  
-  --state-unverifiable: #8B5CF6;
-  --state-unverifiable-bg: rgba(139, 92, 246, 0.12);
-  --state-unverifiable-border: rgba(139, 92, 246, 0.3);
+  /* Apple Precision Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Risk Tiers */
-  --risk-critical: #DC2626;
-  --risk-high: #EA580C;
-  --risk-medium: #D97706;
-  --risk-low: #059669;
-  
-  /* GeM National Accent */
-  --gem-orange: #FF9933;
-  --gem-blue: #138808;
-  --gem-navy: #000080;
-  
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  /* Apple System Colors (Clean, Muted, Sophisticated) */
+  --apple-bg: #F5F5F7;          /* Classic Apple light canvas */
+  --apple-card: #FFFFFF;        /* Pure white card surface */
+  --apple-subtle: #F2F2F7;      /* Secondary group surface */
+  --apple-divider: rgba(0, 0, 0, 0.08); /* Apple hairline divider */
+  --apple-border: rgba(0, 0, 0, 0.06);  /* Soft card outline */
+  --apple-border-hover: rgba(0, 0, 0, 0.16);
+
+  /* Apple Text Hierarchy */
+  --text-primary: #1D1D1F;      /* Apple deep charcoal */
+  --text-secondary: #48484A;    /* Apple secondary label */
+  --text-muted: #86868B;        /* Apple tertiary / caption */
+  --text-subtle: #AEAEB2;
+
+  /* Apple Blue & Accents */
+  --apple-blue: #0071E3;
+  --apple-blue-hover: #0077ED;
+  --apple-blue-subtle: rgba(0, 113, 227, 0.08);
+  --apple-charcoal: #1D1D1F;
+
+  /* Muted Functional Statuses (Apple System Tints) */
+  --state-pass: #1B5E20;
+  --state-pass-bg: #E8F5E9;
+  --state-pass-border: #C8E6C9;
+
+  --state-fail: #B71C1C;
+  --state-fail-bg: #FFEBEE;
+  --state-fail-border: #FFCDD2;
+
+  --state-review: #B26A00;
+  --state-review-bg: #FFF8E1;
+  --state-review-border: #FFE082;
+
+  --state-unverifiable: #5E35B1;
+  --state-unverifiable-bg: #EDE7F6;
+  --state-unverifiable-border: #D1C4E9;
+
+  /* Risk Tiers (Muted Minimalist) */
+  --risk-critical-bg: #FFEBEE;
+  --risk-critical-text: #B71C1C;
+  --risk-critical-border: #FFCDD2;
+
+  --risk-high-bg: #FFF3E0;
+  --risk-high-text: #E65100;
+  --risk-high-border: #FFE0B2;
+
+  --risk-medium-bg: #FFF8E1;
+  --risk-medium-text: #B26A00;
+  --risk-medium-border: #FFE082;
+
+  --risk-low-bg: #E8F5E9;
+  --risk-low-text: #1B5E20;
+  --risk-low-border: #C8E6C9;
+
+  /* Apple Diffusion Shadows */
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-selected: 0 4px 16px rgba(0, 113, 227, 0.12);
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+
+  /* Radii */
+  --radius-pill: 9999px;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --radius-xl: 20px;
 }
 
-* {
+/* ==========================================================================
+   Base Reset
+   ========================================================================== */
+
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-primary);
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.25) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(15, 118, 110, 0.18) 0px, transparent 50%);
+  font-family: var(--font-sans);
+  background-color: var(--apple-bg);
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  line-height: 1.5;
+  line-height: 1.47059;
+  letter-spacing: -0.016em;
 }
 
 /* ==========================================================================
-   Header & Navigation
+   Apple Header & Frosted Masthead
    ========================================================================== */
+
+.gov-top-bar {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--apple-divider);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.gov-top-stripe {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #F97316 0%, #F97316 33.3%, #CBD5E1 33.3%, #CBD5E1 66.6%, #16A34A 66.6%, #16A34A 100%);
+}
+
+.gov-top-content {
+  max-width: 1520px;
+  margin: 0 auto;
+  padding: 0.35rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gov-top-content .emblem-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.gov-top-content .emblem-icon {
+  width: 13px;
+  height: 13px;
+  fill: var(--text-secondary);
+}
+
+.gov-top-content .portal-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: #34C759;
+  border-radius: 50%;
+  display: inline-block;
+}
 
 header.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.85rem 2rem;
-  background: rgba(13, 27, 46, 0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--apple-divider);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -96,28 +186,34 @@ header.navbar {
   gap: 1rem;
 }
 
-.brand-logo {
+.brand-emblem-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
-  border-radius: var(--radius-md);
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: -0.5px;
+  width: 38px;
+  height: 38px;
+  background: var(--apple-charcoal);
+  border-radius: var(--radius-sm);
   color: #FFFFFF;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-emblem-badge:hover {
+  transform: scale(1.04);
 }
 
 .brand-text h1 {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: -0.2px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .brand-text p {
@@ -126,317 +222,567 @@ header.navbar {
 }
 
 .simulated-pill {
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #FBBF24;
-  padding: 0.15rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-secondary);
+  padding: 0.18rem 0.55rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.85rem;
 }
 
 .control-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 
 select.dropdown-select {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid transparent;
   color: var(--text-primary);
-  padding: 0.45rem 1rem;
+  padding: 0.42rem 0.85rem;
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-select.dropdown-select:hover, select.dropdown-select:focus {
-  border-color: #3B82F6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+select.dropdown-select:hover {
+  background: rgba(0, 0, 0, 0.07);
 }
 
-.role-pill-badge {
-  background: #1E293B;
-  border: 1px solid var(--border-subtle);
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+select.dropdown-select:focus {
+  background: #FFFFFF;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+}
+
+.btn-nav-outline {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border: 1px solid var(--apple-border);
+  padding: 0.42rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-nav-outline:hover {
+  background: var(--apple-subtle);
+  border-color: var(--apple-border-hover);
+  transform: translateY(-1px);
+}
+
+.btn-nav-primary {
+  background: var(--apple-blue);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.45rem 1rem;
+  font-family: inherit;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #38BDF8;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-nav-primary:hover {
+  background: var(--apple-blue-hover);
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   Main Layout & Metric Cards
+   Main Canvas & Executive Metrics
    ========================================================================== */
 
 main.container {
   flex: 1;
-  padding: 2rem;
-  max-width: 1440px;
+  padding: 1.5rem 2rem;
+  max-width: 1520px;
   margin: 0 auto;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .metric-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  box-shadow: var(--shadow-lg);
-  transition: transform 0.2s, border-color 0.2s;
+  gap: 0.35rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .metric-card:hover {
   transform: translateY(-2px);
-  border-color: var(--border-accent);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--apple-border-hover);
+}
+
+.metric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: var(--apple-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.metric-card:hover .metric-card-icon {
+  background: var(--text-primary);
+  color: #FFFFFF;
 }
 
 .metric-label {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 0.72rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .metric-value {
-  font-size: 1.85rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-size: 1.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
 .metric-sub {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: var(--text-muted);
 }
 
 /* ==========================================================================
-   Two-Column Content Grid: Table & Inspector
+   30 / 70 MASTER-DETAIL VERTICAL SPLIT LAYOUT
    ========================================================================== */
 
 .content-grid {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 2rem;
+  grid-template-columns: 3fr 7fr; /* Exactly 30% / 70% */
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.panel-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-subtle);
+/* Left Pane: 30% Tender Bidder Packets Sidebar */
+#bidders-panel {
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  box-shadow: var(--shadow-lg);
+}
+
+/* Right Pane: 70% Detail Dossier & Workflow Inspector */
+#detail-panel {
+  background: var(--apple-card);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 0.85rem;
+  padding: 1.15rem 1.4rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--apple-divider);
 }
 
 .panel-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-/* Bidders Table */
-.table-responsive {
-  overflow-x: auto;
-}
-
-table.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.85rem;
-}
-
-table.data-table th {
+/* 30% Sidebar Search Bar */
+.table-filter-bar {
   padding: 0.75rem 1rem;
-  background: rgba(13, 27, 46, 0.6);
-  color: var(--text-secondary);
-  font-weight: 600;
-  border-bottom: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--apple-divider);
 }
 
-table.data-table td {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--border-subtle);
+.search-input-box {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--apple-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 0.48rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.78rem;
   color: var(--text-primary);
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-table.data-table tr.clickable-row {
-  cursor: pointer;
-  transition: background 0.15s;
+.search-input:focus {
+  background: #FFFFFF;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
 }
-
-table.data-table tr.clickable-row:hover {
-  background: var(--bg-card-hover);
-}
-
-table.data-table tr.selected-row {
-  background: rgba(59, 130, 246, 0.15);
-  border-left: 3px solid #3B82F6;
-}
-
-/* State & Risk Badges */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-.badge-pass { background: var(--state-pass-bg); color: var(--state-pass); border: 1px solid var(--state-pass-border); }
-.badge-fail { background: var(--state-fail-bg); color: var(--state-fail); border: 1px solid var(--state-fail-border); }
-.badge-review { background: var(--state-review-bg); color: var(--state-review); border: 1px solid var(--state-review-border); }
-.badge-unverifiable { background: var(--state-unverifiable-bg); color: var(--state-unverifiable); border: 1px solid var(--state-unverifiable-border); }
-
-.badge-risk-critical { background: rgba(220, 38, 38, 0.2); color: #F87171; border: 1px solid rgba(220, 38, 38, 0.5); }
-.badge-risk-high { background: rgba(234, 88, 12, 0.2); color: #FB923C; border: 1px solid rgba(234, 88, 12, 0.5); }
-.badge-risk-medium { background: rgba(217, 119, 6, 0.2); color: #FBBF24; border: 1px solid rgba(217, 119, 6, 0.5); }
-.badge-risk-low { background: rgba(5, 150, 105, 0.2); color: #34D399; border: 1px solid rgba(5, 150, 105, 0.5); }
 
 /* ==========================================================================
-   Detail Inspector Tabs & Panels
+   30% Pane: Apple Finder / Notes Style Bidder Cards Table
+   ========================================================================== */
+
+#bidders-panel .table-responsive {
+  padding: 0.5rem;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+table#bidders-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+table#bidders-table thead {
+  display: none; /* Modern Apple card list layout */
+}
+
+table#bidders-table tr.clickable-row {
+  background: #FFFFFF;
+  border: 1px solid var(--apple-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  margin-bottom: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+table#bidders-table tr.clickable-row:hover {
+  background: var(--apple-subtle);
+  border-color: var(--apple-border-hover);
+  transform: translateY(-1px);
+}
+
+table#bidders-table tr.selected-row {
+  background: #FFFFFF !important;
+  border-color: var(--apple-blue) !important;
+  box-shadow: 0 0 0 2px var(--apple-blue), var(--shadow-hover) !important;
+}
+
+table#bidders-table td {
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.bidder-card-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.bidder-card-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--apple-charcoal);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.selected-row .bidder-card-avatar {
+  background: var(--apple-blue);
+}
+
+.bidder-card-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.bidder-card-name {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
+}
+
+.bidder-card-sub {
+  font-size: 0.69rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1px;
+}
+
+.bidder-card-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.bidder-card-score {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   70% Pane: Apple Segmented Pill Tabs & Dossier Inspector
    ========================================================================== */
 
 .tabs-header {
   display: flex;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--apple-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin: 1rem 1.4rem 0.5rem 1.4rem;
+  gap: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .tab-btn {
+  flex: 1;
   background: transparent;
   border: none;
+  border-radius: var(--radius-pill);
   color: var(--text-secondary);
-  padding: 0.65rem 1.25rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 0.48rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
 .tab-btn:hover {
   color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .tab-btn.active {
-  color: #38BDF8;
-  border-bottom-color: #38BDF8;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tab-content {
   display: none;
   flex-direction: column;
   gap: 1.25rem;
+  padding: 1.25rem 1.4rem;
 }
 
 .tab-content.active {
   display: flex;
 }
 
-/* Advisory Banner */
+/* ==========================================================================
+   Tab 1: Evaluation Matrix Table
+   ========================================================================== */
+
+table#requirements-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table#requirements-table th {
+  padding: 0.65rem 1rem;
+  background: var(--apple-subtle);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--apple-divider);
+  text-align: left;
+}
+
+table#requirements-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--apple-divider);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+.req-id-tag {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--apple-charcoal);
+  font-size: 0.76rem;
+}
+
+/* ==========================================================================
+   Tab 2: Evidence Viewer & Grounding Inspector (macOS QuickLook Style)
+   ========================================================================== */
+
+.evidence-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  background: var(--apple-subtle);
+  border: 1px solid var(--apple-divider);
+  border-bottom: none;
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  font-size: 0.78rem;
+}
+
+.evidence-filename-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.evidence-viewer-box {
+  background: #FFFFFF;
+  border: 1px solid var(--apple-divider);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  line-height: 1.8;
+  max-height: 380px;
+  overflow-y: auto;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+/* Muted Subtle Highlighter */
+.highlight-box {
+  background-color: #FEF9C3;
+  color: #1D1D1F;
+  border-bottom: 2px solid #EAB308;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+  cursor: help;
+}
+
+/* ==========================================================================
+   Tab 3: Advisory & Decision Desk (Apple Segmented Action Desk)
+   ========================================================================== */
+
 .advisory-banner {
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: var(--apple-subtle);
+  border: 1px solid var(--apple-border);
+  border-left: 4px solid var(--text-primary);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1.15rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .advisory-disclaimer {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: #FBBF24;
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--apple-divider);
 }
 
-.advisory-recommendation {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Evidence Viewer */
-.evidence-viewer-box {
-  background: #050B14;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.85rem;
-  color: #CBD5E1;
-  white-space: pre-wrap;
-  line-height: 1.7;
-  max-height: 280px;
-  overflow-y: auto;
-  position: relative;
-}
-
-.highlight-box {
-  background: rgba(59, 130, 246, 0.25);
-  border: 1px solid #60A5FA;
-  color: #93C5FD;
-  padding: 0.15rem 0.35rem;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-}
-
-/* Officer Action Form */
 .action-box {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background: var(--apple-subtle);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--radius-lg);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.action-header-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .action-buttons {
@@ -448,78 +794,386 @@ table.data-table tr.selected-row {
   flex: 1;
   padding: 0.65rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s;
+  border: 1px solid var(--apple-border);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-approve { background: rgba(16, 185, 129, 0.2); color: #34D399; border-color: rgba(16, 185, 129, 0.4); }
-.btn-approve:hover { background: #10B981; color: white; }
+.btn-action:hover {
+  background: #FFFFFF;
+  border-color: var(--apple-border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
 
-.btn-reject { background: rgba(239, 68, 68, 0.2); color: #F87171; border-color: rgba(239, 68, 68, 0.4); }
-.btn-reject:hover { background: #EF4444; color: white; }
-
-.btn-clarify { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border-color: rgba(245, 158, 11, 0.4); }
-.btn-clarify:hover { background: #F59E0B; color: white; }
+.btn-action.active-action {
+  background: var(--apple-charcoal) !important;
+  color: #FFFFFF !important;
+  border-color: var(--apple-charcoal) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
 textarea.justification-textarea {
   width: 100%;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  border: 1px solid var(--apple-border);
   color: var(--text-primary);
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  font-family: inherit;
   outline: none;
   resize: vertical;
   min-height: 80px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 textarea.justification-textarea:focus {
-  border-color: #38BDF8;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
 }
 
 .char-counter {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   text-align: right;
+  margin-top: 0.25rem;
 }
 
-/* Audit Chain Visualizer */
+.btn-submit-action {
+  background: var(--apple-charcoal);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-submit-action:hover:not(:disabled) {
+  background: #000000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-submit-action:disabled {
+  background: #C7C7CC;
+  color: #FFFFFF;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   Tab 4: Cryptographic Audit Trail Ledger
+   ========================================================================== */
+
+.audit-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--apple-divider);
+}
+
+.btn-audit-verify {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border: 1px solid var(--apple-border);
+  padding: 0.45rem 0.95rem;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-audit-verify:hover {
+  background: var(--apple-charcoal);
+  color: #FFFFFF;
+  border-color: var(--apple-charcoal);
+  transform: translateY(-1px);
+}
+
+.btn-audit-tamper {
+  background: #FFFFFF;
+  color: var(--state-fail);
+  border: 1px solid var(--state-fail-border);
+  padding: 0.45rem 0.95rem;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-audit-tamper:hover {
+  background: var(--state-fail);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
 .audit-blocks-container {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  max-height: 320px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
 .audit-block {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid var(--border-subtle);
-  border-left: 3px solid #38BDF8;
-  border-radius: var(--radius-sm);
-  padding: 0.85rem 1rem;
+  background: #FFFFFF;
+  border: 1px solid var(--apple-border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.15rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audit-block:hover {
+  border-color: var(--apple-border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
 }
 
 .audit-hash {
-  font-family: monospace;
-  color: #94A3B8;
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.71rem;
   word-break: break-all;
+  background: var(--apple-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
 }
 
-/* Footer */
-footer.footer {
-  text-align: center;
+/* ==========================================================================
+   Badges (Apple Capsule Pill Design)
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.badge-pass {
+  background-color: var(--state-pass-bg);
+  color: var(--state-pass);
+  border-color: var(--state-pass-border);
+}
+
+.badge-fail {
+  background-color: var(--state-fail-bg);
+  color: var(--state-fail);
+  border-color: var(--state-fail-border);
+}
+
+.badge-review {
+  background-color: var(--state-review-bg);
+  color: var(--state-review);
+  border-color: var(--state-review-border);
+}
+
+.badge-unverifiable {
+  background-color: var(--state-unverifiable-bg);
+  color: var(--state-unverifiable);
+  border-color: var(--state-unverifiable-border);
+}
+
+.badge-risk-critical {
+  background-color: var(--risk-critical-bg);
+  color: var(--risk-critical-text);
+  border-color: var(--risk-critical-border);
+}
+
+.badge-risk-high {
+  background-color: var(--risk-high-bg);
+  color: var(--risk-high-text);
+  border-color: var(--risk-high-border);
+}
+
+.badge-risk-medium {
+  background-color: var(--risk-medium-bg);
+  color: var(--risk-medium-text);
+  border-color: var(--risk-medium-border);
+}
+
+.badge-risk-low {
+  background-color: var(--risk-low-bg);
+  color: var(--risk-low-text);
+  border-color: var(--risk-low-border);
+}
+
+/* ==========================================================================
+   Modals (Apple Sheet Dialogs)
+   ========================================================================== */
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
   padding: 1.5rem;
-  border-top: 1px solid var(--border-subtle);
-  font-size: 0.8rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  max-width: 820px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 2rem 2.25rem;
+  box-shadow: var(--shadow-modal);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--apple-divider);
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.modal-header p {
+  font-size: 0.78rem;
   color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.modal-close-btn {
+  background: var(--apple-subtle);
+  border: none;
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.legal-callout-box {
+  background: var(--apple-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  font-size: 0.82rem;
+  border-left: 4px solid var(--text-primary);
+}
+
+.demo-step-box {
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  background: var(--apple-subtle);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.demo-step-box:hover {
+  background: #FFFFFF;
+  border-color: var(--apple-border-hover);
+  box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+footer.footer {
+  margin-top: auto;
+  background: #FFFFFF;
+  border-top: 1px solid var(--apple-divider);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+footer.footer .footer-tagline {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-controls {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
 }

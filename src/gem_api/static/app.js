@@ -1,6 +1,6 @@
 /**
  * GeM Bid Eligibility Verification Platform — Officer Dashboard Client
- * Handles real-time API integrations, evidence viewer highlights, RBAC, and audit verification.
+ * 30 / 70 Vertical Split Screen with Apple-Inspired Precision Design.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,12 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentBidderId = null;
   let currentRole = 'officer';
   let selectedAction = 'APPROVE';
+  let loadedBidders = [];
 
   // DOM Elements
   const tenderSelect = document.getElementById('tender-select');
   const roleSelect = document.getElementById('role-select');
   const biddersTableBody = document.getElementById('bidders-table-body');
   const biddersCountBadge = document.getElementById('bidders-count-badge');
+  const bidderSearchInput = document.getElementById('bidder-search-input');
   
   // Metric elements
   const metricTotal = document.getElementById('metric-total-bidders');
@@ -71,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (isAuditor) {
       actionFeedback.style.display = 'block';
-      actionFeedback.style.color = '#F59E0B';
-      actionFeedback.textContent = 'Auditor role is read-only (OFCR-05). Actions are disabled.';
+      actionFeedback.style.color = '#B45309';
+      actionFeedback.textContent = 'Auditor role is read-only (OFCR-05). Statutory decisions are disabled.';
     } else {
       actionFeedback.style.display = 'none';
     }
@@ -84,16 +86,28 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBidders(currentTenderId);
   });
 
+  // Filter input
+  if (bidderSearchInput) {
+    bidderSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = loadedBidders.filter(b => 
+        b.legal_name.toLowerCase().includes(q) ||
+        b.bidder_id.toLowerCase().includes(q) ||
+        b.overall_state.toLowerCase().includes(q) ||
+        b.risk_level.toLowerCase().includes(q)
+      );
+      renderBiddersTable(filtered);
+    });
+  }
+
   // Action selection
   function setAction(action) {
     selectedAction = action;
     actionBtns.forEach(b => {
       if (b.dataset.action === action) {
-        b.style.transform = 'scale(1.03)';
-        b.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.5)';
+        b.classList.add('active-action');
       } else {
-        b.style.transform = 'none';
-        b.style.boxShadow = 'none';
+        b.classList.remove('active-action');
       }
     });
   }
@@ -108,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const len = e.target.value.trim().length;
     charCounter.textContent = `${len} / 10 characters minimum`;
     if (len >= 10) {
-      charCounter.style.color = '#10B981';
+      charCounter.style.color = 'var(--state-pass)';
       if (currentRole !== 'auditor') actionSubmitBtn.disabled = false;
     } else {
       charCounter.style.color = 'var(--text-muted)';
@@ -124,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     actionSubmitBtn.disabled = true;
     actionFeedback.style.display = 'block';
-    actionFeedback.style.color = '#38BDF8';
+    actionFeedback.style.color = 'var(--apple-blue)';
     actionFeedback.textContent = 'Submitting determination to cryptographic audit chain...';
 
     try {
@@ -147,18 +161,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const data = await res.json();
-      actionFeedback.style.color = '#10B981';
-      actionFeedback.innerHTML = `✓ Determination recorded! Audit Block Hash: <span style="font-family: monospace;">${data.record_hash.substring(0, 16)}...</span>`;
+      actionFeedback.style.color = 'var(--state-pass)';
+      actionFeedback.innerHTML = `✓ Statutory Determination recorded! Audit Block Hash: <span style="font-family: var(--font-mono); font-weight: 600;">${data.record_hash.substring(0, 16)}...</span>`;
       justificationInput.value = '';
       charCounter.textContent = '0 / 10 characters minimum';
       loadAuditChain();
     } catch (err) {
-      actionFeedback.style.color = '#EF4444';
+      actionFeedback.style.color = 'var(--state-fail)';
       actionFeedback.textContent = `Error: ${err.message}`;
     } finally {
       if (currentRole !== 'auditor') actionSubmitBtn.disabled = false;
     }
   });
+
+  // Helper: Get Entity Initials for Avatar
+  function getInitials(name) {
+    const parts = name.split(' ').filter(p => p.length > 0);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  }
 
   // Fetch Bidders List
   async function loadBidders(tenderId) {
@@ -166,14 +189,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch(`/api/tenders/${tenderId}/bidders`);
       const data = await res.json();
-      const bidders = data.bidders || [];
+      loadedBidders = data.bidders || [];
 
-      biddersCountBadge.textContent = `${bidders.length} Packets`;
-      renderMetrics(bidders);
-      renderBiddersTable(bidders);
+      biddersCountBadge.textContent = `${loadedBidders.length} Packets`;
+      renderMetrics(loadedBidders);
+      renderBiddersTable(loadedBidders);
 
-      if (bidders.length > 0) {
-        selectBidder(bidders[0].bidder_id);
+      if (loadedBidders.length > 0) {
+        selectBidder(loadedBidders[0].bidder_id);
       }
     } catch (err) {
       console.error('Failed to load bidders:', err);
@@ -194,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     metricCriticalRisk.textContent = critical;
   }
 
-  // Render Bidders Table
+  // Render Bidders Table in 30% Pane (Apple Card List Style)
   function renderBiddersTable(bidders) {
     biddersTableBody.innerHTML = '';
     bidders.forEach(b => {
@@ -204,19 +227,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const stateBadgeClass = `badge-${b.overall_state.toLowerCase()}`;
       const riskBadgeClass = `badge-risk-${b.risk_level.toLowerCase()}`;
+      const initials = getInitials(b.legal_name);
 
       tr.innerHTML = `
-        <td>
-          <div style="font-weight: 600;">${b.legal_name}</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">${b.bidder_id}</div>
+        <td style="width: 100%; border: none;">
+          <div class="bidder-card-main">
+            <div class="bidder-card-avatar">${initials}</div>
+            <div class="bidder-card-meta">
+              <div class="bidder-card-name" title="${b.legal_name}">${b.legal_name}</div>
+              <div class="bidder-card-sub">
+                <span>${b.bidder_id}</span>
+                <span>·</span>
+                <span class="badge ${riskBadgeClass}">${b.risk_level}</span>
+              </div>
+            </div>
+          </div>
         </td>
-        <td>
-          <div style="font-weight: 700;">${b.compliance_score.toFixed(1)}%</div>
-          <div style="font-size: 0.7rem; color: var(--text-muted);">Coverage: ${b.verifiable_coverage_pct.toFixed(0)}%</div>
+        <td style="border: none; text-align: right; flex-shrink: 0;">
+          <div class="bidder-card-stats">
+            <div class="bidder-card-score">${b.compliance_score.toFixed(0)}%</div>
+            <span class="badge ${stateBadgeClass}">${b.overall_state}</span>
+          </div>
         </td>
-        <td><span class="badge ${riskBadgeClass}">${b.risk_level}</span></td>
-        <td><span class="badge ${stateBadgeClass}">${b.overall_state}</span></td>
-        <td><button class="btn-action" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; background: rgba(59, 130, 246, 0.2); color: #93C5FD; border-color: rgba(59, 130, 246, 0.3);">Inspect</button></td>
       `;
 
       tr.addEventListener('click', () => selectBidder(b.bidder_id));
@@ -247,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Render Requirements Matrix
+  // Render Requirements Matrix in 70% Pane
   function renderRequirementsTable(reqs) {
     requirementsTableBody.innerHTML = '';
     reqs.forEach(req => {
@@ -256,10 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td style="font-weight: 700; color: #38BDF8;">${req.requirement_id}</td>
-        <td>${checksText}</td>
+        <td class="req-id-tag">${req.requirement_id}</td>
+        <td style="color: var(--text-secondary); line-height: 1.5;">${checksText}</td>
         <td><span class="badge ${badgeClass}">${req.state}</span></td>
-        <td><span class="simulated-pill" style="font-size: 0.65rem;">SIMULATED</span></td>
+        <td><span class="simulated-pill">SIMULATED</span></td>
       `;
       requirementsTableBody.appendChild(tr);
     });
@@ -297,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const records = data.records || [];
 
       if (records.length === 0) {
-        auditBlocks.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem;">No decisions recorded yet. Decisions made by officers will form a tamper-evident hash chain here.</div>';
+        auditBlocks.innerHTML = '<div style="color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;">No decisions recorded yet. Decisions made by officers will form a tamper-evident hash chain here.</div>';
         return;
       }
 
@@ -307,12 +339,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const block = document.createElement('div');
         block.className = 'audit-block';
         block.innerHTML = `
-          <div style="display: flex; justify-content: space-between; font-weight: 700;">
-            <span style="color: #38BDF8;">Block #${idx + 1} — ${payload.officer_action}</span>
-            <span style="color: var(--text-muted); font-size: 0.75rem;">${payload.timestamp}</span>
+          <div style="display: flex; justify-content: space-between; font-weight: 700; align-items: center;">
+            <span style="color: var(--text-primary); font-size: 0.84rem;">Block #${idx + 1} — ${payload.officer_action}</span>
+            <span style="color: var(--text-muted); font-size: 0.71rem; font-family: var(--font-mono);">${payload.timestamp}</span>
           </div>
-          <div><strong>Bidder:</strong> ${payload.bidder_id} | <strong>Score:</strong> ${payload.compliance_score.toFixed(1)}% | <strong>Risk:</strong> ${payload.risk_level}</div>
-          <div style="color: var(--text-secondary); font-size: 0.75rem;"><strong>Justification:</strong> "${payload.officer_justification}"</div>
+          <div style="color: var(--text-secondary); font-size: 0.78rem;">
+            <strong>Bidder:</strong> ${payload.bidder_id} &nbsp;|&nbsp; 
+            <strong>Score:</strong> ${payload.compliance_score.toFixed(1)}% &nbsp;|&nbsp; 
+            <strong>Risk:</strong> ${payload.risk_level}
+          </div>
+          <div style="color: var(--text-secondary); font-size: 0.76rem; background: var(--apple-subtle); padding: 0.4rem 0.65rem; border-radius: var(--radius-xs);">
+            <strong>Justification:</strong> "${payload.officer_justification}"
+          </div>
           <div class="audit-hash"><strong>Prev:</strong> ${rec.prev_hash}</div>
           <div class="audit-hash"><strong>Hash:</strong> ${rec.record_hash}</div>
         `;
